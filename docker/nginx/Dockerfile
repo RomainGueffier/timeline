@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-LABEL maintainer="Janosch Kocsis <jk@coloso.de>"
+LABEL maintainer="Romain Gueffier <r.gueffier.pro@gmail.com>"
 
 RUN addgroup -S www-data \
     && adduser -S -G www-data www-data

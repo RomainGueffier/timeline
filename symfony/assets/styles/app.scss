@@ -1,0 +1,157 @@
+
+/** add bootstrap & font-awesome **/
+@import "~bootstrap/scss/bootstrap";
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+
+/*****************
+   custom styles
+******************/
+
+main > .container {
+    padding-top: 60px;
+}
+
+.timeline-wrapper {
+    overflow-x: auto;
+    position: relative;
+    background: #FCFCFC;
+    box-shadow: 0 0 0.2em #777 inset;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border-top: 2px solid #222;
+    margin-bottom: 1rem;
+}
+
+.timeline-events{
+    width: fit-content;
+    position: relative;
+    height: 500px;
+}
+
+.timeline {
+    width: fit-content;
+    position: relative;
+    z-index: 10;
+}
+
+.timeline-events .character {
+    margin-bottom: .5rem;
+    padding: 0;
+    position: absolute;
+}
+
+.event, .longevent {
+    position: absolute;
+    height: 100%;
+    border-left: 2px solid #555;
+    top: 0;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+    text-align: right;
+    padding-bottom: .5rem;
+    padding-left: .5rem;
+    font-size: .9rem;
+    line-height: 0rem;
+}
+
+.longevent {
+    width: auto;
+    background: rgba(225,225,225,.3);
+    border: none;
+}
+
+.period {
+    height: auto;
+    text-align: center;
+    width: auto;
+    background: #83a4d4;
+    border: none;
+}
+
+.period h3 {
+    display: block;
+    bottom: 2rem;
+    margin: auto;
+    margin-top: 300px;
+    font-weight: bolder;
+}
+
+.timeline-period {
+    width: 50px;/** ECHELLE d'une période **/
+    height: 1rem;
+    border-left: .1rem solid #222;
+    position: relative;
+}
+
+.timeline-period.timeline-period-strong {
+    border-left: .4rem solid #222;
+}
+
+.timeline-period.timeline-period-zero {
+    border-left: .5rem solid #222;
+}
+
+.timeline-period.timeline-period-light {
+    border-left: .3rem solid #222;
+}
+
+.timeline-period.timeline-period-extralight {
+    border-left: .2rem solid #222;
+}
+
+.timeline-period > label {
+    position: absolute;
+    display: block;
+    bottom: -1rem;
+    left: -1.2rem;
+    font-size: .5rem;
+    text-align: center;
+    margin: auto;
+    width: 2rem;
+}
+
+.timeline-period.timeline-period-strong > label {
+    font-size: .8rem;
+    bottom: -1.5rem;
+}
+
+.timeline-period.timeline-period-zero > label {
+    font-size: 1rem;
+    bottom: -1.5rem;
+}
+
+.timeline-period.timeline-period-light > label {
+    font-size: .7rem;
+    bottom: -1.4rem;
+}
+
+.timeline-period.timeline-period-extralight > label {
+    font-size: .6rem;
+    bottom: -1.3rem;
+}
+
+.character {
+    background: #E7E7E7;
+    font-size: .7rem;
+    margin: 1rem auto;
+    z-index: 10;
+}
+
+.character-0 {
+    background: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(231,231,231,1) 50%, rgba(250,250,250,1) 100%);
+}
+
+.character-50 {
+    background: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(231,231,231,1) 25%, rgba(231,231,231,1) 75%, rgba(250,250,250,1) 100%);
+}
+
+.character-80 {
+    background: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(231,231,231,1) 10%, rgba(231,231,231,1) 90%, rgba(250,250,250,1) 100%);
+}

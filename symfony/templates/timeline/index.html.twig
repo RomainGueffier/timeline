@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Frise chronologique{% endblock %}
+
+{% block body %}
+<!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h1 class="mt-5">Chronologie complète de l'histoire</h1>
+        <p class="lead">
+            Sélectionne une <code>échelle</code> et fais glisser la <code>barre latérale</code> pour naviguer dans l'histoire.
+            <button class="btn btn-link btn-lg" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+                <i class="fas fa-pen-square"></i>
+            </button>
+        </p>
+    </div>
+</main>
+<div class="timeline-wrapper">
+    <div class="timeline">
+        {{ timeline|raw }}
+    </div>
+    <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}">
+        <div class="fa-3x">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </div>
+    </div>
+    <?php include 'templates/event.php'; ?>
+    <div class="timeline-period">
+
+    </div>
+</div>
+{% endblock %}

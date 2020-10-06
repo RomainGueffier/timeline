@@ -1,14 +1,16 @@
 FROM php:7.4-fpm-alpine
 
-LABEL maintainer="Janosch Kocsis <jk@coloso.de>"
+LABEL maintainer="Romain Gueffier <r.gueffier.pro@gmail.com>"
 
 RUN apk add --update \
     make \
     curl \
     nodejs \
-    yarn
+    yarn \
+    icu-dev
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql intl
+RUN docker-php-ext-configure intl && docker-php-ext-install intl
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     ln -s $(composer config --global home) /root/composer
