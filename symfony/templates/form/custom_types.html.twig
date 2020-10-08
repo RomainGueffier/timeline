@@ -1,0 +1,15 @@
+{% block old_date_row %}
+{{ form_label(form) }}
+<div class="card card-body my-3">
+  <div id="birthdate" class="row">
+      {% for child in form.children|filter(child => not child.rendered) %}
+      <div class="form-group col">
+          {{ form_label(child) }}
+          {{ form_widget(child) }}
+          {{ form_help(child) }}
+          {{ form_errors(child) }}
+      </div>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -3,7 +3,9 @@
 namespace App\Form\Type;
 
 use App\Entity\Character;
+use App\Form\Type\OldDateType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,14 +22,11 @@ class CharacterType extends AbstractType
         $builder
             //->add('parent')
             ->add('name', TextType::class, ['label' => 'Nom'])
-            ->add('birth', BirthdayType::class, ['label' => 'Date de naissance'])
+            ->add('birth', OldDateType::class, ['label' => 'Date de naissance'])
             ->add('birthplace', TextType::class, ['label' => 'Lieu de naissance'])
-            ->add('death', BirthdayType::class, ['label' => 'Date de décès'])
+            ->add('death', OldDateType::class, ['label' => 'Date de décès'])
             ->add('deathplace', TextType::class, ['label' => 'Lieu de décès'])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'attr' => ['class' => 'tinymce']
-            ])
+            ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('age', IntegerType::class, ['label' => 'Durée de vie'])
             ->add('accuracy', ChoiceType::class, [
                 'label' => 'Exactitude des dates (%)',
@@ -42,6 +41,32 @@ class CharacterType extends AbstractType
             //->add('period')
             ->add('weight', IntegerType::class, ['label' => 'Priorité d\'affichage'])
             ->add('save', SubmitType::class, ['label' => 'Ajouter ce personnage'])
+        ;
+
+        // transform json date into array for form and vice versa
+        $builder->get('birth')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($json) {
+                    // transform the json string to an array
+                    return json_decode($json, true);
+                },
+                function ($array) {
+                    // transform the array back to json
+                    return json_encode($array);
+                }
+            ))
+        ;
+        $builder->get('death')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($json) {
+                    // transform the json string to an array
+                    return json_decode($json, true);
+                },
+                function ($array) {
+                    // transform the array back to json
+                    return json_encode($array);
+                }
+            ))
         ;
     }
 

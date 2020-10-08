@@ -11,6 +11,7 @@ services:
       - MYSQL_PASSWORD=symfony
     volumes:
       - ./docker/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/mysqld_charset.cnf
+      - ./docker/mysql/data:/var/lib/mysql
   php:
     build: ./docker/php
     ports: ['9000:9000']
@@ -22,7 +23,9 @@ services:
     build: ./docker/nginx
     ports: ['80:80']
     restart: always
-    volumes: ['./symfony/:/var/www/symfony:cached']
+    volumes:
+      - ./symfony/:/var/www/symfony:cached
+      - ./docker/php/sessions:/var/php/sessions
     links:
       - php
   phpmyadmin:

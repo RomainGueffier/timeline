@@ -32,9 +32,7 @@ class Character
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\NotBlank
-     * @Assert\Type("\DateTime")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $birth;
 
@@ -44,7 +42,7 @@ class Character
     private $birthplace;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $death;
 
@@ -107,12 +105,12 @@ class Character
         return $this;
     }
 
-    public function getBirth(): ?\DateTimeInterface
+    public function getBirth(): ?string
     {
         return $this->birth;
     }
 
-    public function setBirth(\DateTimeInterface $birth): self
+    public function setBirth(?string $birth): self
     {
         $this->birth = $birth;
 
@@ -131,12 +129,12 @@ class Character
         return $this;
     }
 
-    public function getDeath(): ?\DateTimeInterface
+    public function getDeath(): ?string
     {
         return $this->death;
     }
 
-    public function setDeath(?\DateTimeInterface $death): self
+    public function setDeath(?string $death): self
     {
         $this->death = $death;
 

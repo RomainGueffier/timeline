@@ -1,6 +1,6 @@
 {% if characters %}
 {% for key, character in characters %}
-<div class="character character-{{ character.accuracy }} text-center" role="alert" style="width:{{ character.age / ratio }}px;left:{{ character.left }}px;top: {{ character.weight * 3 }}rem;">
+<div class="character character-{{ character.accuracy }} text-center" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ character.weight * 3 }}rem;">
     {{ character.name }}
     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#{{ key }}">
         <i class="fas fa-info-circle"></i>

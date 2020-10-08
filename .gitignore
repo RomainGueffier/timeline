@@ -6,4 +6,7 @@ symfony/.env
 symfony/public/bundles/
 symfony/var/
 symfony/vendor/
+docker/php/sessions/*
+docker/mysql/data/*
+docker/phpmyadmin/sessions/*
 ###< symfony/framework-bundle ###

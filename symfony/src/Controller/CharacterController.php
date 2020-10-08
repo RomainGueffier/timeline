@@ -15,8 +15,12 @@ class CharacterController extends AbstractController
      */
     public function index()
     {
+        $characters = $this->getDoctrine()
+            ->getRepository(Character::class)
+            ->findAll();
+
         return $this->render('character/index.html.twig', [
-            'controller_name' => 'Liste des personnages',
+            'characters' => $characters,
         ]);
     }
 
@@ -25,7 +29,19 @@ class CharacterController extends AbstractController
      */
     public function read($id)
     {
-        return $this->render('character/read.html.twig', []);
+        $character = $this->getDoctrine()
+            ->getRepository(Character::class)
+            ->find($id);
+
+        if (!$character) {
+            throw $this->createNotFoundException(
+                'Aucun personnage n\'existe en base avec l\'id : ' . $id
+            );
+        }
+
+        return $this->render('character/read.html.twig', [
+            'character' => $character
+        ]);
     }
 
     /**
@@ -39,15 +55,15 @@ class CharacterController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $character = $form->getData();
+            $data = $form->getData();
 
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($character);
-            // $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            // tell Doctrine you want to (eventually) save the Form (no queries yet)
+            $entityManager->persist($data);
+            // actually executes the queries (i.e. the INSERT query)
+            $entityManager->flush();
 
-            return $this->redirectToRoute('character');
+            return $this->redirectToRoute('/character');
         }
 
         return $this->render('character/add.html.twig', [
@@ -63,23 +79,28 @@ class CharacterController extends AbstractController
         $ratio = $request->query->get('ratio');
         $start = $request->query->get('start');
 
-        $character = $this->getDoctrine()->getRepository(Character::class);
+        $repository = $this->getDoctrine()->getRepository(Character::class);
 
-        $characters = $character->findAll();
+        $characters = $repository->findAll();
+        $positions = []; // left css position ratio for each character
         if ($characters) {
-            foreach ($characters as $key => $values) {
+            foreach ($characters as $key => $character) {
+                $birth = json_decode($character->getBirth() , true);
+                // if bc true, then set date to negative
+                $year = $birth['BC'] ? -1 * $birth['year'] : $birth['year'];
                 $left = 0;
-                if ($character['birth'] < 0) {
-                    $left = (abs($start) - abs($character['birth'])) / $ratio;
+                if ($year < 0) {
+                    $left = (abs($start) - abs($year)) / $ratio;
                 } else {
-                    $left = (abs($start) + $character['birth']) / $ratio;
+                    $left = (abs($start) + $year) / $ratio;
                 }
-                $characters[$key]['left'] = $left;
+                $positions[$key] = $left;
             }
         }
 
       	return $this->render('character/ajax.html.twig', [
             'characters' => $characters,
+            'positions' => $positions,
             'ratio' => $ratio
         ]);
 

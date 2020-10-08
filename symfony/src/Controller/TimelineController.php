@@ -58,7 +58,8 @@ class TimelineController extends AbstractController
             'start' => $start,
             'end' => $end,
             'unit' => $unit,
-            'timeline' => $timeline
+            'timeline' => $timeline,
+            'range' => $range
         ]);
     }
 }
