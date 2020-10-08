@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le personnage <span class="display-4">{{ character.name }}</span>{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <div class="card card-body">
+            {{ form(form) }}
+        </div>
+    </div>
+</main>
+{% endblock %}

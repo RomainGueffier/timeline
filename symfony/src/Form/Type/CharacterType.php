@@ -32,15 +32,14 @@ class CharacterType extends AbstractType
                 'label' => 'Exactitude des dates (%)',
                 'choices'  => [
                     '100%' => 100,
-                    '75%' => 75,
+                    '80%' => 80,
                     '50%' => 50,
-                    '25%' => 25,
-                    '1%' => 0,
+                    '0%' => 0,
                 ],
             ])
             //->add('period')
             ->add('weight', IntegerType::class, ['label' => 'Priorité d\'affichage'])
-            ->add('save', SubmitType::class, ['label' => 'Ajouter ce personnage'])
+            ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
 
         // transform json date into array for form and vice versa

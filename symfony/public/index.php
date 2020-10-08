@@ -28,3 +28,7 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
+
+function d($var) {
+  die('<pre>' . print_r($var, true) . '</pre>');
+}

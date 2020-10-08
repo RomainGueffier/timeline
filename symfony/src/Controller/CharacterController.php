@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CharacterController extends AbstractController
 {
     /**
-     * @Route("/character", name="wath all character")
+     * @Route("/character", name="character_read_all")
      */
     public function index()
     {
@@ -25,7 +25,7 @@ class CharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character/id/{id}", name="wath one character")
+     * @Route("/character/read/id/{id}", name="character_read_one")
      */
     public function read($id)
     {
@@ -45,7 +45,7 @@ class CharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character/add", name="add character")
+     * @Route("/character/add", name="character_add")
      */
     public function add(Request $request)
     {
@@ -63,7 +63,7 @@ class CharacterController extends AbstractController
             // actually executes the queries (i.e. the INSERT query)
             $entityManager->flush();
 
-            return $this->redirectToRoute('/character');
+            return $this->redirectToRoute('character_read_all');
         }
 
         return $this->render('character/add.html.twig', [
@@ -72,7 +72,38 @@ class CharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character/ajax", name="get characters for timeline presentation")
+     * @Route("/character/edit/id/{id}", name="character_edit")
+     */
+    public function edit($id, Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $character = $entityManager->getRepository(Character::class)->find($id);
+
+        if (!$character) {
+            throw $this->createNotFoundException(
+                'Aucun personnage n\'existe en base avec l\'id : ' . $id
+            );
+        }
+
+        $form = $this->createForm(CharacterType::class, $character);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $entityManager->persist($data);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('character_read_all');
+        }
+
+        return $this->render('character/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/character/ajax", name="character_ajax_timeline")
      */
     public function ajax(Request $request)
     {

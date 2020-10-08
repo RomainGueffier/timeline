@@ -8,9 +8,11 @@
         <div class="jumbotron">
             <h1 class="display-4">Personnage</h1>
 
+            {{ dump(character) }}
+
             <p class="lead">Actions :</p>
             <ul>
-                <li>Modifier un personnage <code><a href="/character/add">ici</a></li>
+                <li>Modifier un personnage <code><a href="{{ path('character_edit', {id: character.id) }}">ici</a></li>
             </ul>
         </div>
     </div>
