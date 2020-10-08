@@ -75,9 +75,9 @@ $ yarn encore dev
 # Ou en production :
 $ yarn encore production
 ```
-Enfin, cette commande pour vider le cache :
+Enfin, cette commande pour vider tous les caches :
 ```
-$ console/bin cache:clear
+$ bin/console cache:pool:clear cache.global_clearer
 ```
 
 ### Accès à l'application
