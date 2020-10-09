@@ -18,8 +18,9 @@
                         <h4 class="card-title">{{ character.name }}</h4>
                         <h6 class="card-subtitle mb-2 text-muted">{{ character.age }} ans <small>({{ character.birth.year }}{{ character.birth.BC ? ' av.n.è.' : '' }} - {{ character.death.year }}{{ character.birth.BC ? ' av.n.è.' : '' }})</small></h6>
                         <p class="card-text">{{ character.description|u.truncate(50, '...') }}</p>
-                        <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i> Modifier</a>
-                        <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i> Voir plus</a>
+                        <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger disabled"><i class="fas fa-trash"></i></a>
                     </div>
                 </div>
             </div>

@@ -45,5 +45,9 @@ $(document).ready(function(e){
         }
 		}).then(function(response) {
 				$(".timeline-events").html(response);
+        // Launch ajax listener
+        $(document).on("click", ".btn-modal", function(e){
+            $(e.currentTarget.getAttribute('data-target')).modal('show');
+        });
   	});
 });

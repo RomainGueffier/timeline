@@ -137,7 +137,7 @@ class CharacterController extends AbstractController
         $positions = []; // left css position ratio for each character
         if ($characters) {
             foreach ($characters as $key => $character) {
-                $birth = json_decode($character->getBirth() , true);
+                $birth = $character->getBirth();
                 // if bc true, then set date to negative
                 $year = $birth['BC'] ? -1 * $birth['year'] : $birth['year'];
                 $left = 0;
