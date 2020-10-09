@@ -27,12 +27,11 @@ class Character
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
     private $birth;
 
@@ -42,7 +41,7 @@ class Character
     private $birthplace;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
     private $death;
 
@@ -76,6 +75,11 @@ class Character
      */
     private $weight;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $imageFilename;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,12 +109,12 @@ class Character
         return $this;
     }
 
-    public function getBirth(): ?string
+    public function getBirth(): ?array
     {
         return $this->birth;
     }
 
-    public function setBirth(?string $birth): self
+    public function setBirth(?array $birth): self
     {
         $this->birth = $birth;
 
@@ -129,12 +133,12 @@ class Character
         return $this;
     }
 
-    public function getDeath(): ?string
+    public function getDeath(): ?array
     {
         return $this->death;
     }
 
-    public function setDeath(?string $death): self
+    public function setDeath(?array $death): self
     {
         $this->death = $death;
 
@@ -212,4 +216,17 @@ class Character
 
         return $this;
     }
+
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(string $imageFilename): self
+    {
+        $this->imageFilename = $imageFilename;
+
+        return $this;
+    }
+
 }

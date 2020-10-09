@@ -24,19 +24,25 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/">Accueil <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{ path('index') }}">Accueil <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/timeline">Frise chronologique</a>
+                            <a class="nav-link" href="{{ path('timeline') }}">Frise chronologique</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/character">Personnages</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Personnages
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('character_read_all') }}">Tous les personnages</a>
+                                <a class="dropdown-item" href="{{ path('character_add') }}">Ajouter un personage</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Compte</a>
                         </li>
                     </ul>
-                    <form class="form-inline mt-2 mt-md-0">
+                    <form class="form-inline mt-2 mt-md-0" action="" method="get">
                         <input class="form-control mr-sm-2" type="text" placeholder="Evènement, date, personnage, etc" aria-label="Recherche">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
                     </form>

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201008141103 extends AbstractMigration
+final class Version20201009074842 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,12 +20,12 @@ final class Version20201008141103 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE `character` CHANGE birth birth VARCHAR(255) DEFAULT NULL, CHANGE death death VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE `character` CHANGE birth birth LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\', CHANGE death death LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\'');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE `character` CHANGE birth birth INT DEFAULT NULL, CHANGE death death INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE `character` CHANGE birth birth LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci` COMMENT \'(DC2Type:simple_array)\', CHANGE death death LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci` COMMENT \'(DC2Type:simple_array)\'');
     }
 }

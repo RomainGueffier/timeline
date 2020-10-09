@@ -4,6 +4,7 @@
 ###> symfony/framework-bundle ###
 symfony/.env
 symfony/public/bundles/
+symfony/public/uploads/images/*
 symfony/var/
 symfony/vendor/
 docker/php/sessions/*

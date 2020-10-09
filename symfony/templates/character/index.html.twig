@@ -5,31 +5,29 @@
 {% block container %}
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <a type="button" class="btn btn-secondary btn-lg btn-block" href="/character/add">
+        <a type="button" class="btn btn-success btn-lg btn-block my-3" href="{{ path('character_add') }}">
             <i class="fas fa-plus-square"></i> Ajouter un personnage
         </a>
         {% if characters %}
-        <ul class="list-group">
+        <div class="row">
             {% for character in characters %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <h4>{{ character.name }}</h4>
-                <p class="small text-muted">{{ character.description|trim(20) }}</p>
-                <a class="badge badge-primary badge-pill" href="{{ path('character_read_one', {id: character.id}) }}">
-                    <i class="fas fa-eye"></i>
-                </a>
-                <a class="badge badge-warning badge-pill" href="{{ path('character_edit', {id: character.id}) }}">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a class="badge badge-danger badge-pill" href="#">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </li>
+            <div class="col-auto mb-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ character.name }}</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ character.age }} ans <small>({{ character.birth.year }}{{ character.birth.BC ? ' av.n.è.' : '' }} - {{ character.death.year }}{{ character.birth.BC ? ' av.n.è.' : '' }})</small></h6>
+                        <p class="card-text">{{ character.description|u.truncate(50, '...') }}</p>
+                        <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i> Modifier</a>
+                        <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i> Voir plus</a>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
         {% else %}
         <p class="alert alert-warning" role="alert">Aucun personnage</p>
         {% endif %}
-
     </div>
 </main>
 {% endblock %}

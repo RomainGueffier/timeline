@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Character;
-use App\Form\Type\CharacterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Entity\Character;
+use App\Form\Type\CharacterType;
+use App\Service\FileUploader;
 
 class CharacterController extends AbstractController
 {
@@ -47,7 +52,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/add", name="character_add")
      */
-    public function add(Request $request)
+    public function add(Request $request, FileUploader $fileUploader)
     {
         $character = new Character();
 
@@ -55,12 +60,17 @@ class CharacterController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $character = $form->getData();
+
+            // upload image file
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->upload($imageFile);
+                $character->setImageFilename($imageFileName);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
-            // tell Doctrine you want to (eventually) save the Form (no queries yet)
-            $entityManager->persist($data);
-            // actually executes the queries (i.e. the INSERT query)
+            $entityManager->persist($character);
             $entityManager->flush();
 
             return $this->redirectToRoute('character_read_all');
@@ -74,10 +84,11 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/edit/id/{id}", name="character_edit")
      */
-    public function edit($id, Request $request)
+    public function edit($id, Request $request, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->find($id);
+        $oldImage = $character->getImageFilename();
 
         if (!$character) {
             throw $this->createNotFoundException(
@@ -89,9 +100,19 @@ class CharacterController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $character = $form->getData();
 
-            $entityManager->persist($data);
+            // upload image file
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                if ($oldImage) {
+                    $fileUploader->delete($oldImage);
+                }
+                $imageFileName = $fileUploader->upload($imageFile);
+                $character->setImageFilename($imageFileName);
+            }
+
+            $entityManager->persist($character);
             $entityManager->flush();
 
             return $this->redirectToRoute('character_read_all');

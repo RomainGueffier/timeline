@@ -7,7 +7,9 @@ use App\Form\Type\OldDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,34 +41,31 @@ class CharacterType extends AbstractType
             ])
             //->add('period')
             ->add('weight', IntegerType::class, ['label' => 'Priorité d\'affichage'])
-            ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
-        ;
+            ->add('image', FileType::class, [
+                'label' => 'Image',
 
-        // transform json date into array for form and vice versa
-        $builder->get('birth')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($json) {
-                    // transform the json string to an array
-                    return json_decode($json, true);
-                },
-                function ($array) {
-                    // transform the array back to json
-                    return json_encode($array);
-                }
-            ))
-        ;
-        $builder->get('death')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($json) {
-                    // transform the json string to an array
-                    return json_decode($json, true);
-                },
-                function ($array) {
-                    // transform the array back to json
-                    return json_encode($array);
-                }
-            ))
-        ;
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                        ],
+                        'mimeTypesMessage' => 'Merci de téléverser uniquement une image JPG/JPEG',
+                    ])
+                ]
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
