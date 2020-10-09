@@ -33,21 +33,32 @@
                 <input class="btn btn-primary" type="submit" name="submit" value="Valider">
             </form>
         </div>
+        <div id="character-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-users"></i><small> Chargement des personnages...</small>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="event-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-calendar"></i><small> Chargement des évènements...</small>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
 </main>
 <div class="timeline-wrapper">
     <div class="timeline">
         {{ timeline|raw }}
     </div>
-    <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}">
-        <div class="fa-3x">
-            <i class="fas fa-circle-notch fa-spin"></i>
-        </div>
-    </div>
-    <?php include 'templates/event.php'; }}
-    <div class="timeline-period">
-
-    </div>
+    <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}"></div>
+    <div class="timeline-period"></div>
 </div>
 {% endblock %}
 

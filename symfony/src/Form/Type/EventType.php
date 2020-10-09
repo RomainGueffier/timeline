@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Character;
+use App\Entity\Event;
 use App\Form\Type\OldDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -16,19 +16,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class CharacterType extends AbstractType
+class EventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //->add('parent')
             ->add('name', TextType::class, ['label' => 'Nom'])
-            ->add('birth', OldDateType::class, ['label' => 'Date de naissance'])
-            ->add('birthplace', TextType::class, ['label' => 'Lieu de naissance'])
-            ->add('death', OldDateType::class, ['label' => 'Date de décès'])
-            ->add('deathplace', TextType::class, ['label' => 'Lieu de décès'])
+            ->add('start', OldDateType::class, ['label' => 'Date de début'])
+            ->add('end', OldDateType::class, ['label' => 'Date de fin'])
+            ->add('duration', IntegerType::class, ['label' => 'Durée'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
-            ->add('age', IntegerType::class, ['label' => 'Durée de vie'])
             ->add('accuracy', ChoiceType::class, [
                 'label' => 'Exactitude des dates (%)',
                 'choices'  => [
@@ -38,20 +35,10 @@ class CharacterType extends AbstractType
                     '0%' => 0,
                 ],
             ])
-            //->add('period')
-            ->add('weight', IntegerType::class, ['label' => 'Priorité d\'affichage'])
             ->add('image', FileType::class, [
                 'label' => 'Image',
-
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -64,13 +51,12 @@ class CharacterType extends AbstractType
                 ]
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Character::class,
+            'data_class' => Event::class,
         ]);
     }
 }

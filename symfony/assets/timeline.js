@@ -34,7 +34,7 @@ $(document).ready(function(e){
         $(".badge-end").text(value);
     });
 
-    // chargement asynchrone des Personnages
+    // chargement asynchrone des Personnages / évènements
     var ratio = $(".timeline-events").attr('ratio');
     var start = $(".timeline-events").attr('start');
     $.ajax({
@@ -44,7 +44,22 @@ $(document).ready(function(e){
           ratio: ratio, start: start
         }
 		}).then(function(response) {
+        $("#character-loader").remove();
 				$(".timeline-events").html(response);
+        // Launch ajax listener
+        $(document).on("click", ".btn-modal", function(e){
+            $(e.currentTarget.getAttribute('data-target')).modal('show');
+        });
+  	});
+    $.ajax({
+    		url: '/event/ajax',
+    		method: "GET",
+        data: {
+          ratio: ratio, start: start
+        }
+		}).then(function(response) {
+        $("#event-loader").remove();
+				$(response).insertAfter(".timeline-events");
         // Launch ajax listener
         $(document).on("click", ".btn-modal", function(e){
             $(e.currentTarget.getAttribute('data-target')).modal('show');

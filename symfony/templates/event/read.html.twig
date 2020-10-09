@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Personnage{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Personnage</h1>
+
+            {{ dump(character) }}
+            <a href="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">Visionner l'image (JPG)</a>
+
+
+            <p class="lead">Actions :</p>
+            <ul>
+                <li>Modifier un personnage <code><a href="{{ path('character_edit', {id: character.id}) }}">ici</a></li>
+            </ul>
+        </div>
+    </div>
+</main>
+{% endblock %}

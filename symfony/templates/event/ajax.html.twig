@@ -1,0 +1,53 @@
+{% if events %}
+{% for key, event in events %}
+{% if event.duration == 1 %}
+<div class="event" style="left: {{ attribute(positions, key) }}px;">
+    <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-event-{{ key }}">
+        <i class="fas fa-info-circle"></i>
+    </button>
+    {{ event.name }}<br><small class="text-muted">{{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
+</div>
+{% else %}
+<div class="longevent" style="left: {{ attribute(positions, key) }}px;width: {{ event.duration / ratio }}px;">
+    <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-event-{{ key }}">
+        <i class="fas fa-info-circle"></i>
+    </button>
+    {{ event.name }}<br><small class="text-muted">à partir de {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
+</div>
+{% endif %}
+<!-- Hidden Modal -->
+<div class="modal fade" id="modal-event-{{ key }}" tabindex="-1" aria-labelledby="{{ key }}Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{ key }}Label">
+                    {{ event.name }} - <small class="text-muted">{{ (event.accuracy < 100) ? 'env. ' : '' }}{{ event.duration }} an(s)</small>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <img src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}" class="img-fluid">
+            <div class="modal-body">
+                <small class="text-muted">
+                    (
+                    {{ (event.accuracy < 100) ? 'env. ' : '' }}
+                    {% if event.duration > 1 %}
+                    {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }} - {{ event.end.year }} {{ event.end.BC ? 'avant n.è.' : '' }}
+                    {% else %}
+                    {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}
+                    {% endif %}
+                    )
+                </small>
+                <p>{{ event.description|u.truncate(100, '...') }}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ path('event_read_one', {id: event.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}

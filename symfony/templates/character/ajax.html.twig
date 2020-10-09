@@ -2,12 +2,12 @@
 {% for key, character in characters %}
 <div class="character character-{{ character.accuracy }} text-center" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ character.weight * 3 }}rem;">
     {{ character.name }}
-    <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-{{ key }}">
+    <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-character-{{ key }}">
         <i class="fas fa-info-circle"></i>
     </button>
 </div>
 <!-- Hidden Modal -->
-<div class="modal fade" id="modal-{{ key }}" tabindex="-1" aria-labelledby="{{ key }}Label" aria-hidden="true">
+<div class="modal fade" id="modal-character-{{ key }}" tabindex="-1" aria-labelledby="{{ key }}Label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,13 +18,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <img src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}" class="img-fluid">
             <div class="modal-body">
-                <img src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}" class="rounded img-fluid">
                 <small class="text-muted">
                     {{ (character.accuracy < 100) ? 'env. ' : '' }}
                     <br>{{ character.birth.year|abs }} {{ character.birth.BC ? 'avant n.è.' : '' }} - {{ character.death.year|abs }} {{ character.death.BC ? 'avant n.è.' : '' }}
                 </small>
-                <p>{{ character.description }}</p>
+                <p>{{ character.description|u.truncate(100, '...') }}</p>
             </div>
             <div class="modal-footer">
                 <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
