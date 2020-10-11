@@ -6,14 +6,16 @@
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <h1 class="mt-5">Chronologie complète de l'histoire</h1>
-        <p class="lead">
-            Sélectionne une <code>échelle</code> et fais glisser la <code>barre latérale</code> pour naviguer dans l'histoire.
-            <button class="btn btn-link btn-lg" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
-                <i class="fas fa-pen-square"></i>
+        <div class="float-right mt-4">
+            <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+                <i class="fas fa-pen-square" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
             </button>
-        </p>
-        <div class="collapse" id="collapseForm">
+            <a class="btn btn-outline-primary btn-sm" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
+            <a class="btn btn-outline-primary btn-sm" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement"><i class="fas fa-calendar-plus"></i></a>
+        </div>
+        <h1 class="my-3">Frise chronologique</h1>
+        <div class="collapse my-2" id="collapseForm">
+            <p class="lead">Sélectionne une <code>échelle</code> et fais glisser la <code>barre latérale</code> pour naviguer dans l'histoire.</p>
             <form id="timeline-form" method="GET" class="card card-body">
                 <div class="form-group">
                     <label for="range">Échelle de la frise <span class="badge badge-secondary badge-range">{{ unit }} {{ unit > 1 ? 'ans' : 'an' }}</span></label>
@@ -53,7 +55,7 @@
         </div>
     </div>
 </main>
-<div class="timeline-wrapper">
+<div class="timeline-wrapper timeline-{{ unit }}">
     <div class="timeline">
         {{ timeline|raw }}
     </div>

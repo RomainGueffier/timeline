@@ -65,4 +65,7 @@ $(document).ready(function(e){
             $(e.currentTarget.getAttribute('data-target')).modal('show');
         });
   	});
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 });

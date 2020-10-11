@@ -15,7 +15,7 @@ class TimelineController extends AbstractController
     {
         // Valeurs par défaut
         $start = -4100; // année de début de la frise
-        $end = 2100; // année de fin de la frise
+        $end = 2000; // année de fin de la frise
         $unit = 100; // en années par 50px
         $range = 2; // équivalent unit dans le form (2=>100ans,1=>10ans,0=>1an)
 

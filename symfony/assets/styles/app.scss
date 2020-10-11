@@ -32,7 +32,7 @@ main > .container {
 .timeline-events{
     width: fit-content;
     position: relative;
-    height: 500px;
+    height: 700px;
 }
 
 .timeline {
@@ -45,6 +45,7 @@ main > .container {
     margin-bottom: .5rem;
     padding: 0;
     position: absolute;
+    opacity: .9;
 }
 
 .event, .longevent {
@@ -154,4 +155,8 @@ main > .container {
 
 .character-80 {
     background: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(231,231,231,1) 10%, rgba(231,231,231,1) 90%, rgba(250,250,250,1) 100%);
+}
+
+.timeline-100 .character-info-small {
+    display: none;
 }

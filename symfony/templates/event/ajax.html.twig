@@ -2,17 +2,17 @@
 {% for key, event in events %}
 {% if event.duration == 1 %}
 <div class="event" style="left: {{ attribute(positions, key) }}px;">
+    {{ event.name }}
     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-event-{{ key }}">
         <i class="fas fa-info-circle"></i>
-    </button>
-    {{ event.name }}<br><small class="text-muted">{{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
+    </button><br><small class="text-muted">{{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
 </div>
 {% else %}
 <div class="longevent" style="left: {{ attribute(positions, key) }}px;width: {{ event.duration / ratio }}px;">
+    {{ event.name }}
     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-event-{{ key }}">
         <i class="fas fa-info-circle"></i>
-    </button>
-    {{ event.name }}<br><small class="text-muted">à partir de {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
+    </button><br><small class="text-muted">à partir de {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
 </div>
 {% endif %}
 <!-- Hidden Modal -->

@@ -118,8 +118,9 @@ class CharacterController extends AbstractController
             return $this->redirectToRoute('character_read_all');
         }
 
-        return $this->render('character/add.html.twig', [
+        return $this->render('character/edit.html.twig', [
             'form' => $form->createView(),
+            'character' => $character
         ]);
     }
 

@@ -9,10 +9,10 @@
             <i class="fas fa-plus-square"></i> Ajouter un personnage
         </a>
         {% if characters %}
-        <div class="row">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
             {% for character in characters %}
-            <div class="col-auto mb-3">
-                <div class="card" style="width: 18rem;">
+            <div class="col mb-3">
+                <div class="card">
                     <img class="card-img-top" src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
                     <div class="card-body">
                         <h4 class="card-title">{{ character.name }}</h4>

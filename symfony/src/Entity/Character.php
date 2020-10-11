@@ -76,7 +76,7 @@ class Character
     private $weight;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageFilename;
 

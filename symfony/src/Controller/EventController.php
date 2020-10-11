@@ -118,8 +118,9 @@ class EventController extends AbstractController
             return $this->redirectToRoute('event_read_all');
         }
 
-        return $this->render('event/add.html.twig', [
+        return $this->render('event/edit.html.twig', [
             'form' => $form->createView(),
+            'event' => $event
         ]);
     }
 
