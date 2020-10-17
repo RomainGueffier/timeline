@@ -21,7 +21,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="{{ key }}Label">
-                    {{ event.name }} - <small class="text-muted">{{ (event.accuracy < 100) ? 'env. ' : '' }}{{ event.duration }} an(s)</small>
+                    {{ event.name }} - <small class="text-muted">{{ event.duration }} an(s)</small>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -30,14 +30,12 @@
             <img src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}" class="img-fluid">
             <div class="modal-body">
                 <small class="text-muted">
-                    (
-                    {{ (event.accuracy < 100) ? 'env. ' : '' }}
+                    ({{ (event.start.accuracy < 100) ? 'env. ' : '' }}
                     {% if event.duration > 1 %}
-                    {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }} - {{ event.end.year }} {{ event.end.BC ? 'avant n.è.' : '' }}
+                    {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }} - {{ (event.end.accuracy < 100) ? 'env. ' : '' }}{{ event.end.year }} {{ event.end.BC ? 'avant n.è.' : '' }}
                     {% else %}
                     {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}
-                    {% endif %}
-                    )
+                    {% endif %})
                 </small>
                 <p>{{ event.description|u.truncate(100, '...') }}</p>
             </div>

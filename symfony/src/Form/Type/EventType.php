@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EventType extends AbstractType
@@ -26,15 +25,6 @@ class EventType extends AbstractType
             ->add('end', OldDateType::class, ['label' => 'Date de fin'])
             ->add('duration', IntegerType::class, ['label' => 'Durée'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
-            ->add('accuracy', ChoiceType::class, [
-                'label' => 'Exactitude des dates (%)',
-                'choices'  => [
-                    '100%' => 100,
-                    '80%' => 80,
-                    '50%' => 50,
-                    '0%' => 0,
-                ],
-            ])
             ->add('image', FileType::class, [
                 'label' => 'Image',
                 'mapped' => false,

@@ -19,14 +19,12 @@
                         <h6 class="card-subtitle mb-2 text-muted">
                             {{ event.duration }} an(s)
                             <small class="text-muted">
-                                (
-                                {{ (event.accuracy < 100) ? 'env. ' : '' }}
+                                ({{ (event.start.accuracy < 100) ? 'env. ' : '' }}
                                 {% if event.duration > 1 %}
-                                {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }} - {{ event.end.year }} {{ event.end.BC ? 'avant n.è.' : '' }}
+                                {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }} - {{ (event.end.accuracy < 100) ? 'env. ' : '' }}{{ event.end.year }} {{ event.end.BC ? 'avant n.è.' : '' }}
                                 {% else %}
                                 {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}
-                                {% endif %}
-                                )
+                                {% endif %})
                             </small>
                         </h6>
                         <p class="card-text">{{ event.description|u.truncate(50, '...') }}</p>

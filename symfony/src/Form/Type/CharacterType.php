@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use App\Entity\Character;
 use App\Form\Type\OldDateType;
+use App\Form\Type\AgeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CharacterType extends AbstractType
@@ -28,16 +28,7 @@ class CharacterType extends AbstractType
             ->add('death', OldDateType::class, ['label' => 'Date de décès'])
             ->add('deathplace', TextType::class, ['label' => 'Lieu de décès'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
-            ->add('age', IntegerType::class, ['label' => 'Durée de vie'])
-            ->add('accuracy', ChoiceType::class, [
-                'label' => 'Exactitude des dates (%)',
-                'choices'  => [
-                    '100%' => 100,
-                    '80%' => 80,
-                    '50%' => 50,
-                    '0%' => 0,
-                ],
-            ])
+            ->add('age', AgeType::class, ['label' => 'Durée de vie'])
             //->add('period')
             ->add('weight', IntegerType::class, ['label' => 'Priorité d\'affichage'])
             ->add('image', FileType::class, [

@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('timeline', './assets/timeline.js')
+    .addEntry('character_form', './assets/character_form.js')
     .addStyleEntry('index', './assets/styles/index.css')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.

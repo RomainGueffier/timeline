@@ -1,12 +1,12 @@
 {% if characters %}
 {% for key, character in characters %}
-<div class="character character-{{ character.accuracy }} text-center" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ (character.weight * 3) - 3 }}rem;">
+<div class="character character-birth-{{ character.birth.accuracy }} character-death-{{ character.death.accuracy }} text-center" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ (character.weight * 3) - 3 }}rem;">
     <small>{{ character.name }}</small>
     <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-character-{{ key }}">
         <i class="fas fa-info-circle"></i>
     </button>
-    <small class="character-info-small float-left m-2">{{ character.name }} {{ (character.accuracy < 100) ? '~' : '' }}{{ character.birth.year }}</small>
-    <small class="character-info-small float-right m-2">{{ character.name }} {{ (character.accuracy < 100) ? '~' : '' }}{{ character.death.year }}</small>
+    <small class="character-info-small float-left m-2">{{ character.name }} {{ (character.birth.accuracy < 100) ? '~' : '' }}{{ character.birth.year }}</small>
+    <small class="character-info-small float-right m-2">{{ character.name }} {{ (character.death.accuracy < 100) ? '~' : '' }}{{ character.death.year }}</small>
 </div>
 <!-- Hidden Modal -->
 <div class="modal fade" id="modal-character-{{ key }}" tabindex="-1" aria-labelledby="{{ key }}Label" aria-hidden="true">
@@ -14,7 +14,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="{{ key }}Label">
-                    {{ character.name }} - <small class="text-muted">{{ (character.accuracy < 100) ? 'env. ' : '' }}{{ character.age }} an(s)</small>
+                    {{ character.name }}{% if (character.birth.accuracy < 100 or character.death.accuracy < 100) %} - <small class="text-muted">{{ character.age }} an(s)</small>{% endif %}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -23,8 +23,7 @@
             <img src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}" class="img-fluid">
             <div class="modal-body">
                 <small class="text-muted">
-                    {{ (character.accuracy < 100) ? 'env. ' : '' }}
-                    <br>{{ character.birth.year|abs }} {{ character.birth.BC ? 'avant n.è.' : '' }} - {{ character.death.year|abs }} {{ character.death.BC ? 'avant n.è.' : '' }}
+                    {{ (character.birth.accuracy < 100) ? 'env. ' : '' }} {{ character.birth.year|abs }} {{ character.birth.BC ? 'avant n.è.' : '' }} - {{ (character.death.accuracy < 100) ? 'env. ' : '' }} {{ character.death.year|abs }} {{ character.death.BC ? 'avant n.è.' : '' }}
                 </small>
                 <p>{{ character.description|u.truncate(100, '...') }}</p>
             </div>

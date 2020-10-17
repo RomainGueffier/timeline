@@ -26,7 +26,14 @@ class OldDateType extends AbstractType
                 'label' => 'Date avant notre ère',
                 'required' => false
             ])
-        ;
+            ->add('accuracy', ChoiceType::class, [
+                'label' => 'Fiabilité (%)',
+                'choices'  => [
+                    '100%' => 100,
+                    '50%' => 50,
+                    '0%' => 0,
+                ],
+            ]);
     }
 
 }

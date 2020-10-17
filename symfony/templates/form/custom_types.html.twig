@@ -1,7 +1,7 @@
 {% block old_date_row %}
 {{ form_label(form) }}
 <div class="card card-body my-3">
-  <div id="birthdate" class="row">
+  <div id="{{ form.vars.id }}" class="character_form_birthdate row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
       {% for child in form.children|filter(child => not child.rendered) %}
       <div class="form-group col">
           {{ form_label(child) }}
@@ -11,5 +11,21 @@
       </div>
       {% endfor %}
   </div>
+</div>
+{% endblock %}
+
+{% block age_row %}
+{{ form_label(form) }}
+<div class="form-group-inline">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button type="button" id="character-age-calculator" class="form-control btn btn-secondary" data-toggle="tooltip" title="Calculer l'âge à partir des dates de naissance et de mort">
+                <i class="fas fa-calculator"></i>
+            </button>
+        </div>
+        <input id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" type="number" class="form-control" value="{{ form.vars.value }}" {% if form.vars.required %}required="required"{% endif %}>
+    </div>
+    {{ form_help(form) }}
+    {{ form_errors(form) }}
 </div>
 {% endblock %}

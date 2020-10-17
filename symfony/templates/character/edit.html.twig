@@ -12,3 +12,8 @@
     </div>
 </main>
 {% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('character_form') }}
+{% endblock %}

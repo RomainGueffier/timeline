@@ -3,15 +3,15 @@ services:
   mysql:
     image: mysql:5.7
     ports: ['3306:3306']
-    restart: always
+    restart: "no"
     environment:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=symfony
       - MYSQL_USER=symfony
       - MYSQL_PASSWORD=symfony
     volumes:
-      - ./docker/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/mysqld_charset.cnf
-      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/mysqld_charset.cnf:ro
+      - ./docker/mysql/data:/var/lib/mysql:cached
   php:
     build: ./docker/php
     ports: ['9000:9000']
@@ -22,22 +22,24 @@ services:
   nginx:
     build: ./docker/nginx
     ports: ['80:80']
-    restart: always
+    restart: "no"
     volumes:
       - ./symfony/:/var/www/symfony:cached
-      - ./docker/php/sessions:/var/php/sessions
+      - ./docker/php/sessions:/var/php/sessions:cached
     links:
       - php
+    environment:
+      - VIRTUAL_HOST=therealtimeline.local
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     links:
       - mysql:db
     ports: ['81:80']
-    restart: always
+    restart: "no"
     environment:
       - MYSQL_USERNAME=root
       - MYSQL_ROOT_PASSWORD=admin
       - PMA_USER=root
       - PMA_PASSWORD=admin
     volumes:
-     - ./docker/phpmyadmin/sessions:/sessions
+     - ./docker/phpmyadmin/sessions:/sessions:cached

@@ -38,11 +38,6 @@ class Event
     private $duration;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $accuracy;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -101,18 +96,6 @@ class Event
     public function setDuration(int $duration): self
     {
         $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getAccuracy(): ?int
-    {
-        return $this->accuracy;
-    }
-
-    public function setAccuracy(int $accuracy): self
-    {
-        $this->accuracy = $accuracy;
 
         return $this;
     }

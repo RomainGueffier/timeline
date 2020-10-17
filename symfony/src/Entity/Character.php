@@ -56,14 +56,9 @@ class Character
     private $description;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $age;
-
-    /**
      * @ORM\Column(type="integer")
      */
-    private $accuracy;
+    private $age;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
