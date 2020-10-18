@@ -14,7 +14,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="{{ key }}Label">
-                    {{ character.name }}{% if (character.birth.accuracy < 100 or character.death.accuracy < 100) %} - <small class="text-muted">{{ character.age }} an(s)</small>{% endif %}
+                    {{ character.name }} - <small class="text-muted">{{ (character.birth.accuracy == 100 or character.death.accuracy == 100) ? '' : 'env. ' }}{{ character.age }} an(s)</small>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
