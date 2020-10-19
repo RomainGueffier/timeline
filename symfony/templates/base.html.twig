@@ -45,13 +45,24 @@
                                 <a class="dropdown-item" href="{{ path('event_add') }}">Ajouter un évènement</a>
                             </div>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Catégories
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('category_read_all') }}">Toutes les catégories</a>
+                                <a class="dropdown-item" href="{{ path('category_add') }}">Ajouter une catégorie</a>
+                            </div>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Compte</a>
                         </li>
                     </ul>
                     <form class="form-inline mt-2 mt-md-0" action="" method="get">
                         <input class="form-control mr-sm-2" type="text" placeholder="Evènement, date, personnage, etc" aria-label="Recherche">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </form>
                 </div>
             </nav>

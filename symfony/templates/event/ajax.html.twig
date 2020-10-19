@@ -1,14 +1,14 @@
 {% if events %}
 {% for key, event in events %}
 {% if event.duration == 1 %}
-<div class="event" style="left: {{ attribute(positions, key) }}px;">
+<div class="event {% for category in event.categories %}category-{{ category.id }} {% endfor %}" style="left: {{ attribute(positions, key) }}px;">
     {{ event.name }}
     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-event-{{ key }}">
         <i class="fas fa-info-circle"></i>
     </button><br><small class="text-muted">{{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}</small>
 </div>
 {% else %}
-<div class="longevent" style="left: {{ attribute(positions, key) }}px;width: {{ event.duration / ratio }}px;">
+<div class="longevent {% for category in event.categories %}category-{{ category.id }} {% endfor %}" style="left: {{ attribute(positions, key) }}px;width: {{ event.duration / ratio }}px;">
     {{ event.name }}
     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-event-{{ key }}">
         <i class="fas fa-info-circle"></i>

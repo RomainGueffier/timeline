@@ -65,6 +65,35 @@ $(document).ready(function(e){
             $(e.currentTarget.getAttribute('data-target')).modal('show');
         });
   	});
+    $.ajax({
+    		url: '/category/ajax',
+    		method: "GET",
+        data: {}
+		}).then(function(response) {
+				$("#modal-categories .modal-body").html(response);
+        $("#set_filters").click(function(e) {
+            // hide events and characters with category id
+            $("#modal-categories .modal-body input[type=checkbox]:not(:checked)").each(function(e) {
+                var className = '.category-' + $(this).attr('category_id');
+                $(className).hide();
+            });
+            // Then show. If an event or character has 2 categories, one hidden, the other visible,
+            // this way it will be visible anyway
+            $("#modal-categories .modal-body input[type=checkbox]:checked").each(function(e) {
+                var className = '.category-' + $(this).attr('category_id');
+                $(className).show();
+            });
+
+        });
+        $("#customSwitchAll").click(function(e) {
+            if ($(this).is(':checked')) {
+                $("#modal-categories .modal-body input.custom-control-input").prop('checked', true);
+            } else {
+                $("#modal-categories .modal-body input.custom-control-input").prop('checked', false);
+            }
+
+        });
+  	});
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })

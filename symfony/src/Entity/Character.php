@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CharacterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -63,17 +65,23 @@ class Character
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $period;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
     private $weight;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageFilename;
+
+    /**
+     * Many Characters have Many Categories.
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="characters")
+     * @ORM\JoinTable(name="characters_categories")
+     */
+    private $categories;
+
+    public function __construct() {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -176,30 +184,6 @@ class Character
         return $this;
     }
 
-    public function getAccuracy(): ?int
-    {
-        return $this->accuracy;
-    }
-
-    public function setAccuracy(int $accuracy): self
-    {
-        $this->accuracy = $accuracy;
-
-        return $this;
-    }
-
-    public function getPeriod(): ?int
-    {
-        return $this->period;
-    }
-
-    public function setPeriod(?int $period): self
-    {
-        $this->period = $period;
-
-        return $this;
-    }
-
     public function getWeight(): ?int
     {
         return $this->weight;
@@ -220,6 +204,32 @@ class Character
     public function setImageFilename(string $imageFilename): self
     {
         $this->imageFilename = $imageFilename;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
 
         return $this;
     }

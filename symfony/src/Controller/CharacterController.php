@@ -88,6 +88,7 @@ class CharacterController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->find($id);
+
         $oldImage = $character->getImageFilename();
 
         if (!$character) {

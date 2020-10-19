@@ -1,6 +1,6 @@
 {% if characters %}
 {% for key, character in characters %}
-<div class="character character-birth-{{ character.birth.accuracy }} character-death-{{ character.death.accuracy }} text-center" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ (character.weight * 3) - 3 }}rem;">
+<div class="character character-birth-{{ character.birth.accuracy }} character-death-{{ character.death.accuracy }} text-center {% for category in character.categories %}category-{{ category.id }} {% endfor %}" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ (character.weight * 3) - 3 }}rem;">
     <small>{{ character.name }}</small>
     <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-character-{{ key }}">
         <i class="fas fa-info-circle"></i>

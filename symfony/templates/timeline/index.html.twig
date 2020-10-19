@@ -7,7 +7,10 @@
 <main role="main" class="flex-shrink-0">
     <div class="container">
         <div class="float-right mt-4">
-            <button class="btn btn-outline-info btn-sm" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+            <button class="btn btn-outline-info btn-sm" type="button" data-toggle="modal" data-target="#modal-categories">
+                <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
                 <i class="fas fa-pen-square" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
             </button>
             <a class="btn btn-outline-primary btn-sm" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
@@ -34,6 +37,37 @@
                 </div>
                 <input class="btn btn-primary" type="submit" name="submit" value="Valider">
             </form>
+        </div>
+        <div class="modal fade" id="modal-categories" tabindex="-1" aria-labelledby="categoriesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="categoriesLabel">Filtrer par catégories</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="category-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-tags"></i><small> Chargement des catégories...</small>
+                                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitchAll" checked="checked">
+                            <label class="custom-control-label" for="customSwitchAll">Tout cocher / décocher</label>
+                        </div>
+                        <button id="set_filters" type="button" class="btn btn-primary">Appliquer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="character-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
             <div class="d-flex align-items-center">

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,17 @@ class Event
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image_filename;
+
+    /**
+     * Many Events have Many Categories.
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="events")
+     * @ORM\JoinTable(name="events_categories")
+     */
+    private $categories;
+
+    public function __construct() {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +133,32 @@ class Event
     public function setImageFilename(?string $image_filename): self
     {
         $this->image_filename = $image_filename;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
 
         return $this;
     }

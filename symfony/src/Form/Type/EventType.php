@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Event;
+use App\Entity\Category;
 use App\Form\Type\OldDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class EventType extends AbstractType
 {
@@ -39,6 +41,16 @@ class EventType extends AbstractType
                         'mimeTypesMessage' => 'Merci de téléverser uniquement une image JPG/JPEG',
                     ])
                 ]
+            ])
+            ->add('categories', EntityType::class, [
+                'label' => 'Catégorie',
+                // looks for choices from this entity
+                'class' => Category::class,
+                // uses the Category.name property as the visible option string
+                'choice_label' => 'name',
+                // used to render a select box, check boxes or radios
+                'multiple' => true,
+                'expanded' => true,
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
     }

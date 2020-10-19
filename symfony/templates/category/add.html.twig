@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une catégorie{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="my-2">Ajouter un catégorie</h2>
+        <div class="card card-body">
+            {{ form(form) }}
+        </div>
+    </div>
+</main>
+{% endblock %}
