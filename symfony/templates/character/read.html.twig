@@ -1,21 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Personnage{% endblock %}
+{% block title %}Personnage : {{ character.name }}{% endblock %}
 
 {% block container %}
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4">Personnage</h1>
-
-            {{ dump(character) }}
-            <a href="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">Visionner l'image (JPG)</a>
-
-
-            <p class="lead">Actions :</p>
-            <ul>
-                <li>Modifier un personnage <code><a href="{{ path('character_edit', {id: character.id}) }}">ici</a></li>
-            </ul>
+        <h2 class="my-2 display-4">{{ character.name }}</h2>
+        <div class="row no-gutters bg-light position-relative">
+            <div class="col-md-6 mb-md-0 p-md-4">
+                <img src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" class="align-self-end" alt="{{ character.name }}" style="width:100%;">
+            </div>
+            <div class="col-md-6 position-static p-4 pl-md-0">
+                <p class="lead">{{ character.age }} an(s) -
+                  <small class="text-muted">
+                    {{ (character.birth.accuracy < 100) ? 'env. ' : '' }} {{ character.birth.year|abs }} {{ character.birth.BC ? 'avant n.è.' : '' }} - {{ (character.death.accuracy < 100) ? 'env. ' : '' }} {{ character.death.year|abs }} {{ character.death.BC ? 'avant n.è.' : '' }}
+                  </small>
+                </p>
+                <p>{{ character.description }}</p>
+                <p class="mb-0">
+                    <a class="btn btn-outline-secondary" href="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
+                        <i class="fas fa-image"></i>
+                    </a>
+                    <a class="btn btn-outline-warning" href="{{ path('character_edit', {id: character.id}) }}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 </main>

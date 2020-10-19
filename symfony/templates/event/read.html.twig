@@ -5,17 +5,27 @@
 {% block container %}
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4">Personnage</h1>
-
-            {{ dump(character) }}
-            <a href="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">Visionner l'image (JPG)</a>
-
-
-            <p class="lead">Actions :</p>
-            <ul>
-                <li>Modifier un personnage <code><a href="{{ path('character_edit', {id: character.id}) }}">ici</a></li>
-            </ul>
+        <h2 class="my-2 display-4">{{ event.name }}</h2>
+        <div class="row no-gutters bg-light position-relative">
+            <div class="col-md-6 mb-md-0 p-md-4">
+                <img src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" class="align-self-end" alt="{{ event.name }}" style="width:100%;">
+            </div>
+            <div class="col-md-6 position-static p-4 pl-md-0">
+                <p class="lead">{{ event.duration }} an(s) -
+                  <small class="text-muted">
+                    {{ event.start.accuracy < 100 ? 'env. ' : '' }} {{ event.start.year|abs }} {{ event.end.BC ? 'avant n.è.' : '' }} - {{ (event.end.accuracy < 100) ? 'env. ' : '' }} {{ event.end.year|abs }} {{ event.end.BC ? 'avant n.è.' : '' }}
+                  </small>
+                </p>
+                <p>{{ event.description }}</p>
+                <p class="mb-0">
+                    <a class="btn btn-outline-secondary" href="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
+                        <i class="fas fa-image"></i>
+                    </a>
+                    <a class="btn btn-outline-warning" href="{{ path('event_edit', {id: event.id}) }}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 </main>
