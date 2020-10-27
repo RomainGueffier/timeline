@@ -33,6 +33,7 @@ class Category
      * Many Categories have Many Characters.
      * @ORM\ManyToMany(targetEntity="Character", mappedBy="categories")
      * @ORM\JoinTable(name="characters_categories")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $characters;
 
@@ -40,6 +41,7 @@ class Category
      * Many Categories have Many Events.
      * @ORM\ManyToMany(targetEntity="Event", mappedBy="categories")
      * @ORM\JoinTable(name="events_categories")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $events;
 

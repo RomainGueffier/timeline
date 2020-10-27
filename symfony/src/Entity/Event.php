@@ -53,6 +53,7 @@ class Event
      * Many Events have Many Categories.
      * @ORM\ManyToMany(targetEntity="Category", inversedBy="events")
      * @ORM\JoinTable(name="events_categories")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $categories;
 

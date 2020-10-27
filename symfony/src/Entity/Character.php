@@ -76,6 +76,7 @@ class Character
      * Many Characters have Many Categories.
      * @ORM\ManyToMany(targetEntity="Category", inversedBy="characters")
      * @ORM\JoinTable(name="characters_categories")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $categories;
 

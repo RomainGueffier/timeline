@@ -4,71 +4,13 @@
 
 {% block container %}
 <!-- Begin page content -->
-<main role="main" class="flex-shrink-0">
+<main role="main" class="flex-shrink-0 timeline-main">
     <div class="container">
         <div class="float-right mt-4">
-            <button class="btn btn-outline-info btn-sm" type="button" data-toggle="modal" data-target="#modal-categories">
-                <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
-            </button>
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
-                <i class="fas fa-pen-square" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
-            </button>
             <a class="btn btn-outline-primary btn-sm" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
             <a class="btn btn-outline-primary btn-sm" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement"><i class="fas fa-calendar-plus"></i></a>
         </div>
-        <h1 class="my-3">Frise chronologique</h1>
-        <div class="collapse my-2" id="collapseForm">
-            <p class="lead">Sélectionne une <code>échelle</code> et fais glisser la <code>barre latérale</code> pour naviguer dans l'histoire.</p>
-            <form id="timeline-form" method="GET" class="card card-body">
-                <div class="form-group">
-                    <label for="range">Échelle de la frise <span class="badge badge-secondary badge-range">{{ unit }} {{ unit > 1 ? 'ans' : 'an' }}</span></label>
-                    <input type="range" name="range" class="custom-range" min="0" max="2" id="range" value="{{ range }}">
-                    <small id="rangeHelp" class="form-text text-muted">Fais glisser le curseur pour changer l'échelle</small>
-                </div>
-                <div class="form-group">
-                    <label for="start">Date début de la frise <span class="badge badge-secondary badge-start">{{ start|abs }} {{ start >= 0 ? '' : 'av.n.è.' }}</span></label>
-                    <input type="range" name="start" class="custom-range" min="-4100" max="2100" step="{{ unit }}" id="start" value="{{ start }}">
-                    <small id="startHelp" class="form-text text-muted">Fais glisser le curseur pour changer l'échelle</small>
-                </div>
-                <div class="form-group">
-                    <label for="end">Date de fin de la frise <span class="badge badge-secondary badge-end">{{ end|abs }} {{ end >= 0 ? '' : 'av.n.è.' }}</span></label>
-                    <input type="range" name="end" class="custom-range" min="-4100" max="2100" id="end" step="{{ unit }}" value="{{ end }}">
-                    <small id="endHelp" class="form-text text-muted">Fais glisser le curseur pour sélectionner la date de fin</small>
-                </div>
-                <input class="btn btn-primary" type="submit" name="submit" value="Valider">
-            </form>
-        </div>
-        <div class="modal fade" id="modal-categories" tabindex="-1" aria-labelledby="categoriesLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="categoriesLabel">Filtrer par catégories</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="category-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-tags"></i><small> Chargement des catégories...</small>
-                                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                            </div>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitchAll" checked="checked">
-                            <label class="custom-control-label" for="customSwitchAll">Tout cocher / décocher</label>
-                        </div>
-                        <button id="set_filters" type="button" class="btn btn-primary">Appliquer</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1 class="my-3 text-light text-center">Frise chronologique</h1>
         <div id="character-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
             <div class="d-flex align-items-center">
                 <i class="fas fa-users"></i><small> Chargement des personnages...</small>
@@ -95,6 +37,101 @@
     </div>
     <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}"></div>
     <div class="timeline-period"></div>
+    <div class="btn-timeline-display-toggle">
+        <div class="btn-group-vertical btn-group-sm">
+            <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal-categories">
+                <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
+            </button>
+            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#modal-scale">
+                <i class="fas fa-pen-square" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
+            </button>
+            <div class="btn-group btn-group-sm dropright" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <h6 class="text-center">Afficher...</h6>
+                    <div class="dropdown-divider"></div>
+                    <button id="btn-events-first" type="button" class="dropdown-item"><i class="fas fa-calendar-alt"></i> en priorité les évènements</button>
+                    <button id="btn-characters-first" type="button" class="dropdown-item"><i class="fas fa-users"></i> en priorité les personnages</button>
+                    <div class="dropdown-divider"></div>
+                    <button id="btn-events-only" type="button" class="dropdown-item"><i class="fas fa-calendar-times"></i> uniquement les évènements</button>
+                    <button id="btn-characters-only" type="button" class="dropdown-item"><i class="fas fa-users-slash"></i> uniquement les personnages</button>
+                    <div class="dropdown-divider"></div>
+                    <button id="btn-reset" type="button" class="dropdown-item text-bolder"><i class="fas fa-trash-restore"></i> Réinitialiser</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal timeline scale -->
+<div class="modal fade" id="modal-scale" tabindex="-1" aria-labelledby="scaleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="timeline-form" method="GET" class="card card-body">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="scaleLabel">Modifier l'échelle de la frise</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p class="lead">Sélectionne une <code>échelle</code> et fais glisser la <code>barre latérale</code> pour naviguer dans l'histoire.</p>
+                  <div class="form-group">
+                      <label for="range">Échelle de la frise <span class="badge badge-secondary badge-range">{{ unit }} {{ unit > 1 ? 'ans' : 'an' }}</span></label>
+                      <input type="range" name="range" class="custom-range" min="0" max="2" id="range" value="{{ range }}">
+                      <small id="rangeHelp" class="form-text text-muted">Fais glisser le curseur pour changer l'échelle</small>
+                  </div>
+                  <div class="form-group">
+                      <label for="start">Date début de la frise <span class="badge badge-secondary badge-start">{{ start|abs }} {{ start >= 0 ? '' : 'av.n.è.' }}</span></label>
+                      <input type="range" name="start" class="custom-range" min="-4100" max="2100" step="{{ unit }}" id="start" value="{{ start }}">
+                      <small id="startHelp" class="form-text text-muted">Fais glisser le curseur pour changer l'échelle</small>
+                  </div>
+                  <div class="form-group">
+                      <label for="end">Date de fin de la frise <span class="badge badge-secondary badge-end">{{ end|abs }} {{ end >= 0 ? '' : 'av.n.è.' }}</span></label>
+                      <input type="range" name="end" class="custom-range" min="-4100" max="2000" id="end" step="{{ unit }}" value="{{ end }}">
+                      <small id="endHelp" class="form-text text-muted">Fais glisser le curseur pour sélectionner la date de fin</small>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <input class="btn btn-primary" type="submit" name="submit" value="Valider">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal filters -->
+<div class="modal fade" id="modal-categories" tabindex="-1" aria-labelledby="categoriesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoriesLabel">Filtrer par catégories</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="category-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-tags"></i><small> Chargement des catégories...</small>
+                        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitchAll" checked="checked">
+                    <label class="custom-control-label" for="customSwitchAll">Tout cocher / décocher</label>
+                </div>
+                <button id="set_filters" type="button" class="btn btn-primary">Appliquer</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

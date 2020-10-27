@@ -6,27 +6,23 @@
         <meta name="description" content="">
         <meta name="author" content="Romain Gueffier">
         <meta name="generator" content="Me">
-        <title>{% block title %}The Real Timeline{% endblock %}</title>
+        <title>{% block title %}One Thousand Years{% endblock %}</title>
         {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
     {% block body %}
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100" style="background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url({{ asset('build/wallpaper_timeline.jpg') }}) no-repeat center center fixed;">
     {% endblock %}
         {% block header %}
         <header>
-            <!-- Fixed navbar -->
-            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand" href="{{ path('index') }}">The Real Timeline</a>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('timeline') }}">Frise chronologique</a>
-                        </li>
+                <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+                    <a class="navbar-brand" href="{{ path('index') }}">One Thousand Years</a>
+                    <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Personnages
@@ -58,12 +54,12 @@
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Compte</a>
                         </li>
                     </ul>
-                    <form class="form-inline mt-2 mt-md-0" action="" method="get">
+                    <!-- <form class="form-inline mt-2 mt-md-0" action="" method="get">
                         <input class="form-control mr-sm-2" type="text" placeholder="Evènement, date, personnage, etc" aria-label="Recherche">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
-                    </form>
+                    </form> -->
                 </div>
             </nav>
         </header>
@@ -71,7 +67,7 @@
         {% block container %}
         {% endblock %}
         {% block footer %}
-        <footer class="footer mt-auto py-3 bg-dark">
+        <footer class="footer mt-auto py-3 bg-transparent text-center">
             <div class="container">
                 <p class="text-muted"><i class="fas fa-copyright"></i> Romain Gueffier - 2020</p>
             </div>

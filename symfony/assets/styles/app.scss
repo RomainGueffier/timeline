@@ -7,18 +7,29 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 
 /*****************
-   custom styles
+   Main styles
 ******************/
 
-main > .container {
-    padding-top: 60px;
+@media screen and (min-width: 1200px) {
+    .timeline-main > .container {
+        padding-top: 120px;
+    }
 }
+
+/*****************
+   Timeline styles
+******************/
 
 .timeline-wrapper {
     overflow-x: auto;
     position: relative;
-    background: #FCFCFC;
-    box-shadow: 0 0 0.2em #777 inset;
+    box-shadow: 0 0 0.5em #000 inset;
+    background-color: #F9FAF7;
+    background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+                      linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+                      linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+                      linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+    background-size: 13px, 29px, 37px, 53px;
 }
 
 .timeline {
@@ -32,20 +43,25 @@ main > .container {
 .timeline-events{
     width: fit-content;
     position: relative;
-    height: 700px;
+    height: 500px;
 }
 
 .timeline {
     width: fit-content;
     position: relative;
-    z-index: 10;
+    z-index: 2;
 }
 
-.timeline-events .character {
+.character {
+    font-size: .8rem;
+    margin: 1rem auto;
     margin-bottom: .5rem;
     padding: 0;
     position: absolute;
     opacity: .9;
+    z-index: 1;
+    background: rgba(170,185,187, .8);
+    height: 2rem;
 }
 
 .event, .longevent {
@@ -64,8 +80,8 @@ main > .container {
 
 .longevent {
     width: auto;
-    background: rgba(225,225,225,.3);
     border: none;
+    background: rgba(237,238,213, .8);
 }
 
 .period {
@@ -86,25 +102,29 @@ main > .container {
 
 .timeline-period {
     width: 50px;/** ECHELLE d'une période **/
-    height: 1rem;
-    border-left: .1rem solid #222;
+    height: .5rem;
+    border-left: .1rem solid #333;
     position: relative;
 }
 
 .timeline-period.timeline-period-strong {
-    border-left: .4rem solid #222;
+    border-left: .4rem solid #333;
+    height: .8rem;
 }
 
 .timeline-period.timeline-period-zero {
-    border-left: .5rem solid #222;
+    border-left: .5rem solid #333;
+    height: 1rem;
 }
 
 .timeline-period.timeline-period-light {
-    border-left: .3rem solid #222;
+    border-left: .3rem solid #333;
+    height: .5rem;
 }
 
 .timeline-period.timeline-period-extralight {
-    border-left: .2rem solid #222;
+    border-left: .2rem solid #333;
+    height: .3rem;
 }
 
 .timeline-period > label {
@@ -138,45 +158,59 @@ main > .container {
     bottom: -1.3rem;
 }
 
-.character {
-    background: #E7E7E7;
-    font-size: .7rem;
-    margin: 1rem auto;
-    z-index: 10;
-}
-
 .character-birth-0.character-death-0 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.2) 0%, rgba(231,231,231,0.9) 50%, rgba(231,231,231,0.2) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.2) 100%);
 }
 
 .character-birth-0.character-death-50 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.2) 0%, rgba(231,231,231,0.9) 50%, rgba(231,231,231,0.9) 75%, rgba(231,231,231,0.2) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 75%, rgba(170,185,187,0.2) 100%);
 }
 
 .character-birth-0.character-death-100 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.2) 0%, rgba(231,231,231,0.9) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 100%);
 }
 
 .character-birth-100.character-death-0 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.9) 0%, rgba(231,231,231,0.2) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.9) 0%, rgba(170,185,187,0.2) 100%);
 }
 
 .character-birth-100.character-death-50 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.9) 0%, rgba(231,231,231,0.9) 50%, rgba(231,231,231,0.9) 75%, rgba(231,231,231,0.2) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.9) 0%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 75%, rgba(170,185,187,0.2) 100%);
 }
 
 .character-birth-50.character-death-0 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.2) 0%, rgba(231,231,231,0.9) 25%, rgba(231,231,231,0.9) 50%, rgba(231,231,231,0.2) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 25%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.2) 100%);
 }
 
 .character-birth-50.character-death-50 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.2) 0%, rgba(231,231,231,0.9) 25%, rgba(231,231,231,0.9) 50%, rgba(231,231,231,0.9) 75%, rgba(231,231,231,0.2) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 25%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 75%, rgba(170,185,187,0.2) 100%);
 }
 
 .character-birth-50.character-death-100 {
-    background: linear-gradient(90deg, rgba(231,231,231,0.2) 0%, rgba(231,231,231,0.9) 25%, rgba(231,231,231,0.9) 50%, rgba(231,231,231,0.9) 100%);
+    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 25%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 100%);
 }
 
 .timeline-100 .character-info-small {
     display: none;
 }
+
+/** Forms filters **/
+fieldset.form-group > div {
+    max-height: 150px;
+    border: 1px solid #EEE;
+    padding: .8em;
+    overflow: auto;
+}
+
+/** display priority button **/
+.timeline-wrapper .btn-timeline-display-toggle {
+    position: fixed;
+    bottom: 12rem;
+    left: 2rem;
+    z-index: 2;
+    opacity: .8;
+}
+
+/*****************
+   Fixes styles
+******************/
