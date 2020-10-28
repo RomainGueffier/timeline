@@ -15,51 +15,39 @@
     <body class="d-flex flex-column h-100" style="background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url({{ asset('build/wallpaper_timeline.jpg') }}) no-repeat center center fixed;">
     {% endblock %}
         {% block header %}
-        <header>
+        <header class="container">
             <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+                <a class="navbar-brand" href="{{ path('index') }}">
+                    One Thousand Years
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-                    <a class="navbar-brand" href="{{ path('index') }}">One Thousand Years</a>
-                    <ul class="navbar-nav">
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav mr-auto">
+                      <li class="nav-item active">
+                          <a class="nav-link" href="{{ path('timeline') }}">Frise chronologique</a>
+                      </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Personnages
+                            <a class="nav-link dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Données <i class="fas fa-caret-down"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('character_read_all') }}">Tous les personnages</a>
-                                <a class="dropdown-item" href="{{ path('character_add') }}">Ajouter un personage</a>
+                                <a class="dropdown-item" href="{{ path('character_read_all') }}">Personnages</a>
+                                <a class="dropdown-item" href="{{ path('event_read_all') }}">Évènements</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('category_read_all') }}">Catégories</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Évènements
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('event_read_all') }}">Tous les évènements</a>
-                                <a class="dropdown-item" href="{{ path('event_add') }}">Ajouter un évènement</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Catégories
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('category_read_all') }}">Toutes les catégories</a>
-                                <a class="dropdown-item" href="{{ path('category_add') }}">Ajouter une catégorie</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Compte</a>
-                        </li>
+
                     </ul>
-                    <!-- <form class="form-inline mt-2 mt-md-0" action="" method="get">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Evènement, date, personnage, etc" aria-label="Recherche">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true" data-toggle="popover" title="Connexion utilisateur"><i class="fas fa-user-circle"></i></a>
+                    <form class="form-inline my-2 my-md-0" action="" method="get" style="opacity:.7;">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Rechercher..." aria-label="Recherche">
+                        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
-                        </button>
-                    </form> -->
+                        </button> -->
+                    </form>
                 </div>
             </nav>
         </header>
