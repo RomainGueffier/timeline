@@ -20,11 +20,11 @@ class TimelineController extends AbstractController
         $range = 2; // équivalent unit dans le form (2=>100ans,1=>10ans,0=>1an)
 
         // GET modifications des valeurs
-        $range = $request->query->get('range') ?: $range;
+        $range = $request->query->get('range') != null ? $request->query->get('range') : $range;
 
         // !!! todo vérification date de fin pas inférieure date de début
-        $start = $request->query->get('start') ?: $start;
-        $end = $request->query->get('end') ?: $end;
+        $start = $request->query->get('start') != null ? $request->query->get('start') : $start;
+        $end = $request->query->get('end') != null ? $request->query->get('end') : $end;
 
         if ($range == 2) {
             $unit = 100;

@@ -138,16 +138,22 @@ class EventController extends AbstractController
         $positions = []; // left css position ratio for each event
         if ($events) {
             foreach ($events as $key => $event) {
-                $start = $event->getStart();
-                // if bc true, then set date to negative
-                $year = $start['BC'] ? -1 * $start['year'] : $start['year'];
-                $left = 0;
-                if ($year < 0) {
-                    $left = (abs($timeline_start) - abs($year)) / $ratio;
+                $end = $event->getEnd();
+                $endyear = $end['BC'] ? -1 * $end['year'] : $end['year'];
+                if ($endyear > $timeline_start) {
+                    $start = $event->getStart();
+                    // if bc true, then set date to negative
+                    $year = $start['BC'] ? -1 * $start['year'] : $start['year'];
+                    $left = 0;
+                    if ($year < 0) {
+                        $left = (abs($timeline_start) - abs($year)) / $ratio;
+                    } else {
+                        $left = ($timeline_start >= 0 ? $year - $timeline_start : (abs($timeline_start) + $year)) / $ratio;
+                    }
+                    $positions[$key] = $left;
                 } else {
-                    $left = (abs($timeline_start) + $year) / $ratio;
+                    unset($events[$key]);
                 }
-                $positions[$key] = $left;
             }
         }
 

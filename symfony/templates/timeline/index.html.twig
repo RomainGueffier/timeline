@@ -35,12 +35,12 @@
     <div class="timeline-period"></div>
     <div class="btn-timeline-display-toggle">
         <div class="btn-group-vertical">
-            <a class="btn btn-primary" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
-            <a class="btn btn-primary" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement"><i class="fas fa-calendar-plus"></i></a>
+            <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
+            <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement"><i class="fas fa-calendar-plus"></i></a>
             <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal-categories">
                 <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
             </button>
-            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#modal-scale">
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-scale">
                 <i class="fas fa-pen-square" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
             </button>
             <div class="btn-group dropright" role="group">
@@ -82,7 +82,7 @@
                   </div>
                   <div class="form-group">
                       <label for="start">Date début de la frise <span class="badge badge-secondary badge-start">{{ start|abs }} {{ start >= 0 ? '' : 'av.n.è.' }}</span></label>
-                      <input type="range" name="start" class="custom-range" min="-4100" max="2100" step="{{ unit }}" id="start" value="{{ start }}">
+                      <input type="range" name="start" class="custom-range" min="-4100" max="2000" step="{{ unit }}" id="start" value="{{ start }}">
                       <small id="startHelp" class="form-text text-muted">Fais glisser le curseur pour changer l'échelle</small>
                   </div>
                   <div class="form-group">

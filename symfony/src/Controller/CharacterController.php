@@ -139,16 +139,22 @@ class CharacterController extends AbstractController
         $positions = []; // left css position ratio for each character
         if ($characters) {
             foreach ($characters as $key => $character) {
-                $birth = $character->getBirth();
-                // if bc true, then set date to negative
-                $year = $birth['BC'] ? -1 * $birth['year'] : $birth['year'];
-                $left = 0;
-                if ($year < 0) {
-                    $left = (abs($start) - abs($year)) / $ratio;
+                $death = $character->getDeath();
+                $deathyear = $death['BC'] ? -1 * $death['year'] : $death['year'];
+                if ($deathyear > $start) {
+                    $birth = $character->getBirth();
+                    // if bc true, then set date to negative
+                    $year = $birth['BC'] ? -1 * $birth['year'] : $birth['year'];
+                    $left = 0;
+                    if ($year < 0) {
+                        $left = (abs($start) - abs($year)) / $ratio;
+                    } else {
+                        $left = ($start >= 0 ? $year - $start : (abs($start) + $year)) / $ratio;
+                    }
+                    $positions[$key] = $left;
                 } else {
-                    $left = (abs($start) + $year) / $ratio;
+                    unset($characters[$key]);
                 }
-                $positions[$key] = $left;
             }
         }
 
