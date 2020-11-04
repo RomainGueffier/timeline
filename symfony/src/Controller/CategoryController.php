@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Category;
 use App\Form\Type\CategoryType;
 
@@ -101,6 +102,58 @@ class CategoryController extends AbstractController
             'form' => $form->createView(),
             'category' => $category
         ]);
+    }
+
+    /**
+     * @Route("/category/delete/id/{id}", name="category_delete")
+     */
+    public function delete($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $category = $entityManager->getRepository(Category::class)->find($id);
+        if (!$category) {
+            throw $this->createNotFoundException(
+                'Aucune catégorie n\'existe en base avec l\'id : ' . $id
+            );
+        }
+        $name = $category->getName();
+
+        if ($category) {
+            $entityManager->remove($category);
+            $entityManager->flush();
+        }
+
+        return $this->render('category/delete.html.twig', [
+            'category' => $category,
+            'name' => $name
+        ]);
+    }
+
+    /**
+     * @Route("/category/deleteajax/id/{id}", name="category_ajax_delete")
+     */
+    public function deleteAjax($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $category = $entityManager->getRepository(Category::class)->find($id);
+        $message = "Aucun catégorie n'existe en base avec l'id : " . $id;
+        $error = true;
+
+        if ($category) {
+            $entityManager->remove($category);
+            $entityManager->flush();
+            $message = "La catégorie " . $category->getName() . " a bien été supprimé";
+            $error = false;
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode([
+            'error' => $error,
+            'message' => $message
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

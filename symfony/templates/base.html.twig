@@ -60,6 +60,8 @@
                 <p class="text-muted"><i class="fas fa-copyright"></i> Romain Gueffier - 2020</p>
             </div>
         </footer>
+        {% block modal %}
+        {% endblock %}
         {% endblock %}
         {% block javascripts %}
         {{ encore_entry_script_tags('app') }}

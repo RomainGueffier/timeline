@@ -1,16 +1,16 @@
 {% block old_date_row %}
 {{ form_label(form) }}
-<div class="card card-body my-3">
-  <div id="{{ form.vars.id }}" class="character_form_birthdate row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-      {% for child in form.children|filter(child => not child.rendered) %}
-      <div class="form-group col">
-          {{ form_label(child) }}
-          {{ form_widget(child) }}
-          {{ form_help(child) }}
-          {{ form_errors(child) }}
-      </div>
-      {% endfor %}
-  </div>
+<div class="form-row my-3">
+    <div id="{{ form.vars.id }}" class="character_form_birthdate row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        {% for child in form.children|filter(child => not child.rendered) %}
+        <div class="form-group col">
+            {{ form_label(child) }}
+            {{ form_widget(child) }}
+            {{ form_help(child) }}
+            {{ form_errors(child) }}
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 

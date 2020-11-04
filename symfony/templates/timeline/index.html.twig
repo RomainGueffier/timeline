@@ -62,11 +62,15 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block modal %}
+{{ parent() }}
 <!-- Modal timeline scale -->
 <div class="modal fade" id="modal-scale" tabindex="-1" aria-labelledby="scaleLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form id="timeline-form" method="GET" class="card card-body">
+            <form id="timeline-form" method="GET">
               <div class="modal-header">
                   <h5 class="modal-title" id="scaleLabel">Modifier l'échelle de la frise</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">

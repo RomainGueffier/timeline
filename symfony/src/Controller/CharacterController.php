@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Character;
 use App\Form\Type\CharacterType;
@@ -123,6 +124,66 @@ class CharacterController extends AbstractController
             'form' => $form->createView(),
             'character' => $character
         ]);
+    }
+
+    /**
+     * @Route("/character/delete/id/{id}", name="character_delete")
+     */
+    public function delete($id, FileUploader $fileUploader)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $character = $entityManager->getRepository(Character::class)->find($id);
+        if (!$character) {
+            throw $this->createNotFoundException(
+                'Aucun personnage n\'existe en base avec l\'id : ' . $id
+            );
+        }
+        $name = $character->getName();
+
+        if ($character) {
+            $image = $character->getImageFilename();
+            if ($image) {
+                $fileUploader->delete($image);
+            }
+            $entityManager->remove($character);
+            $entityManager->flush();
+        }
+
+        return $this->render('character/delete.html.twig', [
+            'character' => $character,
+            'name' => $name
+        ]);
+    }
+
+    /**
+     * @Route("/character/deleteajax/id/{id}", name="character_ajax_delete")
+     */
+    public function deleteAjax($id, FileUploader $fileUploader)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $character = $entityManager->getRepository(Character::class)->find($id);
+        $message = "Aucun personnage n'existe en base avec l'id : " . $id;
+        $error = true;
+
+        if ($character) {
+            $image = $character->getImageFilename();
+            if ($image) {
+                $fileUploader->delete($image);
+            }
+            $entityManager->remove($character);
+            $entityManager->flush();
+            $message = "Le personnage " . $character->getName() . " a bien été supprimé";
+            $error = false;
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode([
+            'error' => $error,
+            'message' => $message
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

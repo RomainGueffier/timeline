@@ -5,13 +5,13 @@
 {% block container %}
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <a type="button" class="btn btn-outline-success btn-lg btn-block my-3" href="{{ path('event_add') }}">
+        <a type="button" class="btn btn-success btn-lg btn-block my-3" href="{{ path('event_add') }}">
             <i class="fas fa-plus-square"></i> Ajouter un évènement
         </a>
         {% if events %}
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
             {% for event in events %}
-            <div class="col-auto mb-3">
+            <div class="col-auto mb-3" id="event-wrapper-{{ event.id }}">
                 <div class="card">
                     <img class="card-img-top" src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
                     <div class="card-body">
@@ -30,7 +30,7 @@
                         <p class="card-text">{{ event.description|u.truncate(50, '...') }}</p>
                         <a href="{{ path('event_read_one', {id: event.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                         <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger disabled"><i class="fas fa-trash"></i></a>
+                        <button type="button" class="btn btn-danger btn-event-delete" event_id="{{ event.id }}"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             </div>

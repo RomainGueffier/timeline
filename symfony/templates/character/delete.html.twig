@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer un personnage{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="my-2 text-light">Supprimer un personnage</h2>
+        <div class="card">
+            <div class="card-body">
+                <p>Le personnage <strong>{{ name }}</strong> a bien été supprimé</p>
+                <a href="{{ path('character_read_all') }}" class="btn btn-success">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

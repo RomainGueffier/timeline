@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Event;
 use App\Form\Type\EventType;
@@ -122,6 +123,66 @@ class EventController extends AbstractController
             'form' => $form->createView(),
             'event' => $event
         ]);
+    }
+
+    /**
+     * @Route("/event/delete/id/{id}", name="event_delete")
+     */
+    public function delete($id, FileUploader $fileUploader)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)->find($id);
+        if (!$event) {
+            throw $this->createNotFoundException(
+                'Aucune évènement n\'existe en base avec l\'id : ' . $id
+            );
+        }
+        $name = $event->getName();
+
+        if ($event) {
+            $image = $event->getImageFilename();
+            if ($image) {
+                $fileUploader->delete($image);
+            }
+            $entityManager->remove($event);
+            $entityManager->flush();
+        }
+
+        return $this->render('event/delete.html.twig', [
+            'event' => $event,
+            'name' => $name
+        ]);
+    }
+
+    /**
+     * @Route("/event/deleteajax/id/{id}", name="event_ajax_delete")
+     */
+    public function deleteAjax($id, FileUploader $fileUploader)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)->find($id);
+        $message = "Aucun évènement n'existe en base avec l'id : " . $id;
+        $error = true;
+
+        if ($event) {
+            $image = $event->getImageFilename();
+            if ($image) {
+                $fileUploader->delete($image);
+            }
+            $entityManager->remove($event);
+            $entityManager->flush();
+            $message = "L'évènement " . $event->getName() . " a bien été supprimé";
+            $error = false;
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode([
+            'error' => $error,
+            'message' => $message
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**
