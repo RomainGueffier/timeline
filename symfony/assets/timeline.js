@@ -37,11 +37,12 @@ $(document).ready(function(e){
     // chargement asynchrone des Personnages / évènements
     var ratio = $(".timeline-events").attr('ratio');
     var start = $(".timeline-events").attr('start');
+    var end = $(".timeline-events").attr('end');
     $.ajax({
     		url: '/character/ajax',
     		method: "GET",
         data: {
-          ratio: ratio, start: start
+          ratio: ratio, start: start, end: end
         }
 		}).then(function(response) {
         $("#character-loader").remove();
@@ -66,7 +67,7 @@ $(document).ready(function(e){
     		url: '/event/ajax',
     		method: "GET",
         data: {
-          ratio: ratio, start: start
+          ratio: ratio, start: start, end: end
         }
 		}).then(function(response) {
         $("#event-loader").remove();

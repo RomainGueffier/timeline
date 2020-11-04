@@ -132,6 +132,7 @@ class CharacterController extends AbstractController
     {
         $ratio = $request->query->get('ratio');
         $start = $request->query->get('start');
+        $end = $request->query->get('end');
 
         $repository = $this->getDoctrine()->getRepository(Character::class);
 
@@ -140,16 +141,17 @@ class CharacterController extends AbstractController
         if ($characters) {
             foreach ($characters as $key => $character) {
                 $death = $character->getDeath();
+                // if bc true, then set date to negative
                 $deathyear = $death['BC'] ? -1 * $death['year'] : $death['year'];
-                if ($deathyear > $start) {
-                    $birth = $character->getBirth();
-                    // if bc true, then set date to negative
-                    $year = $birth['BC'] ? -1 * $birth['year'] : $birth['year'];
+                $birth = $character->getBirth();
+                // if bc true, then set date to negative
+                $birthyear = $birth['BC'] ? -1 * $birth['year'] : $birth['year'];
+                if ($deathyear > $start && $birthyear < $end) {
                     $left = 0;
-                    if ($year < 0) {
-                        $left = (abs($start) - abs($year)) / $ratio;
+                    if ($birthyear < 0) {
+                        $left = (abs($start) - abs($birthyear)) / $ratio;
                     } else {
-                        $left = ($start >= 0 ? $year - $start : (abs($start) + $year)) / $ratio;
+                        $left = ($start >= 0 ? $birthyear - $start : (abs($start) + $birthyear)) / $ratio;
                     }
                     $positions[$key] = $left;
                 } else {

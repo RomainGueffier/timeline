@@ -131,6 +131,7 @@ class EventController extends AbstractController
     {
         $ratio = $request->query->get('ratio');
         $timeline_start = $request->query->get('start');
+        $timeline_end = $request->query->get('end');
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
 
@@ -140,15 +141,14 @@ class EventController extends AbstractController
             foreach ($events as $key => $event) {
                 $end = $event->getEnd();
                 $endyear = $end['BC'] ? -1 * $end['year'] : $end['year'];
-                if ($endyear > $timeline_start) {
-                    $start = $event->getStart();
-                    // if bc true, then set date to negative
-                    $year = $start['BC'] ? -1 * $start['year'] : $start['year'];
+                $start = $event->getStart();
+                $birthyear = $start['BC'] ? -1 * $start['year'] : $start['year'];
+                if ($endyear > $timeline_start && $birthyear < $timeline_end) {
                     $left = 0;
-                    if ($year < 0) {
-                        $left = (abs($timeline_start) - abs($year)) / $ratio;
+                    if ($birthyear < 0) {
+                        $left = (abs($timeline_start) - abs($birthyear)) / $ratio;
                     } else {
-                        $left = ($timeline_start >= 0 ? $year - $timeline_start : (abs($timeline_start) + $year)) / $ratio;
+                        $left = ($timeline_start >= 0 ? $birthyear - $timeline_start : (abs($timeline_start) + $birthyear)) / $ratio;
                     }
                     $positions[$key] = $left;
                 } else {

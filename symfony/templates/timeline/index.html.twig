@@ -9,8 +9,8 @@
         <h1 class="my-3 text-light text-center">Frise chronologique</h1>
     </div>
 </main>
-<div class="timeline-wrapper timeline-{{ unit }}">
-    <div class="timeline">
+<div id="timeline-wrapper" class="timeline-wrapper timeline-{{ unit }}">
+    <div id="timeline-units" class="timeline">
         {{ timeline|raw }}
     </div>
     <div id="character-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
@@ -31,7 +31,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}"></div>
+    <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}" end="{{ end }}"></div>
     <div class="timeline-period"></div>
     <div class="btn-timeline-display-toggle">
         <div class="btn-group-vertical">
