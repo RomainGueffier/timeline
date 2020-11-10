@@ -121,4 +121,14 @@ $(document).ready(function(e){
               });
           }
     });
+    // Global confirmation box to all delete a link
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        return bootbox.confirm('Es-tu vraiment sûr de vouloir supprimer ce contenu ?', function(result) {
+            if (result) {
+                window.location = href
+            }
+        });
+    });
 });
