@@ -12,21 +12,21 @@ $(document).ready(function(e){
                 age = death + Math.abs(birth);
             }
         }
-        $("form #character_age").val(age);
+        $("form #event_duration").val(age);
     }
     $("form .custom_form_olddate").change(function(e){
-        var birth = parseInt($("form #character_birth_year").val());
-        var death = parseInt($("form #character_death_year").val());
-        if ($('form #character_birth_BC').is(':checked')) {
+        var birth = parseInt($("form #event_start_year").val());
+        var death = parseInt($("form #event_end_year").val());
+        if ($('form #event_start_BC').is(':checked')) {
             birth *= -1;
         }
-        if ($('form #character_death_BC').is(':checked')) {
+        if ($('form #event_end_BC').is(':checked')) {
             death *= -1;
         }
         setAge(birth, death);
     });
     $("form #age-calculator").click(function(e){
-        $("form #character_birth_year").change();
+        $("form #event_start_year").change();
     });
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()

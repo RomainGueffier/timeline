@@ -25,7 +25,7 @@ class EventType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('start', OldDateType::class, ['label' => 'Date de début'])
             ->add('end', OldDateType::class, ['label' => 'Date de fin'])
-            ->add('duration', IntegerType::class, ['label' => 'Durée'])
+            ->add('duration', AgeType::class, ['label' => 'Durée'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('image', FileType::class, [
                 'label' => 'Image',

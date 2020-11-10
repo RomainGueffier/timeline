@@ -1,7 +1,7 @@
 {% block old_date_row %}
 {{ form_label(form) }}
 <div class="form-row my-3">
-    <div id="{{ form.vars.id }}" class="character_form_birthdate row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    <div id="{{ form.vars.id }}" class="custom_form_olddate row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         {% for child in form.children|filter(child => not child.rendered) %}
         <div class="form-group col">
             {{ form_label(child) }}
@@ -19,7 +19,7 @@
 <div class="form-group-inline">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <button type="button" id="character-age-calculator" class="form-control btn btn-secondary" data-toggle="tooltip" title="Calculer l'âge à partir des dates de naissance et de mort">
+            <button type="button" id="age-calculator" class="form-control btn btn-secondary" data-toggle="tooltip" title="Calculer la durée à partir des dates de début et fin">
                 <i class="fas fa-calculator"></i>
             </button>
         </div>
