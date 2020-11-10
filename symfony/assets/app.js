@@ -7,6 +7,7 @@
 const $ = require('jquery');
 require('bootstrap');
 window.bootbox = require('bootbox');
+bootbox.setLocale('fr');
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';

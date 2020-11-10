@@ -1,4 +1,0 @@
-steps:
-  # running docker-compose in production Google Cloud Platform
-  - name: 'docker/compose:1.26.2'
-    args: ['up', '-d']
