@@ -36,7 +36,7 @@ class EventController extends AbstractController
     public function read($id)
     {
         $event = $this->getDoctrine()
-            ->getRepository(event::class)
+            ->getRepository(Event::class)
             ->find($id);
 
         if (!$event) {

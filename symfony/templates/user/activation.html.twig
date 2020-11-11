@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activer mon compte{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="my-2 text-light">Activer mon compte</h2>
+        <div class="card">
+            <div class="card-body">
+                {% if status == 'success' %}
+                <div class="alert alert-success">Génial, ton compte est activé ! Tu peux te connecter par <a href="{{ path('app_login') }}">ici</a></div>
+                {% elseif status == 'already' %}
+                <div class="alert alert-warning">Oups, ton compte est déjà activé ! Pour te connecter, c'est par <a href="{{ path('app_login') }}">ici</a></div>
+                {% else %}
+                <div class="alert alert-danger">Oups, impossible d'activer ton compte ! Merci de vérifier ton lien, ou demande un nouveau lien <a class="disabled" href="#">ici</a></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

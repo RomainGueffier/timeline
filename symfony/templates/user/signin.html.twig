@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="my-2 text-light">Inscription</h2>
+        <div class="card">
+            <div class="card-body">
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
