@@ -15,6 +15,11 @@ import './styles/app.scss';
 console.log('Application started');
 
 $(document).ready(function(e){
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+    
     // flag to avoid multiple click during ajax loading
     var $pending = false;
     // character delete
