@@ -22,6 +22,7 @@
                 <a class="nav-link active" href="{{ path('index') }}">Accueil</a>
                 <a class="nav-link" href="{{ path('timeline') }}">Frise chronologique</a>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="nav-link" href="{{ path('user_profile') }}" aria-disabled="true" title="Mon profil"><i class="fas fa-user-circle"></i></a>
                 <a class="nav-link" href="{{ path('app_logout') }}" aria-disabled="true" title="Se déconnecter"><i class="fas fa-sign-out-alt"></i></a>
                 {% else %}
                 <a class="nav-link" href="{{ path('app_login') }}" aria-disabled="true" title="Connexion utilisateur"><i class="fas fa-user-circle"></i></a>

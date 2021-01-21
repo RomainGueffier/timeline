@@ -116,9 +116,6 @@ $(document).ready(function(e){
             }
         });
   	});
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
     $("#btn-events-first").click(function() {
         $(".timeline-wrapper .character").css('z-index', '0');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").css('z-index', '1');

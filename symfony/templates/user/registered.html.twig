@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Validation de ton compte{% endblock %}
 
 {% block container %}
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <h2 class="my-2 text-light">Inscription</h2>
+        <h2 class="my-2 text-light">Validation de ton compte</h2>
         <div class="card">
             <div class="card-body">
                 <div class="alert alert-success">
-                    Ton compte a bien été créé! Pour commencer à l'utiliser, merci de confirmer ton adresse e-mail en visitant le lien d'activation que tu vas recevoir dans ta boîte e-mail <strong>{{ user.email }}</strong>
+                    Ton compte utilisateur est presque opérationnel! Pour valider les identifiants, merci de confirmer ton adresse e-mail en visitant le lien d'activation que tu vas recevoir dans ta boîte e-mail <strong>{{ user.email }}</strong>
                 </div>
             </div>
         </div>

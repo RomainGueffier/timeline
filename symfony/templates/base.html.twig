@@ -42,12 +42,15 @@
 
                     </ul>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('app_logout') }}" tabindex="-1" aria-disabled="true" data-toggle="popover" title="Se déconnecter">
-                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('user_profile') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Mon Profil">
+                        <i class="fas fa-user-circle"></i>
+                    </a>
+                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('app_logout') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Se déconnecter">
+                        <i class="fas fa-sign-out-alt"></i>
                     </a>
                     {% else %}
-                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('app_login') }}" tabindex="-1" aria-disabled="true" data-toggle="popover" title="Connexion utilisateur">
-                        <i class="fas fa-user-circle"></i> Connexion
+                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('app_login') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Connexion utilisateur">
+                        <i class="fas fa-user-circle"></i>
                     </a>
                     {% endif %}
                     <form class="form-inline my-2 my-md-0" action="" method="get" style="opacity:.7;">

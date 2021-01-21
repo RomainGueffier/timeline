@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ton profil{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="my-2 text-light">Ton profil utilisateur</h2>
+        <div class="card">
+            <div class="card-body">
+                <h4><i class="fas fa-user-circle"></i> {{ user.pseudo }}</h4>
+                <p>
+                    <i class="fas fa-at"></i> {{ user.email }}
+                    <br><i class="fas fa-id-badge"></i> {{ user.roles[0]|replace({'ROLE_USER': 'Utilisateur', 'ROLE_ADMIN': "Administrateur"}) }}
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('app_logout') }}" class="btn btn-primary" data-toggle="tooltip" title="Déconnexion"><i class="fas fa-sign-out-alt"></i></a>
+                <a href="{{ path('user_edit') }}" class="btn btn-warning" data-toggle="tooltip" title="Modifier ton profil"><i class="fas fa-edit"></i></a>
+                <a href="{{ path('user_changepassword') }}" class="btn btn-dark" data-toggle="tooltip" title="Changer ton mot de passe"><i class="fas fa-unlock-alt"></i></a>
+                <a href="{{ path('user_delete') }}" class="btn btn-danger btn-delete" data-toggle="tooltip" title="Supprimer ton compte"><i class="fas fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

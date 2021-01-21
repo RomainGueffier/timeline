@@ -12,12 +12,15 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
             {% for character in characters %}
             <div class="col mb-3" id="character-wrapper-{{ character.id }}">
-                <div class="card">
+                <div class="card h-100">
                     <img class="card-img-top" src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
                     <div class="card-body">
                         <h4 class="card-title">{{ character.name }}</h4>
                         <h6 class="card-subtitle mb-2 text-muted">{{ character.age }} ans <small>({{ character.birth.year }}{{ character.birth.BC ? ' av.n.è.' : '' }} - {{ character.death.year }}{{ character.birth.BC ? ' av.n.è.' : '' }})</small></h6>
                         <p class="card-text">{{ character.description|u.truncate(50, '...') }}</p>
+
+                    </div>
+                    <div class="card-footer">
                         <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                         <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
                         <button type="button" class="btn btn-danger btn-character-delete" character_id="{{ character.id }}"><i class="fas fa-trash"></i></button>
