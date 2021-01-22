@@ -1,0 +1,9 @@
+<p>Bonjour,</p>
+
+<p>Pour réinitialiser ton mot de passe, merci de visiter le lien suivant. Si tu n'es pas à l'origine de cette demande, merci d'ignorer cet email.</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>Ce lien arrivera à expiration dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+<p>Cordialement, l'équipe OneThousandYears</p>
