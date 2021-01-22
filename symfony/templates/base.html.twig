@@ -12,11 +12,11 @@
         {% endblock %}
     </head>
     {% block body %}
-    <body class="d-flex flex-column h-100" style="background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url({{ asset('build/wallpaper_timeline.jpg') }}) no-repeat center center fixed;">
+    <body class="d-flex flex-column h-100" style="background:linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) ), #F5F5F5 url({{ asset('build/timeline.png ') }}) no-repeat center center fixed;background-attachment: fixed;">
     {% endblock %}
         {% block header %}
-        <header class="container">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <header class="container" style="margin-bottom:200px;">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
                 <a class="navbar-brand" href="{{ path('index') }}">
                     One Thousand Years
                 </a>
