@@ -16,11 +16,13 @@ use Symfony\Component\Uid\Uuid;
 use App\Security\LoginFormAuthenticator;
 use App\Form\Type\UserType;
 use App\Form\Type\User\EditType;
-use App\Form\Type\User\ChangePasswordType;
 use App\Entity\User;
 
 class UserController extends AbstractController
 {
+    /**
+     * Fonction d'envoi d'email en lien avec les comptes utilisateurs
+     */
     private function _sendActivationEmail($token, MailerInterface $mailer): bool
     {
         $userActivationPage = $this->generateUrl('user_activate', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -195,42 +197,6 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/user/changepassword", name="user_changepassword")
-     */
-    public function changepassword(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    {
-        // usually you'll want to make sure the user is authenticated first
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $user = $this->getUser();
-
-        $form = $this->createForm(ChangePasswordType::class, $user);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newpassword = $form->getData();
-d($newpassword);
-            // Encoding password
-            $user->setPassword($passwordEncoder->encodePassword($user, $newpassword));
-
-            // change token
-            $uuid = Uuid::v4();
-            $token = $uuid->toBase58();
-            $user->setToken($token);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_profile');
-        }
-
-        return $this->render('user/changepassword.html.twig', [
             'form' => $form->createView(),
         ]);
     }
