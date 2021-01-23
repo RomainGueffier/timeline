@@ -17,7 +17,10 @@
 <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
         <div class="inner">
-            <h3 class="masthead-brand">One Thousand Years</h3>
+            <h3 class="masthead-brand">
+                <img src="{{ asset('build/logo.png ') }}" width="32" height="32" alt="" loading="lazy">
+                Timeline.io
+            </h3>
             <nav class="nav nav-masthead justify-content-center">
                 <a class="nav-link active" href="{{ path('index') }}">Accueil</a>
                 <a class="nav-link" href="{{ path('timeline') }}">Frise chronologique</a>
@@ -32,6 +35,7 @@
     </header>
 
     <main role="main" class="inner cover">
+        <img src="{{ asset('build/logo.png ') }}" alt="" loading="lazy">
         <h1 class="cover-heading">La chronologie de l'histoire</h1>
         <p class="lead">Rédécouvre l'histoire au moyen de cet outil de construction de frise chronologique</p>
         <p class="lead">
