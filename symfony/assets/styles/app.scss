@@ -15,6 +15,11 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     }
 }
 
+body.page main {
+    background-color: #F7F7F7;
+    padding: 2rem 0;
+}
+
 /*****************
    Timeline styles
 ******************/
@@ -23,11 +28,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     overflow-x: auto;
     position: relative;
     box-shadow: 0 0 0.5em #000 inset;
-    background-color: #F9FAF7;
-    background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
-                      linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
-                      linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
-                      linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+    background-color: #F7F7F7;
     background-size: 13px, 29px, 37px, 53px;
 }
 
@@ -59,7 +60,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     position: absolute;
     opacity: .9;
     z-index: 1;
-    background: rgba(170,185,187, .8);
+    background: rgba(200,200,190, .8);
     height: 2rem;
 }
 
@@ -158,35 +159,35 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 }
 
 .character-birth-0.character-death-0 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.2) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.2) 100%);
 }
 
 .character-birth-0.character-death-50 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 75%, rgba(170,185,187,0.2) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 75%, rgba(200,200,190,0.2) 100%);
 }
 
 .character-birth-0.character-death-100 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 100%);
 }
 
 .character-birth-100.character-death-0 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.9) 0%, rgba(170,185,187,0.2) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.9) 0%, rgba(200,200,190,0.2) 100%);
 }
 
 .character-birth-100.character-death-50 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.9) 0%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 75%, rgba(170,185,187,0.2) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.9) 0%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 75%, rgba(200,200,190,0.2) 100%);
 }
 
 .character-birth-50.character-death-0 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 25%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.2) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 25%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.2) 100%);
 }
 
 .character-birth-50.character-death-50 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 25%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 75%, rgba(170,185,187,0.2) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 25%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 75%, rgba(200,200,190,0.2) 100%);
 }
 
 .character-birth-50.character-death-100 {
-    background: linear-gradient(90deg, rgba(170,185,187,0.2) 0%, rgba(170,185,187,0.9) 25%, rgba(170,185,187,0.9) 50%, rgba(170,185,187,0.9) 100%);
+    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 25%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 100%);
 }
 
 .timeline-100 .character-info-small {
