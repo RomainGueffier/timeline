@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Character;
 use App\Form\Type\CharacterType;
 use App\Service\FileUploader;
@@ -21,9 +22,14 @@ class CharacterController extends AbstractController
      */
     public function index()
     {
+        $user = $this->getUser();
+
         $characters = $this->getDoctrine()
             ->getRepository(Character::class)
-            ->findAll();
+            ->findBy(
+                ['user' => $user->getId()],
+                ['name' => 'ASC']
+            );
 
         return $this->render('character/index.html.twig', [
             'characters' => $characters,
@@ -35,14 +41,19 @@ class CharacterController extends AbstractController
      */
     public function read($id)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        $user = $this->getUser();
+
         $character = $this->getDoctrine()
             ->getRepository(Character::class)
-            ->find($id);
+            ->findOneBy([
+                'id' => $id,
+                'user' => $user->getId(),
+            ]);
 
         if (!$character) {
-            throw $this->createNotFoundException(
-                'Aucun personnage n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
         return $this->render('character/read.html.twig', [
@@ -70,6 +81,9 @@ class CharacterController extends AbstractController
                 $character->setImageFilename($imageFileName);
             }
 
+            $user = $this->getUser();
+            $character->setUser($user->getId());
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($character);
             $entityManager->flush();
@@ -93,9 +107,7 @@ class CharacterController extends AbstractController
         $oldImage = $character->getImageFilename();
 
         if (!$character) {
-            throw $this->createNotFoundException(
-                'Aucun personnage n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
         $form = $this->createForm(CharacterType::class, $character);
@@ -134,9 +146,7 @@ class CharacterController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->find($id);
         if (!$character) {
-            throw $this->createNotFoundException(
-                'Aucun personnage n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
         $name = $character->getName();
 
@@ -196,8 +206,11 @@ class CharacterController extends AbstractController
         $end = $request->query->get('end');
 
         $repository = $this->getDoctrine()->getRepository(Character::class);
+        $user = $this->getUser();
 
-        $characters = $repository->findAll();
+        $characters = $repository->findBy(
+            ['user' => $user->getId()]
+        );
         $positions = []; // left css position ratio for each character
         if ($characters) {
             foreach ($characters as $key => $character) {

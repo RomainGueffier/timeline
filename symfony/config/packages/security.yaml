@@ -47,6 +47,10 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/signin, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/timeline, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/category, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/event, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/character, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/user, roles: ROLE_USER }
 
