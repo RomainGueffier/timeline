@@ -22,12 +22,10 @@ class EventController extends AbstractController
      */
     public function index()
     {
-        $user = $this->getUser();
-
         $events = $this->getDoctrine()
             ->getRepository(Event::class)
             ->findBy(
-                ['user' => $user->getId()],
+                ['user' => $this->getUser()->getId()],
                 ['name' => 'ASC']
             );
 
@@ -41,15 +39,11 @@ class EventController extends AbstractController
      */
     public function read($id)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
-        $user = $this->getUser();
-
         $event = $this->getDoctrine()
             ->getRepository(Event::class)
             ->findOneBy([
                 'id' => $id,
-                'user' => $user->getId(),
+                'user' => $this->getUser()->getId(),
             ]);
 
         if (!$event) {
@@ -102,13 +96,17 @@ class EventController extends AbstractController
     public function edit($id, Request $request, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $event = $entityManager->getRepository(Event::class)->find($id);
-        $oldImage = $event->getImageFilename();
 
+        $event = $entityManager->getRepository(Event::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+        
         if (!$event) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
+        $oldImage = $event->getImageFilename();
         $form = $this->createForm(EventType::class, $event);
 
         $form->handleRequest($request);
@@ -143,7 +141,10 @@ class EventController extends AbstractController
     public function delete($id, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $event = $entityManager->getRepository(Event::class)->find($id);
+        $event = $entityManager->getRepository(Event::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
         if (!$event) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
@@ -170,8 +171,11 @@ class EventController extends AbstractController
     public function deleteAjax($id, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $event = $entityManager->getRepository(Event::class)->find($id);
-        $message = "Aucun évènement n'existe en base avec l'id : " . $id;
+        $event = $entityManager->getRepository(Event::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+        $message = "Impossible de supprimer cet évènement";
         $error = true;
 
         if ($event) {
@@ -205,10 +209,9 @@ class EventController extends AbstractController
         $timeline_end = $request->query->get('end');
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
-        $user = $this->getUser();
 
         $events = $repository->findBy(
-            ['user' => $user->getId()]
+            ['user' => $this->getUser()->getId()]
         );
         $positions = []; // left css position ratio for each event
         if ($events) {

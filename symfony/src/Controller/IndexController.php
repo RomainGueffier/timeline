@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Timeline;
 
 class IndexController extends AbstractController
 {
@@ -12,8 +13,15 @@ class IndexController extends AbstractController
      */
     public function index()
     {
+        $timelines = $this->getDoctrine()
+            ->getRepository(Timeline::class)
+            ->findBy(
+                ['visibility' => true],
+                ['name' => 'ASC']
+            );
+
         return $this->render('index/index.html.twig', [
-            'controller_name' => 'IndexController',
+            'timelines' => $timelines,
         ]);
     }
 }

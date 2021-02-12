@@ -22,12 +22,10 @@ class CharacterController extends AbstractController
      */
     public function index()
     {
-        $user = $this->getUser();
-
         $characters = $this->getDoctrine()
             ->getRepository(Character::class)
             ->findBy(
-                ['user' => $user->getId()],
+                ['user' => $this->getUser()->getId()],
                 ['name' => 'ASC']
             );
 
@@ -41,15 +39,11 @@ class CharacterController extends AbstractController
      */
     public function read($id)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
-        $user = $this->getUser();
-
         $character = $this->getDoctrine()
             ->getRepository(Character::class)
             ->findOneBy([
                 'id' => $id,
-                'user' => $user->getId(),
+                'user' => $this->getUser()->getId(),
             ]);
 
         if (!$character) {
@@ -102,14 +96,16 @@ class CharacterController extends AbstractController
     public function edit($id, Request $request, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $character = $entityManager->getRepository(Character::class)->find($id);
-
-        $oldImage = $character->getImageFilename();
+        $character = $entityManager->getRepository(Character::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
 
         if (!$character) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
+        $oldImage = $character->getImageFilename();
         $form = $this->createForm(CharacterType::class, $character);
 
         $form->handleRequest($request);
@@ -144,7 +140,11 @@ class CharacterController extends AbstractController
     public function delete($id, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $character = $entityManager->getRepository(Character::class)->find($id);
+        $character = $entityManager->getRepository(Character::class)>findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+
         if (!$character) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
@@ -171,8 +171,11 @@ class CharacterController extends AbstractController
     public function deleteAjax($id, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $character = $entityManager->getRepository(Character::class)->find($id);
-        $message = "Aucun personnage n'existe en base avec l'id : " . $id;
+        $character = $entityManager->getRepository(Character::class)>findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+        $message = "Impossible de supprimer ce personnage";
         $error = true;
 
         if ($character) {
@@ -206,10 +209,9 @@ class CharacterController extends AbstractController
         $end = $request->query->get('end');
 
         $repository = $this->getDoctrine()->getRepository(Character::class);
-        $user = $this->getUser();
 
         $characters = $repository->findBy(
-            ['user' => $user->getId()]
+            ['user' => $this->getUser()->getId()]
         );
         $positions = []; // left css position ratio for each character
         if ($characters) {

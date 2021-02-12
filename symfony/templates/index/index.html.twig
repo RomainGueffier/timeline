@@ -23,8 +23,8 @@
             </h3>
             <nav class="nav nav-masthead justify-content-center">
                 <a class="nav-link active" href="{{ path('index') }}">Accueil</a>
-                <a class="nav-link" href="{{ path('timeline') }}">Frise chronologique</a>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="nav-link" href="{{ path('timeline_list') }}">Mes frises chronologiques</a>
                 <a class="nav-link" href="{{ path('user_profile') }}" aria-disabled="true" title="Mon profil"><i class="fas fa-user-circle"></i></a>
                 <a class="nav-link" href="{{ path('app_logout') }}" aria-disabled="true" title="Se déconnecter"><i class="fas fa-sign-out-alt"></i></a>
                 {% else %}
@@ -37,11 +37,25 @@
     <main role="main" class="inner cover">
         <img src="{{ asset('build/logo.png ') }}" alt="" loading="lazy">
         <h1 class="cover-heading">La chronologie de l'histoire</h1>
-        <p class="lead">Rédécouvre l'histoire au moyen de cet outil de construction de frise chronologique</p>
+        <p class="lead">Rédécouvre l'histoire au moyen de cet outil de construction de frise chronologique !</p>
         <p class="lead">
-            <a href="{{ path('timeline') }}" class="btn btn-lg btn-secondary">Commencer</a>
+            <a href="#timelines" class="btn btn-lg btn-secondary">Commencer</a>
         </p>
     </main>
+
+    <section id="#timelines">
+        <h2>Les dernières frises chronologiques</h2>
+        {% if timelines %}
+        {% for timeline in timelines %}
+        <h3>{{ timeline.name }}</h3>
+        <p>{{ timeline.description }}</p>
+        <a href="{{ path('timeline', {id: timeline.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i> Voir plus</a>
+        <hr>
+        {% endfor %}
+        {% else %}
+        Aucune frise n'a été publiée pour l'instant
+        {% endif %}
+    </section>
 
     <footer class="mastfoot mt-auto">
         <div class="inner">

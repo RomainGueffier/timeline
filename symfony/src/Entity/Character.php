@@ -81,6 +81,11 @@ class Character
     private $categories;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Timeline", inversedBy="characters")
+     */
+    private $timeline;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="characters")
      */
     private $user;
@@ -183,7 +188,7 @@ class Character
         return $this->age;
     }
 
-    public function setAge(?int $age): self
+    public function setAge(int $age): self
     {
         $this->age = $age;
 
@@ -207,7 +212,7 @@ class Character
         return $this->imageFilename;
     }
 
-    public function setImageFilename(string $imageFilename): self
+    public function setImageFilename(?string $imageFilename): self
     {
         $this->imageFilename = $imageFilename;
 
@@ -233,9 +238,7 @@ class Character
 
     public function removeCategory(Category $category): self
     {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-        }
+        $this->categories->removeElement($category);
 
         return $this;
     }
@@ -248,6 +251,18 @@ class Character
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTimeline(): ?Timeline
+    {
+        return $this->timeline;
+    }
+
+    public function setTimeline(?Timeline $timeline): self
+    {
+        $this->timeline = $timeline;
 
         return $this;
     }
