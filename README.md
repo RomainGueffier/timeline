@@ -83,4 +83,8 @@ $ bin/console cache:pool:clear cache.global_clearer
 ### Accès à l'application
 Accéder à [localhost](http://localhost/) dans le navigateur
 
-
+### Reste à faire
+Ajouter dans les formulaires des données la possibilité de lier des données à une frise
+Modifier les entités dans ce but
+Revoir le graphisme du site (encore)
+Ajouter la notion de frise partagée, en lecture seule, etc

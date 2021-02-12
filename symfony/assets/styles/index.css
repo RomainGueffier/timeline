@@ -46,6 +46,10 @@ body {
   max-width: 42em;
 }
 
+body.index section {
+  background: #F5F5F5;
+}
+
 
 /*
  * Header

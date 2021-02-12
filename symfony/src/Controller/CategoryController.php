@@ -17,12 +17,10 @@ class CategoryController extends AbstractController
      */
     public function index()
     {
-        $user = $this->getUser();
-
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
             ->findBy(
-                ['user' => $user->getId()],
+                ['user' => $this->getUser()->getId()],
                 ['name' => 'ASC']
             );
 
@@ -36,13 +34,11 @@ class CategoryController extends AbstractController
      */
     public function read($id)
     {
-        $user = $this->getUser();
-
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
             ->findOneBy([
                 'id' => $id,
-                'user' => $user->getId(),
+                'user' => $this->getUser()->getId(),
             ]);
 
         if (!$category) {
@@ -90,7 +86,10 @@ class CategoryController extends AbstractController
     public function edit($id, Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $category = $entityManager->getRepository(Category::class)->find($id);
+        $category = $entityManager->getRepository(Category::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
 
         if (!$category) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
@@ -120,7 +119,10 @@ class CategoryController extends AbstractController
     public function delete($id)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $category = $entityManager->getRepository(Category::class)->find($id);
+        $category = $entityManager->getRepository(Category::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
         if (!$category) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
@@ -143,8 +145,11 @@ class CategoryController extends AbstractController
     public function deleteAjax($id)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $category = $entityManager->getRepository(Category::class)->find($id);
-        $message = "Aucun catégorie n'existe en base avec l'id : " . $id;
+        $category = $entityManager->getRepository(Category::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+        $message = "Impossible de supprimer cette catégorie";
         $error = true;
 
         if ($category) {
@@ -170,9 +175,8 @@ class CategoryController extends AbstractController
     public function ajax(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Category::class);
-        $user = $this->getUser();
         $categories = $repository->findBy(
-            ['user' => $user->getId()]
+            ['user' => $this->getUser()->getId()]
         );
 
       	return $this->render('category/ajax.html.twig', [

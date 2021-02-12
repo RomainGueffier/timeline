@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des frises{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <a type="button" class="btn btn-success btn-lg btn-block my-3" href="{{ path('timeline_add') }}">
+            <i class="fas fa-plus-square"></i> Ajouter une frise chronologique
+        </a>
+        {% if timelines %}
+        <ul class="list-group list-group-flush">
+            {% for timeline in timelines %}
+            <li class="list-group-item" id="timeline-wrapper-{{ timeline.id }}">
+                <div class="float-right">
+                    <a href="{{ path('timeline', {id: timeline.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('timeline_edit', {id: timeline.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                    <button type="button" class="btn btn-danger btn-timeline-delete" timeline_id="{{ timeline.id }}"><i class="fas fa-trash"></i></button>
+                </div>
+                <h4>{{ timeline.name }}</h4>
+                <p class="text-muted">{{ timeline.description|u.truncate(100, '...') }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="alert alert-warning" role="alert">Aucune frise chronologique</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

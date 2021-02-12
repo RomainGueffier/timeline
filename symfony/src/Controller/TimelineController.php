@@ -5,13 +5,35 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Timeline;
+use App\Form\TimelineFormType;
 
 class TimelineController extends AbstractController
 {
+
     /**
-     * @Route("/timeline", name="timeline")
+     * @Route("/timeline/list", name="timeline_list")
      */
-    public function index(Request $request)
+    public function list()
+    {
+        $user = $this->getUser();
+
+        $timelines = $this->getDoctrine()
+            ->getRepository(Timeline::class)
+            ->findBy(
+                ['user' => $user->getId()],
+                ['name' => 'ASC']
+            );
+
+        return $this->render('timeline/list.html.twig', [
+            'timelines' => $timelines,
+        ]);
+    }
+
+    /**
+     * @Route("/timeline/id/{id}", name="timeline")
+     */
+    public function index($id, Request $request)
     {
         // Valeurs par défaut
         $start = -4100; // année de début de la frise
@@ -59,7 +81,126 @@ class TimelineController extends AbstractController
             'end' => $end,
             'unit' => $unit,
             'timeline' => $timeline,
-            'range' => $range
+            'range' => $range,
+            'timeline_id' => $id
         ]);
+    }
+
+    /**
+     * @Route("/timeline/add", name="timeline_add")
+     */
+    public function add(Request $request)
+    {
+        $timeline = new Timeline();
+
+        $form = $this->createForm(TimelineFormType::class, $timeline);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $timeline = $form->getData();
+
+            $user = $this->getUser();
+            $timeline->setUser($this->getUser());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($timeline);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('timeline_list');
+        }
+
+        return $this->render('timeline/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/timeline/edit/id/{id}", name="timeline_edit")
+     */
+    public function edit($id, Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+
+        if (!$timeline) {
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
+        }
+
+        $form = $this->createForm(TimelineFormType::class, $timeline);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $timeline = $form->getData();
+
+            $entityManager->persist($timeline);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('timeline_list');
+        }
+
+        return $this->render('timeline/edit.html.twig', [
+            'form' => $form->createView(),
+            'timeline' => $timeline
+        ]);
+    }
+
+    /**
+     * @Route("/timeline/delete/id/{id}", name="timeline_delete")
+     */
+    public function delete($id)
+    {
+        $user = $this->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
+            'id' => $id, 'user' => $user->getId()
+        ]);
+
+        if (!$timeline) {
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
+        }
+
+        $name = $timeline->getName();
+
+        $entityManager->remove($timeline);
+        $entityManager->flush();
+
+        return $this->render('timeline/delete.html.twig', [
+            'timeline' => $timeline,
+            'name' => $name
+        ]);
+    }
+
+    /**
+     * @Route("/timeline/deleteajax/id/{id}", name="timeline_ajax_delete")
+     */
+    public function deleteAjax($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $timeline = $entityManager->getRepository(Event::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+        $message = "Impossible de supprimer cette frise";
+        $error = true;
+
+        if ($timeline) {
+            $entityManager->remove($timeline);
+            $entityManager->flush();
+            $message = "La frise " . $timeline->getName() . " a bien été supprimée";
+            $error = false;
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode([
+            'error' => $error,
+            'message' => $message
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 }

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\TimelineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\Entity(repositoryClass=TimelineRepository::class)
  */
-class Category
+class Timeline
 {
     /**
      * @ORM\Id
@@ -25,37 +25,38 @@ class Category
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * Many Categories have Many Characters.
-     * @ORM\ManyToMany(targetEntity="Character", mappedBy="categories")
-     * @ORM\JoinTable(name="characters_categories")
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\Column(type="boolean")
+     */
+    private $visibility;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="timeline")
+     */
+    private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="timeline")
      */
     private $characters;
 
     /**
-     * Many Categories have Many Events.
-     * @ORM\ManyToMany(targetEntity="Event", mappedBy="categories")
-     * @ORM\JoinTable(name="events_categories")
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="timeline")
      */
     private $events;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Timeline", inversedBy="categories")
-     */
-    private $timeline;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="timelines")
      */
     private $user;
 
-    public function __construct() {
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
         $this->characters = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
@@ -77,12 +78,24 @@ class Category
         return $this;
     }
 
+    public function getVisibility(): ?bool
+    {
+        return $this->visibility;
+    }
+
+    public function setVisibility(bool $visibility): self
+    {
+        $this->visibility = $visibility;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -90,28 +103,30 @@ class Category
     }
 
     /**
-     * @return Collection|Character[]
+     * @return Collection|Category[]
      */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function addCategory(Character $category): self
+    public function addCategory(Category $category): self
     {
         if (!$this->categories->contains($category)) {
             $this->categories[] = $category;
-            $category->addCategory($this);
+            $category->setTimeline($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Character $category): self
+    public function removeCategory(Category $category): self
     {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-            $category->removeCategory($this);
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getTimeline() === $this) {
+                $category->setTimeline(null);
+            }
         }
 
         return $this;
@@ -129,7 +144,7 @@ class Category
     {
         if (!$this->characters->contains($character)) {
             $this->characters[] = $character;
-            $character->addCategory($this);
+            $character->setTimeline($this);
         }
 
         return $this;
@@ -138,7 +153,10 @@ class Category
     public function removeCharacter(Character $character): self
     {
         if ($this->characters->removeElement($character)) {
-            $character->removeCategory($this);
+            // set the owning side to null (unless already changed)
+            if ($character->getTimeline() === $this) {
+                $character->setTimeline(null);
+            }
         }
 
         return $this;
@@ -156,7 +174,7 @@ class Category
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
-            $event->addCategory($this);
+            $event->setTimeline($this);
         }
 
         return $this;
@@ -165,7 +183,10 @@ class Category
     public function removeEvent(Event $event): self
     {
         if ($this->events->removeElement($event)) {
-            $event->removeCategory($this);
+            // set the owning side to null (unless already changed)
+            if ($event->getTimeline() === $this) {
+                $event->setTimeline(null);
+            }
         }
 
         return $this;
@@ -179,18 +200,6 @@ class Category
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getTimeline(): ?Timeline
-    {
-        return $this->timeline;
-    }
-
-    public function setTimeline(?Timeline $timeline): self
-    {
-        $this->timeline = $timeline;
 
         return $this;
     }

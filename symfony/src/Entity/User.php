@@ -66,11 +66,17 @@ class User implements UserInterface
      */
     private $categories;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Timeline", mappedBy="user")
+     */
+    private $timelines;
+
     public function __construct()
     {
         $this->characters = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->timelines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,16 +106,9 @@ class User implements UserInterface
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
     public function setRoles(array $roles): self
@@ -119,12 +118,9 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -271,6 +267,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($category->getUser() === $this) {
                 $category->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Timeline[]
+     */
+    public function getTimelines(): Collection
+    {
+        return $this->timelines;
+    }
+
+    public function addTimeline(Timeline $timeline): self
+    {
+        if (!$this->timelines->contains($timeline)) {
+            $this->timelines[] = $timeline;
+            $timeline->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeline(Timeline $timeline): self
+    {
+        if ($this->timelines->removeElement($timeline)) {
+            // set the owning side to null (unless already changed)
+            if ($timeline->getUser() === $this) {
+                $timeline->setUser(null);
             }
         }
 

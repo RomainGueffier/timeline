@@ -58,6 +58,11 @@ class Event
     private $categories;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Timeline", inversedBy="events")
+     */
+    private $timeline;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
      */
     private $user;
@@ -162,9 +167,7 @@ class Event
 
     public function removeCategory(Category $category): self
     {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-        }
+        $this->categories->removeElement($category);
 
         return $this;
     }
@@ -177,6 +180,18 @@ class Event
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTimeline(): ?Timeline
+    {
+        return $this->timeline;
+    }
+
+    public function setTimeline(?Timeline $timeline): self
+    {
+        $this->timeline = $timeline;
 
         return $this;
     }
