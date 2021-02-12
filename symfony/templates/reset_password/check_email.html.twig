@@ -10,7 +10,7 @@
             <div class="card-body">
                 <p>
                     Nous t'avons envoyé un email contenant le lien de réinitialisation de ton mot de passe.
-                    Ce lien arrivera à expiration dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                    Ce lien arrivera à expiration dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData) }}.
                 </p>
                 <p>Si tu n'a pas reçu cet email, vérifie ton dossier spam, attend un peu, ou <a href="{{ path('app_forgot_password_request') }}">essaie de nouveau</a>.</p>
             </div>
