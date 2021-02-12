@@ -70,6 +70,7 @@ $ console/bin doctrine:migrations:migrate
 ```
 Puis, cette commande pour publier les dépendances CSS/JS :
 ```
+$ yarn install --force
 # Pour un poste local:
 $ yarn encore dev
 # Ou en production :
@@ -84,7 +85,7 @@ $ bin/console cache:pool:clear cache.global_clearer
 Accéder à [localhost](http://localhost/) dans le navigateur
 
 ### Reste à faire
-Ajouter dans les formulaires des données la possibilité de lier des données à une frise
-Modifier les entités dans ce but
-Revoir le graphisme du site (encore)
-Ajouter la notion de frise partagée, en lecture seule, etc
+* Ajouter dans les formulaires des données la possibilité de lier des données à une frise
+* Modifier les entités dans ce but
+* Revoir le graphisme du site (encore)
+* Ajouter la notion de frise partagée, en lecture seule, etc
