@@ -4,6 +4,6 @@
 
 <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
 
-<p>Ce lien arrivera à expiration dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+<p>Ce lien arrivera à expiration dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData) }}.</p>
 
 <p>Cordialement, l'équipe OneThousandYears</p>
