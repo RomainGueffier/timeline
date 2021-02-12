@@ -19,6 +19,7 @@ services:
     links:
       - mysql
       - phpmyadmin
+      - maildev
   nginx:
     build: ./docker/nginx
     ports: ['80:80']
@@ -43,3 +44,8 @@ services:
       - PMA_PASSWORD=admin
     volumes:
      - ./docker/phpmyadmin/sessions:/sessions:cached
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:80"
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
