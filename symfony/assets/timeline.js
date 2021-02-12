@@ -39,14 +39,14 @@ $(document).ready(function(e){
     var start = $(".timeline-events").attr('start');
     var end = $(".timeline-events").attr('end');
     $.ajax({
-    		url: '/character/ajax',
-    		method: "GET",
+        url: '/character/ajax',
+        method: "GET",
         data: {
           ratio: ratio, start: start, end: end
         }
-		}).then(function(response) {
+    }).then(function(response) {
         $("#character-loader").remove();
-				$(".timeline-events").html(response);
+        $(".timeline-events").html(response);
         // Launch ajax listener
         $(document).on("click", ".btn-modal", function(e){
             $(e.currentTarget.getAttribute('data-target')).modal('show');
@@ -64,14 +64,14 @@ $(document).ready(function(e){
         });
   	});
     $.ajax({
-    		url: '/event/ajax',
-    		method: "GET",
+        url: '/event/ajax',
+        method: "GET",
         data: {
           ratio: ratio, start: start, end: end
         }
-		}).then(function(response) {
+    }).then(function(response) {
         $("#event-loader").remove();
-				$(response).insertAfter(".timeline-events");
+        $(response).insertAfter(".timeline-events");
         // Launch ajax listener
         $(document).on("click", ".btn-modal", function(e){
             $(e.currentTarget.getAttribute('data-target')).modal('show');
@@ -89,11 +89,11 @@ $(document).ready(function(e){
         });
   	});
     $.ajax({
-    		url: '/category/ajax',
-    		method: "GET",
+        url: '/category/ajax',
+        method: "GET",
         data: {}
-		}).then(function(response) {
-				$("#modal-categories .modal-body").html(response);
+    }).then(function(response) {
+        $("#modal-categories .modal-body").html(response);
         $("#set_filters").click(function(e) {
             // hide events and characters with category id
             $("#modal-categories .modal-body input[type=checkbox]:not(:checked)").each(function(e) {
@@ -106,7 +106,6 @@ $(document).ready(function(e){
                 var className = '.category-' + $(this).attr('category_id');
                 $(className).show();
             });
-
         });
         $("#customSwitchAll").click(function(e) {
             if ($(this).is(':checked')) {

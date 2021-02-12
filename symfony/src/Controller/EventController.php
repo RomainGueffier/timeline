@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Event;
 use App\Form\Type\EventType;
 use App\Service\FileUploader;
@@ -21,9 +22,14 @@ class EventController extends AbstractController
      */
     public function index()
     {
+        $user = $this->getUser();
+
         $events = $this->getDoctrine()
             ->getRepository(Event::class)
-            ->findAll();
+            ->findBy(
+                ['user' => $user->getId()],
+                ['name' => 'ASC']
+            );
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
@@ -35,14 +41,19 @@ class EventController extends AbstractController
      */
     public function read($id)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        $user = $this->getUser();
+
         $event = $this->getDoctrine()
             ->getRepository(Event::class)
-            ->find($id);
+            ->findOneBy([
+                'id' => $id,
+                'user' => $user->getId(),
+            ]);
 
         if (!$event) {
-            throw $this->createNotFoundException(
-                'Aucun évènement n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
         return $this->render('event/read.html.twig', [
@@ -70,6 +81,9 @@ class EventController extends AbstractController
                 $event->setImageFilename($imageFileName);
             }
 
+            $user = $this->getUser();
+            $event->setUser($user->getId());
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
@@ -92,9 +106,7 @@ class EventController extends AbstractController
         $oldImage = $event->getImageFilename();
 
         if (!$event) {
-            throw $this->createNotFoundException(
-                'Aucun évènement n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
         $form = $this->createForm(EventType::class, $event);
@@ -133,9 +145,7 @@ class EventController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $event = $entityManager->getRepository(Event::class)->find($id);
         if (!$event) {
-            throw $this->createNotFoundException(
-                'Aucune évènement n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
         $name = $event->getName();
 
@@ -195,8 +205,11 @@ class EventController extends AbstractController
         $timeline_end = $request->query->get('end');
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
+        $user = $this->getUser();
 
-        $events = $repository->findAll();
+        $events = $repository->findBy(
+            ['user' => $user->getId()]
+        );
         $positions = []; // left css position ratio for each event
         if ($events) {
             foreach ($events as $key => $event) {

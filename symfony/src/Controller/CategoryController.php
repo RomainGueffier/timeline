@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Category;
 use App\Form\Type\CategoryType;
 
@@ -16,9 +17,14 @@ class CategoryController extends AbstractController
      */
     public function index()
     {
+        $user = $this->getUser();
+
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
-            ->findAll();
+            ->findBy(
+                ['user' => $user->getId()],
+                ['name' => 'ASC']
+            );
 
         return $this->render('category/index.html.twig', [
             'categories' => $categories,
@@ -30,14 +36,17 @@ class CategoryController extends AbstractController
      */
     public function read($id)
     {
+        $user = $this->getUser();
+
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
-            ->find($id);
+            ->findOneBy([
+                'id' => $id,
+                'user' => $user->getId(),
+            ]);
 
         if (!$category) {
-            throw $this->createNotFoundException(
-                'Aucune catégorie n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
         return $this->render('category/read.html.twig', [
@@ -60,6 +69,9 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
 
+            $user = $this->getUser();
+            $category->setUser($user->getId());
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
@@ -81,9 +93,7 @@ class CategoryController extends AbstractController
         $category = $entityManager->getRepository(Category::class)->find($id);
 
         if (!$category) {
-            throw $this->createNotFoundException(
-                'Aucune catégorie n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
 
         $form = $this->createForm(CategoryType::class, $category);
@@ -112,9 +122,7 @@ class CategoryController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository(Category::class)->find($id);
         if (!$category) {
-            throw $this->createNotFoundException(
-                'Aucune catégorie n\'existe en base avec l\'id : ' . $id
-            );
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
         $name = $category->getName();
 
@@ -162,9 +170,13 @@ class CategoryController extends AbstractController
     public function ajax(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Category::class);
+        $user = $this->getUser();
+        $categories = $repository->findBy(
+            ['user' => $user->getId()]
+        );
 
       	return $this->render('category/ajax.html.twig', [
-            'categories' => $repository->findAll()
+            'categories' => $categories
         ]);
 
     }

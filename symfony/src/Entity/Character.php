@@ -80,6 +80,11 @@ class Character
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="characters")
+     */
+    private $user;
+
     public function __construct() {
         $this->categories = new ArrayCollection();
     }
@@ -231,6 +236,18 @@ class Character
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
