@@ -17,13 +17,14 @@ use App\Security\LoginFormAuthenticator;
 use App\Form\Type\UserType;
 use App\Form\Type\User\EditType;
 use App\Entity\User;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class UserController extends AbstractController
 {
     /**
      * Fonction d'envoi d'email en lien avec les comptes utilisateurs
      */
-    private function _sendActivationEmail($token, MailerInterface $mailer): bool
+    private function _sendActivationEmail($token, MailerInterface $mailer)
     {
         $userActivationPage = $this->generateUrl('user_activate', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
@@ -56,7 +57,7 @@ class UserController extends AbstractController
     /**
      * @Route("/signin", name="user_signin")
      */
-    public function signin(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function signin(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -78,7 +79,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->_sendActivationEmail($token);
+            $this->_sendActivationEmail($token, $mailer);
 
             return $this->render('user/registered.html.twig', [
                 'user' => $user
@@ -162,7 +163,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/edit", name="user_edit")
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, MailerInterface $mailer): Response
     {
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -186,7 +187,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             if ($user->getEmail() !== $actual_email) {
-                $this->_sendActivationEmail($token);
+                $this->_sendActivationEmail($token, $mailer);
                 // if email has been updated, user should confirm email again
                 return $this->render('user/registered.html.twig', [
                     'user' => $user

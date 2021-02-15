@@ -58,7 +58,7 @@ DATABASE_URL=mysql://symfony:symfony@mysql:3306/symfony?serverVersion=5.7
 ### Mise à jour, déploiement de Symfony (application)
 Lorsque Docker est démarré, lancer la commande suivante pour mettre à jour les dépendances de l'application :
 ```
-docker-compose exec php sh
+docker-compose exec -it <container php> sh
 ```
 Une fois dans le bash PHP :
 ```
