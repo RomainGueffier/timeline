@@ -202,12 +202,14 @@ class EventController extends AbstractController
         $ratio = $request->query->get('ratio');
         $timeline_start = $request->query->get('start');
         $timeline_end = $request->query->get('end');
+        $timeline_id = $request->query->get('timeline_id');
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
 
-        $events = $repository->findBy(
-            ['user' => $this->getUser()->getId()]
-        );
+        $events = $repository->findBy([
+            'user' => $this->getUser()->getId(),
+            'timeline' => $timeline_id
+        ]);
         $positions = []; // left css position ratio for each event
         if ($events) {
             foreach ($events as $key => $event) {

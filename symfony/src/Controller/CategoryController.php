@@ -141,7 +141,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/deleteajax/id/{id}", name="category_ajax_delete")
      */
-    public function deleteAjax($id)
+    public function deleteAjax($id, Response $response): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository(Category::class)->findOneBy([
@@ -158,7 +158,6 @@ class CategoryController extends AbstractController
             $error = false;
         }
 
-        $response = new Response();
         $response->setContent(json_encode([
             'error' => $error,
             'message' => $message
@@ -174,9 +173,10 @@ class CategoryController extends AbstractController
     public function ajax(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Category::class);
-        $categories = $repository->findBy(
-            ['user' => $this->getUser()->getId()]
-        );
+        $categories = $repository->findBy([
+            'user' => $this->getUser()->getId(),
+            'timeline' => $request->query->get('timeline_id')
+        ]);
 
       	return $this->render('category/ajax.html.twig', [
             'categories' => $categories

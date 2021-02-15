@@ -65,6 +65,10 @@ class CharacterType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => true,
                 'expanded' => true,
+                'choice_attr' => function($category, $key, $value) {
+                    // adds a class indicating the timeline ID which own each category
+                    return ['class' => 'character-category-timeline-' . $category->getTimeline()->getId()];
+                },
             ])
             ->add('timeline', EntityType::class, [
                 'label' => 'Frise chronologique',

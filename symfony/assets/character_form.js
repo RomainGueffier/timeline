@@ -1,4 +1,5 @@
 $(document).ready(function(e){
+
     function setAge(birth, death) {
         var age = 0;
         if (birth && death) {
@@ -14,6 +15,7 @@ $(document).ready(function(e){
         }
         $("form #character_age").val(age);
     }
+
     $("form .custom_form_olddate").change(function(e){
         var birth = parseInt($("form #character_birth_year").val());
         var death = parseInt($("form #character_death_year").val());
@@ -25,10 +27,20 @@ $(document).ready(function(e){
         }
         setAge(birth, death);
     });
+
     $("form #age-calculator").click(function(e){
         $("form #character_birth_year").change();
     });
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+
+    // when assign a character to a timeline, the categories outside this timeline are unckecked and hidden,
+    // whereas the categories inside this timeline are shown.
+    $("form #character_timeline").change(function(e){
+        var timeline_id = $(this).val();
+        $("form #character_categories input:not(.character-category-timeline-" + timeline_id + ")")
+            .prop( "checked", false )
+            .parent().hide();
+        $("form #character_categories input.character-category-timeline-" + timeline_id).parent().show();
+    });
+    // on from load, fire the event once to hide all categories not owned by the timeline selected
+    $("form #character_timeline").change();
 });

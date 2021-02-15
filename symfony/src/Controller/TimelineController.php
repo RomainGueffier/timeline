@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Timeline;
 use App\Form\TimelineFormType;
 
@@ -33,8 +35,18 @@ class TimelineController extends AbstractController
     /**
      * @Route("/timeline/id/{id}", name="timeline")
      */
-    public function index($id, Request $request)
+    public function index($id, Request $request, TranslatorInterface $translator)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()->getId(),
+        ]);
+        
+        if (!$timeline) {
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
+        }
+
         // Valeurs par défaut
         $start = -4100; // année de début de la frise
         $end = 2000; // année de fin de la frise
@@ -56,22 +68,21 @@ class TimelineController extends AbstractController
             $unit = 1;
         }
         $ratio = $unit / 50;
-
         $date = $start;
 
-        $timeline = '<div class="timeline-period"></div>';
+        $graphic_timeline = '<div class="timeline-period"></div>';
         while ($date < $end) {
             $date += $unit;
             if ($date == 0) {
-                $timeline .= '<div class="timeline-period timeline-period-zero"><label>0</label></div>';
+                $graphic_timeline .= '<div class="timeline-period timeline-period-zero"><label>0</label></div>';
             } elseif (is_integer(abs($date) / 1000)) {
-                $timeline .= '<div class="timeline-period timeline-period-strong"><label>' . $date . '</label></div>';
+                $graphic_timeline .= '<div class="timeline-period timeline-period-strong"><label>' . $date . '</label></div>';
             } elseif (is_integer(abs($date - 500) / 1000)) {
-                $timeline .= '<div class="timeline-period timeline-period-light"><label>' . $date . '</label></div>';
+                $graphic_timeline .= '<div class="timeline-period timeline-period-light"><label>' . $date . '</label></div>';
             } elseif (is_integer(abs($date) / 100)) {
-                $timeline .= '<div class="timeline-period timeline-period-extralight"><label>' . $date . '</label></div>';
+                $graphic_timeline .= '<div class="timeline-period timeline-period-extralight"><label>' . $date . '</label></div>';
             } else {
-                $timeline .= '<div class="timeline-period"><label>' . $date . '</label></div>';
+                $graphic_timeline .= '<div class="timeline-period"><label>' . $date . '</label></div>';
             }
         }
 
@@ -82,7 +93,7 @@ class TimelineController extends AbstractController
             'unit' => $unit,
             'timeline' => $timeline,
             'range' => $range,
-            'timeline_id' => $id
+            'graphic_timeline' => $graphic_timeline
         ]);
     }
 
@@ -117,7 +128,7 @@ class TimelineController extends AbstractController
     /**
      * @Route("/timeline/edit/id/{id}", name="timeline_edit")
      */
-    public function edit($id, Request $request)
+    public function edit($id, Request $request, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
@@ -150,7 +161,7 @@ class TimelineController extends AbstractController
     /**
      * @Route("/timeline/delete/id/{id}", name="timeline_delete")
      */
-    public function delete($id)
+    public function delete($id, TranslatorInterface $translator)
     {
         $user = $this->getUser();
         $entityManager = $this->getDoctrine()->getManager();
@@ -177,7 +188,7 @@ class TimelineController extends AbstractController
     /**
      * @Route("/timeline/deleteajax/id/{id}", name="timeline_ajax_delete")
      */
-    public function deleteAjax($id)
+    public function deleteAjax($id, Response $response): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $timeline = $entityManager->getRepository(Event::class)->findOneBy([
@@ -194,7 +205,6 @@ class TimelineController extends AbstractController
             $error = false;
         }
 
-        $response = new Response();
         $response->setContent(json_encode([
             'error' => $error,
             'message' => $message

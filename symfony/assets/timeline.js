@@ -34,15 +34,17 @@ $(document).ready(function(e){
         $(".badge-end").text(value);
     });
 
-    // chargement asynchrone des Personnages / évènements
-    var ratio = $(".timeline-events").attr('ratio');
-    var start = $(".timeline-events").attr('start');
-    var end = $(".timeline-events").attr('end');
+    // chargement asynchrone des Personnages / évènements selon la frise chronologique choisie
+    var timeline_id = $(".timeline-events").attr('data-timeline-id');
+    var ratio = $(".timeline-events").attr('data-ratio');
+    var start = $(".timeline-events").attr('data-start');
+    var end = $(".timeline-events").attr('data-end');
+
     $.ajax({
         url: '/character/ajax',
         method: "GET",
         data: {
-          ratio: ratio, start: start, end: end
+          ratio: ratio, start: start, end: end, timeline_id: timeline_id
         }
     }).then(function(response) {
         $("#character-loader").remove();
@@ -67,7 +69,7 @@ $(document).ready(function(e){
         url: '/event/ajax',
         method: "GET",
         data: {
-          ratio: ratio, start: start, end: end
+          ratio: ratio, start: start, end: end, timeline_id: timeline_id
         }
     }).then(function(response) {
         $("#event-loader").remove();
@@ -91,7 +93,9 @@ $(document).ready(function(e){
     $.ajax({
         url: '/category/ajax',
         method: "GET",
-        data: {}
+        data: {
+            timeline_id: timeline_id
+        }
     }).then(function(response) {
         $("#modal-categories .modal-body").html(response);
         $("#set_filters").click(function(e) {
