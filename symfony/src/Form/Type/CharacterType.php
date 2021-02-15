@@ -4,10 +4,10 @@ namespace App\Form\Type;
 
 use App\Entity\Character;
 use App\Entity\Category;
+use App\Entity\Timeline;
 use App\Form\Type\OldDateType;
 use App\Form\Type\AgeType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -65,6 +65,14 @@ class CharacterType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('timeline', EntityType::class, [
+                'label' => 'Frise chronologique',
+                'class' => Timeline::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'help' => "Sélectionner la frise sur laquelle le personnage apparaîtra"
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
 

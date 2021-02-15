@@ -32,7 +32,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/read/id/{id}", name="category_read_one")
      */
-    public function read($id)
+    public function read($id, TranslatorInterface $translator)
     {
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
@@ -65,8 +65,7 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
 
-            $user = $this->getUser();
-            $category->setUser($user->getId());
+            $category->setUser($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
@@ -83,7 +82,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/edit/id/{id}", name="category_edit")
      */
-    public function edit($id, Request $request)
+    public function edit($id, Request $request, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository(Category::class)->findOneBy([
@@ -116,7 +115,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/delete/id/{id}", name="category_delete")
      */
-    public function delete($id)
+    public function delete($id, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository(Category::class)->findOneBy([

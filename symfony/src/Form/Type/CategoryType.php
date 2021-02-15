@@ -5,8 +5,8 @@ namespace App\Form\Type;
 use App\Entity\Category;
 use App\Entity\Event;
 use App\Entity\Character;
+use App\Entity\Timeline;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,6 +39,14 @@ class CategoryType extends AbstractType
                 'expanded' => true,
                 // force update even in inverse Side Doctrine ORM Entity
                 'by_reference' => false,
+            ])
+            ->add('timeline', EntityType::class, [
+                'label' => 'Frise chronologique',
+                'class' => Timeline::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'help' => "Sélectionner la frise sur laquelle la catégorie apparaîtra"
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
     }
