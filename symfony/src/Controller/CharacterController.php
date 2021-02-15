@@ -3,13 +3,9 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Character;
 use App\Form\Type\CharacterType;
@@ -20,7 +16,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character", name="character_read_all")
      */
-    public function index()
+    public function index(): Response
     {
         $characters = $this->getDoctrine()
             ->getRepository(Character::class)
@@ -37,7 +33,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/read/id/{id}", name="character_read_one")
      */
-    public function read($id)
+    public function read($id, TranslatorInterface $translator): Response
     {
         $character = $this->getDoctrine()
             ->getRepository(Character::class)
@@ -58,7 +54,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/add", name="character_add")
      */
-    public function add(Request $request, FileUploader $fileUploader)
+    public function add(Request $request, FileUploader $fileUploader): Response
     {
         $character = new Character();
 
@@ -75,8 +71,7 @@ class CharacterController extends AbstractController
                 $character->setImageFilename($imageFileName);
             }
 
-            $user = $this->getUser();
-            $character->setUser($user->getId());
+            $character->setUser($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($character);
@@ -93,7 +88,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/edit/id/{id}", name="character_edit")
      */
-    public function edit($id, Request $request, FileUploader $fileUploader)
+    public function edit($id, Request $request, FileUploader $fileUploader, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->findOneBy([
@@ -137,10 +132,10 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/delete/id/{id}", name="character_delete")
      */
-    public function delete($id, FileUploader $fileUploader)
+    public function delete($id, FileUploader $fileUploader, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $character = $entityManager->getRepository(Character::class)>findOneBy([
+        $character = $entityManager->getRepository(Character::class)->findOneBy([
             'id' => $id,
             'user' => $this->getUser()->getId(),
         ]);
@@ -171,7 +166,7 @@ class CharacterController extends AbstractController
     public function deleteAjax($id, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $character = $entityManager->getRepository(Character::class)>findOneBy([
+        $character = $entityManager->getRepository(Character::class)->findOneBy([
             'id' => $id,
             'user' => $this->getUser()->getId(),
         ]);

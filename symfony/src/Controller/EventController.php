@@ -3,13 +3,9 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Event;
 use App\Form\Type\EventType;
@@ -37,7 +33,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/read/id/{id}", name="event_read_one")
      */
-    public function read($id)
+    public function read($id, TranslatorInterface $translator)
     {
         $event = $this->getDoctrine()
             ->getRepository(Event::class)
@@ -75,8 +71,7 @@ class EventController extends AbstractController
                 $event->setImageFilename($imageFileName);
             }
 
-            $user = $this->getUser();
-            $event->setUser($user->getId());
+            $event->setUser($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
@@ -93,7 +88,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/edit/id/{id}", name="event_edit")
      */
-    public function edit($id, Request $request, FileUploader $fileUploader)
+    public function edit($id, Request $request, FileUploader $fileUploader, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -138,7 +133,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/delete/id/{id}", name="event_delete")
      */
-    public function delete($id, FileUploader $fileUploader)
+    public function delete($id, FileUploader $fileUploader, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $event = $entityManager->getRepository(Event::class)->findOneBy([

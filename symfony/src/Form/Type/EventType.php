@@ -4,15 +4,14 @@ namespace App\Form\Type;
 
 use App\Entity\Event;
 use App\Entity\Category;
+use App\Entity\Timeline;
 use App\Form\Type\OldDateType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -51,6 +50,14 @@ class EventType extends AbstractType
                 // used to render a select box, check boxes or radios
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('timeline', EntityType::class, [
+                'label' => 'Frise chronologique',
+                'class' => Timeline::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'help' => "Sélectionner la frise sur laquelle l'évènement apparaîtra"
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
     }
