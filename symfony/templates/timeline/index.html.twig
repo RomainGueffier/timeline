@@ -3,10 +3,10 @@
 {% block title %}Frise chronologique{% endblock %}
 
 {% block container %}
-<!-- Begin page content -->
+<h1>{{ timeline.name }}</h1>
 <div id="timeline-wrapper" class="timeline-wrapper timeline-{{ unit }}">
     <div id="timeline-units" class="timeline">
-        {{ timeline|raw }}
+        {{ graphic_timeline|raw }}
     </div>
     <div id="character-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
         <div class="d-flex align-items-center">
@@ -26,7 +26,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="timeline-events" ratio="{{ ratio }}" start="{{ start }}" end="{{ end }}"></div>
+    <div class="timeline-events" data-ratio="{{ ratio }}" data-start="{{ start }}" data-end="{{ end }}" data-timeline-id="{{ timeline.id }}"></div>
     <div class="timeline-period"></div>
     <div class="btn-timeline-display-toggle">
         <div class="btn-group-vertical">

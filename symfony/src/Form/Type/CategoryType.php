@@ -30,6 +30,10 @@ class CategoryType extends AbstractType
                 'expanded' => true,
                 // force update even in inverse Side Doctrine ORM Entity
                 'by_reference' => false,
+                'choice_attr' => function($event, $key, $value) {
+                    // adds a class indicating the timeline ID which own each category
+                    return ['class' => 'category-timeline-' . $event->getTimeline()->getId()];
+                },
             ])
             ->add('characters', EntityType::class, [
                 'label' => 'Personnages',
@@ -39,6 +43,10 @@ class CategoryType extends AbstractType
                 'expanded' => true,
                 // force update even in inverse Side Doctrine ORM Entity
                 'by_reference' => false,
+                'choice_attr' => function($character, $key, $value) {
+                    // adds a class indicating the timeline ID which own each category
+                    return ['class' => 'category-timeline-' . $character->getTimeline()->getId()];
+                },
             ])
             ->add('timeline', EntityType::class, [
                 'label' => 'Frise chronologique',

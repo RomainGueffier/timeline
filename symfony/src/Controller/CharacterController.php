@@ -163,7 +163,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/deleteajax/id/{id}", name="character_ajax_delete")
      */
-    public function deleteAjax($id, FileUploader $fileUploader)
+    public function deleteAjax($id, FileUploader $fileUploader, Response $response): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->findOneBy([
@@ -184,7 +184,6 @@ class CharacterController extends AbstractController
             $error = false;
         }
 
-        $response = new Response();
         $response->setContent(json_encode([
             'error' => $error,
             'message' => $message
@@ -202,11 +201,12 @@ class CharacterController extends AbstractController
         $ratio = $request->query->get('ratio');
         $start = $request->query->get('start');
         $end = $request->query->get('end');
+        $timeline_id = $request->query->get('timeline_id');
 
         $repository = $this->getDoctrine()->getRepository(Character::class);
 
         $characters = $repository->findBy(
-            ['user' => $this->getUser()->getId()]
+            ['user' => $this->getUser()->getId(), 'timeline' => $timeline_id]
         );
         $positions = []; // left css position ratio for each character
         if ($characters) {
