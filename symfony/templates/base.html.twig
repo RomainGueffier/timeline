@@ -12,62 +12,65 @@
         {% endblock %}
     </head>
     {% block body %}
-    <body class="d-flex flex-column h-100 page" style="background:linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) ), #333 url({{ asset('build/timeline.png ') }}) no-repeat top center fixed;">
+    <body class="d-flex flex-column h-100 bg-light">
     {% endblock %}
-        {% block header %}
-        <header class="container" style="margin-bottom:260px;">
-            <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-                <a class="navbar-brand" href="{{ path('index') }}">
-                    <img src="{{ asset('build/logo.png ') }}" width="32" height="32" alt="" loading="lazy">
-                    Timeline.io
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
-                      <li class="nav-item active">
-                          <a class="nav-link" href="{{ path('timeline_list') }}">Mes frises chronologiques</a>
-                      </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Données <i class="fas fa-caret-down"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('character_read_all') }}">Personnages</a>
-                                <a class="dropdown-item" href="{{ path('event_read_all') }}">Évènements</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ path('category_read_all') }}">Catégories</a>
-                            </div>
-                        </li>
-
-                    </ul>
+        {% block header %}{% endblock %}
+        {% block navbar %}
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <a class="navbar-brand" href="{{ path('index') }}">
+                <img src="{{ asset('build/logo.png ') }}" width="32" height="32" alt="" loading="lazy">
+                Timeline.io
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('index') }}">Accueil</a>
+                    </li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('user_profile') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Mon Profil">
-                        <i class="fas fa-user-circle"></i>
-                    </a>
-                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('app_logout') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Se déconnecter">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
-                    {% else %}
-                    <a class="nav-link btn btn-outline-secondary mx-2" href="{{ path('app_login') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Connexion utilisateur">
-                        <i class="fas fa-user-circle"></i>
-                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('timeline_list') }}">Mes frises chronologiques</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Données <i class="fas fa-caret-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('character_read_all') }}">Personnages</a>
+                            <a class="dropdown-item" href="{{ path('event_read_all') }}">Évènements</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ path('category_read_all') }}">Catégories</a>
+                        </div>
+                    </li>
                     {% endif %}
-                    <form class="form-inline my-2 my-md-0" action="" method="get" style="opacity:.7;">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Rechercher..." aria-label="Recherche">
-                        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button> -->
-                    </form>
-                </div>
-            </nav>
-        </header>
+                </ul>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="nav-link btn btn-dark mx-2" href="{{ path('user_profile') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Mon Profil">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+                <a class="nav-link btn btn-dark mx-2" href="{{ path('app_logout') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Se déconnecter">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+                {% else %}
+                <a class="nav-link btn btn-dark mx-2" href="{{ path('app_login') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Connexion utilisateur">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+                {% endif %}
+                <form class="form-inline my-2 my-md-0" action="" method="get" style="opacity:.7;">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Rechercher..." aria-label="Recherche">
+                    <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button> -->
+                </form>
+            </div>
+        </nav>
         {% endblock %}
         {% block container %}
         {% endblock %}
         {% block footer %}
-        <footer class="footer mt-auto py-3 bg-transparent text-center">
+        <footer class="footer mt-auto py-3 bg-dark text-center">
             <div class="container">
                 <p class="text-muted"><i class="fas fa-copyright"></i> Romain Gueffier - 2020</p>
             </div>
