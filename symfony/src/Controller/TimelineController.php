@@ -53,10 +53,10 @@ class TimelineController extends AbstractController
         }
 
         // Valeurs par défaut
-        $start = -4100; // année de début de la frise
-        $end = 2000; // année de fin de la frise
+        $start = $timeline->getStart() ?: -4100; // année de début de la frise
+        $end = $timeline->getEnd() ?: 2000; // année de fin de la frise
         $unit = 100; // en années par 50px
-        $range = 2; // équivalent unit dans le form (2=>100ans,1=>10ans,0=>1an)
+        $range = $timeline->getUnit() ?: 2; // équivalent unit dans le form (2=>100ans,1=>10ans,0=>1an)
 
         // GET modifications des valeurs
         $range = $request->query->get('range') != null ? $request->query->get('range') : $range;

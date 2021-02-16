@@ -30,6 +30,21 @@ class Timeline
     private $description;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $start;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $end;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $unit;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $visibility;
@@ -203,4 +218,41 @@ class Timeline
 
         return $this;
     }
+
+    public function getStart(): ?int
+    {
+        return $this->start;
+    }
+
+    public function setStart(?int $start): self
+    {
+        $this->start = $start;
+
+        return $this;
+    }
+
+    public function getEnd(): ?int
+    {
+        return $this->end;
+    }
+
+    public function setEnd(?int $end): self
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+    public function getUnit(): ?int
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(?int $unit): self
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
 }
