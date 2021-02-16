@@ -2,69 +2,47 @@
 
 {% block title %}Accueil{% endblock %}
 
-{% block body %}
-<body class="text-center index" style="background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url({{ asset('build/wallpaper_temple.jpg') }}) no-repeat center center fixed;">
-{% endblock %}
-
 {% block stylesheets %}
 {{ parent() }}
 {{ encore_entry_link_tags('index') }}
 {% endblock %}
 
-{% block header %}{% endblock %}
-
 {% block container %}
-<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto">
-        <div class="inner">
-            <h3 class="masthead-brand">
-                <img src="{{ asset('build/logo.png ') }}" width="32" height="32" alt="" loading="lazy">
-                Timeline.io
-            </h3>
-            <nav class="nav nav-masthead justify-content-center">
-                <a class="nav-link active" href="{{ path('index') }}">Accueil</a>
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="nav-link" href="{{ path('timeline_list') }}">Mes frises chronologiques</a>
-                <a class="nav-link" href="{{ path('user_profile') }}" aria-disabled="true" title="Mon profil"><i class="fas fa-user-circle"></i></a>
-                <a class="nav-link" href="{{ path('app_logout') }}" aria-disabled="true" title="Se déconnecter"><i class="fas fa-sign-out-alt"></i></a>
-                {% else %}
-                <a class="nav-link" href="{{ path('app_login') }}" aria-disabled="true" title="Connexion utilisateur"><i class="fas fa-user-circle"></i></a>
-                {% endif %}
-            </nav>
-        </div>
-    </header>
-
-    <main role="main" class="inner cover">
-        <img src="{{ asset('build/logo.png ') }}" alt="" loading="lazy">
-        <h1 class="cover-heading">La chronologie de l'histoire</h1>
-        <p class="lead">Rédécouvre l'histoire au moyen de cet outil de construction de frise chronologique !</p>
-        <p class="lead">
-            <a href="#timelines" class="btn btn-lg btn-secondary">Commencer</a>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading display-3">Timeline.io</h1>
+        <p class="lead text-muted">L'histoire à travers ce constructeur de frise gratuit et intuitif ! Retrouvez des frises par thème ou créer vous même votre frise.</p>
+        <p>
+            <a href="{{ path('user_signin') }}" class="btn btn-lg btn-primary my-2">Inscription</a>
+            <a href="#timelines" class="btn btn-secondary btn-lg my-2">Parcourir les frises</a>
         </p>
-    </main>
-
-    <section id="#timelines">
-        <h2>Les dernières frises chronologiques</h2>
+    </div>
+</section>
+<section id="timelines" class="album py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-4 my-2">Les frises en vedette</h2><hr>
         {% if timelines %}
         {% for timeline in timelines %}
-        <h3>{{ timeline.name }}</h3>
-        <p>{{ timeline.description }}</p>
-        <a href="{{ path('timeline', {id: timeline.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i> Voir plus</a>
-        <hr>
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22348%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20348%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_177aa7f0ddf%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_177aa7f0ddf%22%3E%3Crect%20width%3D%22348%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22116.7265625%22%20y%3D%22120.3%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
+            <div class="card-body">
+                <h3 class="card-heading">{{ timeline.name }}</h3>
+                <p class="card-text">{{ timeline.description|u.truncate(50, '...') }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{{ path('timeline', {id: timeline.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i> Voir</a>
+                        <a href="#" class="btn btn-success"><i class="fas fa-share"></i> Partager</a>
+                    </div>
+                    <small class="text-muted"><i class="fas fa-user"></i> {{ timeline.user.pseudo }}</small>
+                </div>
+            </div>
+            </div>
+        </div>
         {% endfor %}
         {% else %}
         Aucune frise n'a été publiée pour l'instant
-        {% endif %}
-    </section>
-
-    <footer class="mastfoot mt-auto">
-        <div class="inner">
-            <p><i class="fas fa-copyright"></i> Romain Gueffier - Tous droits réservés</p>
-        </div>
-    </footer>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        {% endif %}     
+    </div>
+</section>
 {% endblock %}
-
-{% block footer %}{% endblock %}

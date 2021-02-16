@@ -3,7 +3,12 @@
 {% block title %}Frise chronologique{% endblock %}
 
 {% block container %}
-<h1>{{ timeline.name }}</h1>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">{{ timeline.name }}</h1>
+        <p class="lead text-muted">{{ timeline.description|u.truncate(50, '...') }}</p>
+    </div>
+</section>
 <div id="timeline-wrapper" class="timeline-wrapper timeline-{{ unit }}">
     <div id="timeline-units" class="timeline">
         {{ graphic_timeline|raw }}

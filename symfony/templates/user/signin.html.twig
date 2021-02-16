@@ -9,6 +9,10 @@
         <div class="card">
             <div class="card-body">
                 {{ form(form) }}
+                <div class="form-group float-md-right">
+                    <label>Déjà un compte ?</label>
+                    <a href="{{ path('app_login') }}" class="btn btn-success"><i class="fas fa-user-circle"></i> Connexion</a>
+                </div>
             </div>
         </div>
     </div>

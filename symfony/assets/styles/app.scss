@@ -1,3 +1,15 @@
+/** custom bootstrap theming **/
+$theme-colors: (
+    "light": #F0EFED,
+    "secondary": #7C7879,
+    "info": #B8D1E7,
+    "primary": #2F6CC0,
+    "success": #6EA682,
+    "warning": #D19062,
+    "danger": #9D5454,
+    "dark": #202429,
+);
+
 /** add bootstrap & font-awesome **/
 @import "~bootstrap/scss/bootstrap";
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
@@ -8,17 +20,6 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 /*****************
    Main styles
 ******************/
-
-@media screen and (min-width: 1200px) {
-    .timeline-main > .container {
-        padding-top: 120px;
-    }
-}
-
-body.page main {
-    background-color: #F7F7F7;
-    padding: 2rem 0;
-}
 
 /*****************
    Timeline styles
