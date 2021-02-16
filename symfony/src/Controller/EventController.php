@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ class EventController extends AbstractController
 {
     /**
      * @Route("/event", name="event_read_all")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function index()
     {
@@ -32,6 +34,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/read/id/{id}", name="event_read_one")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function read($id, TranslatorInterface $translator)
     {
@@ -53,6 +56,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/add", name="event_add")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function add(Request $request, FileUploader $fileUploader)
     {
@@ -87,6 +91,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/edit/id/{id}", name="event_edit")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit($id, Request $request, FileUploader $fileUploader, TranslatorInterface $translator)
     {
@@ -132,6 +137,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/delete/id/{id}", name="event_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete($id, FileUploader $fileUploader, TranslatorInterface $translator)
     {
@@ -162,6 +168,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/deleteajax/id/{id}", name="event_ajax_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function deleteAjax($id, FileUploader $fileUploader)
     {
@@ -207,7 +214,6 @@ class EventController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Event::class);
 
         $events = $repository->findBy([
-            'user' => $this->getUser()->getId(),
             'timeline' => $timeline_id
         ]);
         $positions = []; // left css position ratio for each event

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ class TimelineController extends AbstractController
 
     /**
      * @Route("/timeline/list", name="timeline_list")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function list()
     {
@@ -38,11 +40,14 @@ class TimelineController extends AbstractController
     public function index($id, Request $request, TranslatorInterface $translator)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
-            'id' => $id,
-            'user' => $this->getUser()->getId(),
-        ]);
+        $timeline = $entityManager->getRepository(Timeline::class)->find($id);
         
+        if (!$timeline) {
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
+        } elseif (!$timeline->getVisibility() && $timeline->getUser() != $this->getUser()) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         if (!$timeline) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
@@ -99,6 +104,7 @@ class TimelineController extends AbstractController
 
     /**
      * @Route("/timeline/add", name="timeline_add")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function add(Request $request)
     {
@@ -127,6 +133,7 @@ class TimelineController extends AbstractController
 
     /**
      * @Route("/timeline/edit/id/{id}", name="timeline_edit")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit($id, Request $request, TranslatorInterface $translator)
     {
@@ -160,6 +167,7 @@ class TimelineController extends AbstractController
 
     /**
      * @Route("/timeline/delete/id/{id}", name="timeline_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete($id, TranslatorInterface $translator)
     {
@@ -187,6 +195,7 @@ class TimelineController extends AbstractController
 
     /**
      * @Route("/timeline/deleteajax/id/{id}", name="timeline_ajax_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function deleteAjax($id, Response $response): Response
     {

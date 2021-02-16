@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ class CharacterController extends AbstractController
 {
     /**
      * @Route("/character", name="character_read_all")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function index(): Response
     {
@@ -32,6 +34,7 @@ class CharacterController extends AbstractController
 
     /**
      * @Route("/character/read/id/{id}", name="character_read_one")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function read($id, TranslatorInterface $translator): Response
     {
@@ -53,6 +56,7 @@ class CharacterController extends AbstractController
 
     /**
      * @Route("/character/add", name="character_add")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function add(Request $request, FileUploader $fileUploader): Response
     {
@@ -87,6 +91,7 @@ class CharacterController extends AbstractController
 
     /**
      * @Route("/character/edit/id/{id}", name="character_edit")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit($id, Request $request, FileUploader $fileUploader, TranslatorInterface $translator)
     {
@@ -131,6 +136,7 @@ class CharacterController extends AbstractController
 
     /**
      * @Route("/character/delete/id/{id}", name="character_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete($id, FileUploader $fileUploader, TranslatorInterface $translator)
     {
@@ -162,6 +168,7 @@ class CharacterController extends AbstractController
 
     /**
      * @Route("/character/deleteajax/id/{id}", name="character_ajax_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function deleteAjax($id, FileUploader $fileUploader, Response $response): Response
     {
@@ -206,7 +213,7 @@ class CharacterController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Character::class);
 
         $characters = $repository->findBy(
-            ['user' => $this->getUser()->getId(), 'timeline' => $timeline_id]
+            ['timeline' => $timeline_id]
         );
         $positions = []; // left css position ratio for each character
         if ($characters) {

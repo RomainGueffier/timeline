@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ class CategoryController extends AbstractController
 {
     /**
      * @Route("/category", name="category_read_all")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function index()
     {
@@ -31,6 +33,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/read/id/{id}", name="category_read_one")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function read($id, TranslatorInterface $translator)
     {
@@ -54,6 +57,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/add", name="category_add")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function add(Request $request)
     {
@@ -81,6 +85,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/edit/id/{id}", name="category_edit")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function edit($id, Request $request, TranslatorInterface $translator)
     {
@@ -114,6 +119,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/delete/id/{id}", name="category_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete($id, TranslatorInterface $translator)
     {
@@ -140,6 +146,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/deleteajax/id/{id}", name="category_ajax_delete")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function deleteAjax($id, Response $response): Response
     {
@@ -174,7 +181,6 @@ class CategoryController extends AbstractController
     {
         $repository = $this->getDoctrine()->getRepository(Category::class);
         $categories = $repository->findBy([
-            'user' => $this->getUser()->getId(),
             'timeline' => $request->query->get('timeline_id')
         ]);
 
