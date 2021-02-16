@@ -10,4 +10,5 @@ symfony/vendor/
 docker/php/sessions/*
 docker/mysql/data/*
 docker/phpmyadmin/sessions/*
+docker/logs/*
 ###< symfony/framework-bundle ###

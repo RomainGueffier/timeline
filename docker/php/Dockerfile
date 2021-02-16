@@ -3,13 +3,14 @@ FROM php:7.4-fpm-alpine
 LABEL maintainer="Romain Gueffier <r.gueffier.pro@gmail.com>"
 
 RUN apk add --update \
+    acl \
     make \
     curl \
     nodejs \
     yarn \
     icu-dev
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql intl
+RUN docker-php-ext-install mysqli pdo pdo_mysql intl opcache
 RUN docker-php-ext-configure intl && docker-php-ext-install intl
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
@@ -20,6 +21,8 @@ ADD php.ini /etc/php/conf.d/
 ADD php.ini /etc/php/cli/conf.d/
 ADD php-fpm.conf /etc/php/php-fpm.d/
 #ADD xdebug.ini  /etc/php/conf.d/
+
+RUN ln -snf /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
 WORKDIR /var/www/symfony
 
