@@ -1,4 +1,4 @@
-# The Real Timeline - La vraie chronologie
+# Timeline.io - La vraie chronologie
 Ce projet permet de visualiser l'histoire et le temps sur l'échelle de l'humanité.
 Une frise chronologique permet d'ajouter des personnages, périodes et évènements et de les comparer entre eux.
 Il est possible d'adapter l'échelle de la frise et d'avoir un tout nouveau regard sur l'histoire !
@@ -22,6 +22,9 @@ Source docker env : https://github.com/coloso/symfony-docker
 **!!! Attention à ne pas laisser un serveur apache ou mysql tourner sur les ports 80/81/3306, sinon docker ne démarrera pas !!!**
 
 ## Installation / Mise à jour
+### Installer le proxy
+Installer et mettre en route le proxy disponible sur le dépôt suivant : https://github.com/RomainGueffier/eagle.git
+
 ### Récupération des sources
 Récupérer le zip / faire un git clone dans un répertoire sur son poste
 
