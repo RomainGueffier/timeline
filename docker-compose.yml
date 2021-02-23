@@ -24,8 +24,7 @@ services:
       - ./docker/logs:/var/log
       - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
     environment:
-      # timestamp=0 in production
-      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=${OPCACHE_TIMESTAMP}
       - PHP_OPCACHE_MAX_ACCELERATED_FILES=10000
       - PHP_OPCACHE_MEMORY_CONSUMPTION=192
       - PHP_OPCACHE_MAX_WASTED_PERCENTAGE=10
@@ -45,10 +44,10 @@ services:
     links:
       - php
     environment:
-      - VIRTUAL_HOST=timeline.io.local
+      - VIRTUAL_HOST=${HOSTNAME}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.timeline_app.rule=Host(`timeline.io.local`)
+      - traefik.http.routers.timeline_app.rule=Host(`${HOSTNAME}`)
       - traefik.http.services.timeline_app.loadbalancer.server.port=80
       - traefik.docker.network=web
     networks:
@@ -57,7 +56,6 @@ services:
     image: phpmyadmin/phpmyadmin
     links:
       - mysql:db
-    ports: ['81:80']
     restart: "unless-stopped"
     environment:
       - MYSQL_USERNAME=root
@@ -66,6 +64,11 @@ services:
       - PMA_PASSWORD=admin
     volumes:
       - ./docker/phpmyadmin/sessions:/sessions:cached
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pma.rule=Host(`pma.${DASHBOARD_HOSTNAME}`)
+      - traefik.http.services.pma.loadbalancer.server.port=80
+      - traefik.docker.network=web
     networks:
       - web
   maildev:

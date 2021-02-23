@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{{ encore_entry_link_tags('index') }}
+{% endblock %}
+
+{% block container %}
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading display-3">Contact</h1>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScS6R_mqeNmildxUT0lLd3NfbRSHlon9SljffGPDo-HyYbN8g/viewform?embedded=true" width="700" height="1386" frameborder="0" marginheight="0" marginwidth="0">Chargement…</iframe>
+    </div>
+</section>
+{% endblock %}

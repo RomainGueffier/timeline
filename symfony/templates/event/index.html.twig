@@ -12,7 +12,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
             {% for event in events %}
             <div class="col-auto mb-3" id="event-wrapper-{{ event.id }}">
-                <div class="card h-100">
+                <div class="card h-100 shadow">
                     <img class="card-img-top" src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
                     <div class="card-body">
                         <h4 class="card-title">{{ event.name }}</h4>
