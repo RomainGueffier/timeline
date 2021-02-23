@@ -18,27 +18,29 @@ use App\Form\Type\UserType;
 use App\Form\Type\User\EditType;
 use App\Entity\User;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Mime\Address;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class UserController extends AbstractController
 {
     /**
      * Fonction d'envoi d'email en lien avec les comptes utilisateurs
      */
-    private function _sendActivationEmail($token, MailerInterface $mailer)
+    private function _sendActivationEmail(User $user, MailerInterface $mailer)
     {
-        $userActivationPage = $this->generateUrl('user_activate', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+        $userActivationPage = $this->generateUrl('user_activate', ['token' => $user->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $sent = false;
         // send activation email
-        $email = (new Email())
-            ->from('r.gueffier.pro@gmail.com')
-            ->to('r.gueffier.pro@gmail.com')
+        $email = (new TemplatedEmail())
+            ->from(new Address('r.gueffier.pro@gmail.com', "L'équipe timeline.zapto.org"))
+            ->to($user->getEmail())
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Inscription sur OneThousandYear')
-            ->html('<p>Hello,</p><p>Ton compte a bien été créé sur OneThousandYear, tu peux activer celui-ci en visitant le lien suivant :</p><p>' . $userActivationPage . '</p><br><p>À très bientôt sur OneThousandYear !</p>');
+            ->subject('Inscription sur timeline.zapto.org')
+            ->html('<p>Bonjour,</p><p>Ton compte a bien été créé sur timeline.zapto.org, tu peux activer celui-ci en visitant le lien suivant :</p><p>' . $userActivationPage . '</p><br><p>À très bientôt sur timeline.zapto.org !</p>');
 
         $email->getHeaders()
             // this header tells auto-repliers ("email holiday mode") to not
@@ -79,7 +81,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->_sendActivationEmail($token, $mailer);
+            $this->_sendActivationEmail($user, $mailer);
 
             return $this->render('user/registered.html.twig', [
                 'user' => $user
@@ -123,11 +125,9 @@ class UserController extends AbstractController
      */
     public function profile(): Response
     {
-        // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->getUser();
-
         if (!$user) {
             throw $this->createNotFoundException(
                 'Impossible de visualiser votre compte, merci de vous reconnecter ou de réessayer plus tard.'
@@ -187,7 +187,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             if ($user->getEmail() !== $actual_email) {
-                $this->_sendActivationEmail($token, $mailer);
+                $this->_sendActivationEmail($user, $mailer);
                 // if email has been updated, user should confirm email again
                 return $this->render('user/registered.html.twig', [
                     'user' => $user

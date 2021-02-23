@@ -24,4 +24,12 @@ class IndexController extends AbstractController
             'timelines' => $timelines,
         ]);
     }
+
+    /**
+     * @Route("/contact", name="contact")
+     */
+    public function contact()
+    {
+        return $this->render('index/contact.html.twig', []);
+    }
 }

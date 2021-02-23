@@ -25,9 +25,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto text-center">
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ path('index') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
                     </li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
@@ -37,7 +40,7 @@
                         <a class="nav-link dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Données <i class="fas fa-caret-down"></i>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ path('character_read_all') }}">Personnages</a>
                             <a class="dropdown-item" href="{{ path('event_read_all') }}">Évènements</a>
                             <div class="dropdown-divider"></div>
@@ -48,14 +51,14 @@
                 </ul>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a class="nav-link btn btn-dark mx-2" href="{{ path('user_profile') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Mon Profil">
-                    <i class="fas fa-user-circle"></i>
+                    <i class="fas fa-user-circle"></i><span class="d-block d-sm-none"> Mon profil</span>
                 </a>
                 <a class="nav-link btn btn-dark mx-2" href="{{ path('app_logout') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Se déconnecter">
-                    <i class="fas fa-sign-out-alt"></i>
+                    <i class="fas fa-sign-out-alt"></i><span class="d-block d-sm-none"> Se déconnecter</span>
                 </a>
                 {% else %}
                 <a class="nav-link btn btn-dark mx-2" href="{{ path('app_login') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Connexion utilisateur">
-                    <i class="fas fa-user-circle"></i>
+                    <i class="fas fa-user-circle"></i><span class="d-block d-sm-none"> Connexion utilisateur</span>
                 </a>
                 {% endif %}
                 <form class="form-inline my-2 my-md-0" action="" method="get" style="opacity:.7;">
@@ -70,9 +73,12 @@
         {% block container %}
         {% endblock %}
         {% block footer %}
-        <footer class="footer mt-auto py-3 bg-dark text-center">
+        <footer class="footer mt-auto py-5 bg-dark text-center">
             <div class="container">
-                <p class="text-muted"><i class="fas fa-copyright"></i> Romain Gueffier - 2020</p>
+                <p class="text-muted">
+                    <span class="lead">{{ app.request.getSchemeAndHttpHost()|replace({'http://': ''}) }}</span> <span class="text-success"><i class="fas fa-code-branch"></i> v1</span>
+                    <br><a class="text-muted" href="https://sites.google.com/view/romaingueffier/accueil"><i class="fas fa-copyright"></i> Romain Gueffier - {{ "now"|date("Y") }}</a>
+                </p>
             </div>
         </footer>
         {% block modal %}
