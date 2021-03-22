@@ -14,7 +14,9 @@ services:
       - ./docker/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/mysqld_charset.cnf:ro
       - ./docker/mysql/data:/var/lib/mysql:cached
     networks:
-      - web
+      - internal
+    labels:
+      - traefik.enable=false
   php:
     build: ./docker/php
     ports: ['9000:9000']
@@ -31,9 +33,10 @@ services:
     links:
       - mysql
       - phpmyadmin
-      - maildev
     networks:
-      - web
+      - internal
+    labels:
+      - traefik.enable=false
   app:
     build: ./docker/nginx
     restart: "unless-stopped"
@@ -48,9 +51,14 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.timeline_app.rule=Host(`${HOSTNAME}`)
-      - traefik.http.services.timeline_app.loadbalancer.server.port=80
-      - traefik.docker.network=web
+      - traefik.http.routers.timeline_app.tls=true
+      - traefik.http.routers.timeline_app.tls.certresolver=lets-encrypt
+      - traefik.port=80
+    depends_on:
+      - mysql
+      - app
     networks:
+      - internal
       - web
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -70,7 +78,10 @@ services:
       - traefik.http.services.pma.loadbalancer.server.port=80
       - traefik.docker.network=web
     networks:
+      - internal
       - web
+    depends_on:
+      - mysql
   maildev:
     image: maildev/maildev
     ports:
@@ -82,3 +93,5 @@ services:
 networks:
   web:
     external: true
+  internal:
+    external: false
