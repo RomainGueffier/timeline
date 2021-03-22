@@ -4,7 +4,7 @@ services:
   mysql:
     image: mysql:5.7
     ports: ['3306:3306']
-    restart: "unless-stopped"
+    restart: "always"
     environment:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=symfony
@@ -20,7 +20,7 @@ services:
   php:
     build: ./docker/php
     ports: ['9000:9000']
-    restart: "unless-stopped"
+    restart: "always"
     volumes:
       - ./symfony/:/var/www/symfony:cached
       - ./docker/logs:/var/log
@@ -39,7 +39,7 @@ services:
       - traefik.enable=false
   app:
     build: ./docker/nginx
-    restart: "unless-stopped"
+    restart: "always"
     volumes:
       - ./symfony/:/var/www/symfony:cached
       - ./docker/php/sessions:/var/php/sessions:cached
@@ -53,7 +53,7 @@ services:
       - traefik.http.routers.timeline_app.rule=Host(`${HOSTNAME}`)
       - traefik.http.routers.timeline_app.tls=true
       - traefik.http.routers.timeline_app.tls.certresolver=lets-encrypt
-      - traefik.port=80
+      - traefik.docker.network=web
     depends_on:
       - mysql
       - app
@@ -74,21 +74,15 @@ services:
       - ./docker/phpmyadmin/sessions:/sessions:cached
     labels:
       - traefik.enable=true
-      - traefik.http.routers.pma.rule=Host(`pma.${DASHBOARD_HOSTNAME}`)
-      - traefik.http.services.pma.loadbalancer.server.port=80
+      - traefik.http.routers.pma.rule=Host(`${DASHBOARD_HOSTNAME}/pma`)
+      - traefik.http.routers.timeline_app.tls=true
+      - traefik.http.routers.timeline_app.tls.certresolver=lets-encrypt
       - traefik.docker.network=web
     networks:
       - internal
       - web
     depends_on:
       - mysql
-  maildev:
-    image: maildev/maildev
-    ports:
-      - "1080:80"
-    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
-    networks:
-      - web
 
 networks:
   web:
