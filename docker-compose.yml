@@ -20,8 +20,6 @@ services:
     networks:
       - internal
       - web
-    labels:
-      - traefik.enable=false
 
   nginx:
     build: ./docker/nginx
@@ -36,6 +34,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.nginx.rule=Host(`${HOSTNAME}`)
+      - traefik.http.routers.nginx.entrypoints=web,websecure
+      - traefik.http.routers.nginx.tls=true
+      - traefik.http.routers.nginx.tls.certresolver=lets-encrypt
     networks:
       - internal
       - web
