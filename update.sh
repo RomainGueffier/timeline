@@ -11,26 +11,18 @@ docker-compose up -d --build
 
 # Create alias to enter container php sh
 echo '--- docker-compose exec web php'
-alias execute = "docker-compose exec timeline sh"
+alias x ='docker-compose exec php sh'
 
 # update dependencies
 echo '--- run composer update'
-execute composer update
+x composer update
 echo '--- run yarn update'
-execute yarn encore production
+x yarn encore production
 
 # update database scheme
 echo '--- run bin/console doctrine:migrations:migrate'
-execute bin/console doctrine:migrations:migrate
+x bin/console doctrine:migrations:migrate
 
 # clear symfony cache
 echo '--- run bin/console cache:warmup --env=prod'
-execute bin/console cache:warmup --env=prod
-
-# set cache and assets folders rights
-# echo '--- run chmod -R 644 symfony/public/'
-# chmod -R 644 symfony/public/
-# echo '--- run chmod -R 777 symfony/var/cache/'
-# chmod -R 777 symfony/cache/
-# echo '--- run chmod -R 777 symfony/var/log/'
-# chmod -R 777 symfony/cache/
+x bin/console cache:warmup --env=prod
