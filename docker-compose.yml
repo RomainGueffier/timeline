@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  timeline:
+  php:
     build: ./docker/php
     ports:
       - 9000:9000
@@ -11,6 +11,7 @@ services:
       - ./docker/logs:/var/log
       - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
     environment:
+      - APP_ENV=${APP_ENV}
       - PHP_OPCACHE_VALIDATE_TIMESTAMPS=${OPCACHE_TIMESTAMP}
       - PHP_OPCACHE_MAX_ACCELERATED_FILES=10000
       - PHP_OPCACHE_MEMORY_CONSUMPTION=192
@@ -19,6 +20,7 @@ services:
       - internal
     labels:
       - traefik.enable=false
+
   nginx:
     build: ./docker/nginx
     restart: always
@@ -36,6 +38,8 @@ services:
     networks:
       - internal
       - web
+    depends_on:
+      - php
 
 networks:
   web:

@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8-fpm-alpine
 
 LABEL maintainer="Romain Gueffier <r.gueffier.pro@gmail.com>"
 
