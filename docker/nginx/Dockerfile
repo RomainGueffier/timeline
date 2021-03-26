@@ -2,9 +2,6 @@ FROM nginx:alpine
 
 LABEL maintainer="Romain Gueffier <r.gueffier.pro@gmail.com>"
 
-RUN addgroup -S www-data \
-    && adduser -S -G www-data www-data
-
 RUN apk add --update nginx
 RUN rm -rf /var/cache/apk/* && rm -rf /tmp/*
 
