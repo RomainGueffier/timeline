@@ -74,7 +74,7 @@ Encore
     //.addEntry('admin', './assets/admin.js')
 
     // Add images assets
-    .copyFiles({ from: './assets/images', to: 'images' })
+    .copyFiles({ from: './assets/images' })
 ;
 
 module.exports = Encore.getWebpackConfig();
