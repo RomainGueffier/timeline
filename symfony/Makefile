@@ -23,10 +23,10 @@ yed: 	## yarn encore webpack dev
 	yarn encore dev
 
 clear:	## symfony clear cache
-	app/console cache:clear --env=$(APP_ENV)
+	bin/console cache:clear --env=$(APP_ENV)
 
 warmup:		## symfony warmup cache
-	app/console cache:warmup --env=$(APP_ENV)
+	bin/console cache:warmup --env=$(APP_ENV)
 
 migrate:	## symfony doctrine migrate migrations
 	bin/console doctrine:migrations:migrate
