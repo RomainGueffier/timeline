@@ -8,7 +8,7 @@ services:
       - 9000:9000
     restart: always
     volumes:
-      - ./symfony/:/var/www/symfony:cached
+      - ./symfony/:/var/www/symfony
       - ./docker/logs:/var/log
       - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
     environment:
@@ -26,7 +26,7 @@ services:
     restart: always
     container_name: nginx
     volumes:
-      - ./symfony/:/var/www/symfony:cached
+      - ./symfony/:/var/www/symfony
       - ./docker/php/sessions:/var/php/sessions:cached
       - ./docker/logs:/var/log/nginx
     environment:
