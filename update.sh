@@ -11,7 +11,7 @@ docker-compose up -d --build
 
 # Create alias to enter container php sh
 echo '--- docker-compose exec web php'
-alias x ='docker-compose exec php sh'
+alias x='docker-compose exec php sh'
 
 # update dependencies
 echo '--- run composer update'
