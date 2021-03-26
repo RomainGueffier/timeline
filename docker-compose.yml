@@ -28,8 +28,6 @@ services:
       - ./symfony/:/var/www/symfony:cached
       - ./docker/php/sessions:/var/php/sessions:cached
       - ./docker/logs:/var/log/nginx
-    links:
-      - timeline
     environment:
       - VIRTUAL_HOST=${HOSTNAME}
     labels:
