@@ -47,4 +47,9 @@ final class Version20210212192055 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_3BAE0AA7EDBEDD37 ON event');
         $this->addSql('ALTER TABLE event DROP timeline_id');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

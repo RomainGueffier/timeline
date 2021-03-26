@@ -44,4 +44,9 @@ final class Version20210212164828 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_3BAE0AA7A76ED395 ON event');
         $this->addSql('ALTER TABLE event DROP user_id');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

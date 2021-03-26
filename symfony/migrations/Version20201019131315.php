@@ -32,4 +32,9 @@ final class Version20201019131315 extends AbstractMigration
         $this->addSql('DROP TABLE characters_categories');
         $this->addSql('ALTER TABLE `character` ADD period INT DEFAULT NULL');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }
