@@ -19,6 +19,7 @@ services:
       - PHP_OPCACHE_MAX_WASTED_PERCENTAGE=10
     networks:
       - internal
+      - web
     labels:
       - traefik.enable=false
 
