@@ -35,7 +35,7 @@ services:
       - VIRTUAL_HOST=${HOSTNAME}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.timeline_app.rule=Host(`${HOSTNAME}`)
+      - traefik.http.routers.nginx.rule=Host(`${HOSTNAME}`)
     networks:
       - internal
       - web
