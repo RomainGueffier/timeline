@@ -2,8 +2,6 @@ FROM php:8-fpm-alpine
 
 LABEL maintainer="Romain Gueffier <r.gueffier.pro@gmail.com>"
 
-RUN usermod -u 1000 www-data
-
 RUN apk add --update \
     acl \
     make \
