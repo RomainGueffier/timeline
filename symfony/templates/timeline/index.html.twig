@@ -8,10 +8,36 @@
         <h1 class="jumbotron-heading">{{ timeline.name }}</h1>
         <p class="text-muted">{{ timeline.description }}</p>
         {% if is_granted('edit', timeline) %}
-        <a class="btn btn-outline-warning" href="{{ path('timeline_edit', {id: timeline.id}) }}">
+        <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage">
+            <i class="fas fa-user-plus"></i>
+        </a>
+        <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement">
+            <i class="fas fa-calendar-plus"></i>
+        </a>
+        <a class="btn btn-warning" href="{{ path('timeline_edit', {id: timeline.id}) }}">
             <i class="fas fa-edit"></i>
         </a>
         {% endif %}
+        <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal-categories">
+            <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
+        </button>
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-scale">
+            <i class="fas fa-ruler-horizontal" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
+        </button>
+        <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-cog"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <h6 class="text-center">Afficher...</h6>
+            <div class="dropdown-divider"></div>
+            <button id="btn-events-first" type="button" class="dropdown-item"><i class="fas fa-calendar-alt"></i> en priorité les évènements</button>
+            <button id="btn-characters-first" type="button" class="dropdown-item"><i class="fas fa-users"></i> en priorité les personnages</button>
+            <div class="dropdown-divider"></div>
+            <button id="btn-events-only" type="button" class="dropdown-item"><i class="fas fa-calendar-times"></i> uniquement les évènements</button>
+            <button id="btn-characters-only" type="button" class="dropdown-item"><i class="fas fa-users-slash"></i> uniquement les personnages</button>
+            <div class="dropdown-divider"></div>
+            <button id="btn-reset" type="button" class="dropdown-item text-bolder"><i class="fas fa-trash-restore"></i> Réinitialiser</button>
+        </div>
     </div>
 </section>
 <div id="timeline-wrapper" class="timeline-wrapper timeline-{{ unit }}">
@@ -38,36 +64,6 @@
     </div>
     <div class="timeline-events" data-ratio="{{ ratio }}" data-start="{{ start }}" data-end="{{ end }}" data-timeline-id="{{ timeline.id }}"></div>
     <div class="timeline-period"></div>
-    <div class="btn-timeline-display-toggle">
-        <div class="btn-group-vertical">
-            {% if is_granted('edit', timeline) %}
-            <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
-            <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement"><i class="fas fa-calendar-plus"></i></a>
-            {% endif %}
-            <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal-categories">
-                <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
-            </button>
-            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-scale">
-                <i class="fas fa-pen-square" data-toggle="tooltip" title="Modifier l'échelle de la frise"></i>
-            </button>
-            <div class="btn-group dropright" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <h6 class="text-center">Afficher...</h6>
-                    <div class="dropdown-divider"></div>
-                    <button id="btn-events-first" type="button" class="dropdown-item"><i class="fas fa-calendar-alt"></i> en priorité les évènements</button>
-                    <button id="btn-characters-first" type="button" class="dropdown-item"><i class="fas fa-users"></i> en priorité les personnages</button>
-                    <div class="dropdown-divider"></div>
-                    <button id="btn-events-only" type="button" class="dropdown-item"><i class="fas fa-calendar-times"></i> uniquement les évènements</button>
-                    <button id="btn-characters-only" type="button" class="dropdown-item"><i class="fas fa-users-slash"></i> uniquement les personnages</button>
-                    <div class="dropdown-divider"></div>
-                    <button id="btn-reset" type="button" class="dropdown-item text-bolder"><i class="fas fa-trash-restore"></i> Réinitialiser</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}
 
