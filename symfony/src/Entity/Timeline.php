@@ -255,4 +255,9 @@ class Timeline
         return $this;
     }
 
+    public function isPublic(): ?bool
+    {
+        return $this->getVisibility();
+    }
+
 }

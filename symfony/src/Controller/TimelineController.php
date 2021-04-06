@@ -41,16 +41,13 @@ class TimelineController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $timeline = $entityManager->getRepository(Timeline::class)->find($id);
-        
-        if (!$timeline) {
-            throw $this->createNotFoundException($translator->trans('pagenotfound'));
-        } elseif (!$timeline->getVisibility() && $timeline->getUser() != $this->getUser()) {
-            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        }
 
         if (!$timeline) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
+
+        // Deny access if user is not granted or timeline not public
+        $this->denyAccessUnlessGranted('read', $timeline);
 
         // Valeurs par défaut
         $start = $timeline->getStart() ?: -4100; // année de début de la frise

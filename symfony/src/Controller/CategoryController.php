@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Category;
+use App\Entity\Timeline;
 use App\Form\Type\CategoryType;
 
 class CategoryController extends AbstractController
@@ -179,9 +180,14 @@ class CategoryController extends AbstractController
      */
     public function ajax(Request $request)
     {
+        $timeline_id = $request->query->get('timeline_id');
+
+        $timeline = $this->getDoctrine()->getRepository(Timeline::class)->find($timeline_id);
+        $this->denyAccessUnlessGranted('read', $timeline);
+
         $repository = $this->getDoctrine()->getRepository(Category::class);
         $categories = $repository->findBy([
-            'timeline' => $request->query->get('timeline_id')
+            'timeline' => $timeline_id
         ]);
 
       	return $this->render('category/ajax.html.twig', [

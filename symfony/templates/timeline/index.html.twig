@@ -7,6 +7,11 @@
     <div class="container">
         <h1 class="jumbotron-heading">{{ timeline.name }}</h1>
         <p class="text-muted">{{ timeline.description }}</p>
+        {% if is_granted('edit', timeline) %}
+        <a class="btn btn-outline-warning" href="{{ path('timeline_edit', {id: timeline.id}) }}">
+            <i class="fas fa-edit"></i>
+        </a>
+        {% endif %}
     </div>
 </section>
 <div id="timeline-wrapper" class="timeline-wrapper timeline-{{ unit }}">
@@ -35,8 +40,10 @@
     <div class="timeline-period"></div>
     <div class="btn-timeline-display-toggle">
         <div class="btn-group-vertical">
+            {% if is_granted('edit', timeline) %}
             <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('character_add') }}" title="Ajouter un personnage"><i class="fas fa-user-plus"></i></a>
             <a class="btn btn-secondary" data-toggle="tooltip" href="{{ path('event_add') }}" title="Ajouter un évènement"><i class="fas fa-calendar-plus"></i></a>
+            {% endif %}
             <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal-categories">
                 <i class="fas fa-filter" data-toggle="tooltip" title="Sélectionner les informations à afficher"></i>
             </button>

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Event;
+use App\Entity\Timeline;
 use App\Form\Type\EventType;
 use App\Service\FileUploader;
 
@@ -34,20 +35,16 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/read/id/{id}", name="event_read_one")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function read($id, TranslatorInterface $translator)
     {
-        $event = $this->getDoctrine()
-            ->getRepository(Event::class)
-            ->findOneBy([
-                'id' => $id,
-                'user' => $this->getUser()->getId(),
-            ]);
+        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
 
         if (!$event) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
+
+        $this->denyAccessUnlessGranted('read', $event);
 
         return $this->render('event/read.html.twig', [
             'event' => $event
@@ -211,12 +208,15 @@ class EventController extends AbstractController
         $timeline_end = $request->query->get('end');
         $timeline_id = $request->query->get('timeline_id');
 
-        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $timeline = $this->getDoctrine()->getRepository(Timeline::class)->find($timeline_id);
+        $this->denyAccessUnlessGranted('read', $timeline);
 
+        $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findBy([
             'timeline' => $timeline_id
         ]);
         $positions = []; // left css position ratio for each event
+
         if ($events) {
             foreach ($events as $key => $event) {
                 $end = $event->getEnd();

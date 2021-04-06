@@ -194,4 +194,9 @@ class Category
 
         return $this;
     }
+
+    public function isPublic(): ?bool
+    {
+        return $this->getTimeline()->getVisibility();
+    }
 }

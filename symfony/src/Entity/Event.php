@@ -195,4 +195,9 @@ class Event
 
         return $this;
     }
+
+    public function isPublic(): ?bool
+    {
+        return $this->getTimeline()->getVisibility();
+    }
 }

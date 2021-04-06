@@ -43,7 +43,9 @@
             </div>
             <div class="modal-footer">
                 <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                {% if is_granted('edit', character) %}
                 <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                {% endif %}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
             </div>
         </div>
