@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Character;
+use App\Entity\Timeline;
 use App\Form\Type\CharacterType;
 use App\Service\FileUploader;
 
@@ -34,20 +35,16 @@ class CharacterController extends AbstractController
 
     /**
      * @Route("/character/read/id/{id}", name="character_read_one")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function read($id, TranslatorInterface $translator): Response
     {
-        $character = $this->getDoctrine()
-            ->getRepository(Character::class)
-            ->findOneBy([
-                'id' => $id,
-                'user' => $this->getUser()->getId(),
-            ]);
+        $character = $this->getDoctrine()->getRepository(Character::class)->find($id);
 
         if (!$character) {
             throw $this->createNotFoundException($translator->trans('pagenotfound'));
         }
+
+        $this->denyAccessUnlessGranted('read', $character);
 
         return $this->render('character/read.html.twig', [
             'character' => $character
@@ -210,12 +207,15 @@ class CharacterController extends AbstractController
         $end = $request->query->get('end');
         $timeline_id = $request->query->get('timeline_id');
 
-        $repository = $this->getDoctrine()->getRepository(Character::class);
+        $timeline = $this->getDoctrine()->getRepository(Timeline::class)->find($timeline_id);
+        $this->denyAccessUnlessGranted('read', $timeline);
 
+        $repository = $this->getDoctrine()->getRepository(Character::class);
         $characters = $repository->findBy(
             ['timeline' => $timeline_id]
         );
         $positions = []; // left css position ratio for each character
+
         if ($characters) {
             foreach ($characters as $key => $character) {
                 $death = $character->getDeath();

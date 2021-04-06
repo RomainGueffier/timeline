@@ -71,7 +71,9 @@
             </div>
             <div class="modal-footer">
                 <a href="{{ path('event_read_one', {id: event.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                {% if is_granted('edit', event) %}
                 <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                {% endif %}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
             </div>
         </div>
