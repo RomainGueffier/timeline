@@ -31,7 +31,7 @@ class CharacterType extends AbstractType
             ->add('deathplace', TextType::class, ['label' => 'Lieu de décès'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('age', AgeType::class, ['label' => 'Durée de vie'])
-            //->add('period')
+            ->add('source', TextType::class, ['label' => 'Sources'])
             ->add('weight', IntegerType::class, ['label' => 'Priorité d\'affichage'])
             ->add('image', FileType::class, [
                 'label' => 'Image',

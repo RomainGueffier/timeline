@@ -6,15 +6,19 @@
  */
 const $ = require('jquery');
 require('bootstrap');
+
 window.bootbox = require('bootbox');
 bootbox.setLocale('fr');
+
+require('selectize');
+import '../node_modules/selectize/dist/css/selectize.bootstrap3.css';
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
 console.log('Application started');
 
-$(document).ready(function(e){
+$(function(){
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()

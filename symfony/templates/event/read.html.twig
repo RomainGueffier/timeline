@@ -17,15 +17,29 @@
                   </small>
                 </p>
                 <p>{{ event.description }}</p>
+                <h6>Source(s)</h6>
+                <ul class="list-group list-group-flush mb-3">
+                {% if event.source %}
+                {% for source in event.source|split(',') %}
+                <li class="list-group-item">
+                    <a href="{{ source }}" class="badge badge-info">{{ source }}</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <li class="list-group-item">
+                    Aucune source
+                </li>
+                {% endif %}
+                </ul>
                 <p class="mb-0">
-                    <a class="btn btn-outline-secondary" href="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
+                    <a class="btn btn-secondary" href="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
                         <i class="fas fa-image"></i>
                     </a>
                     {% if is_granted('edit', event) %}
-                    <a class="btn btn-outline-warning" href="{{ path('event_edit', {id: event.id}) }}">
+                    <a class="btn btn-warning" href="{{ path('event_edit', {id: event.id}) }}">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="btn btn-outline-danger btn-delete" href="{{ path('event_delete', {id: event.id}) }}"><i class="fas fa-trash"></i></a>
+                    <a class="btn btn-danger btn-delete" href="{{ path('event_delete', {id: event.id}) }}"><i class="fas fa-trash"></i></a>
                     {% endif %}
                 </p>
             </div>
