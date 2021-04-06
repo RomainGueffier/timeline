@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
-        "bootbox": "^5.5.1"
+        "bootbox": "^5.5.1",
+        "selectize": "^0.12.6"
     }
 }

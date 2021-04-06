@@ -1,11 +1,12 @@
-$(document).ready(function(e){
-    $("form #start").change(function(e){
+$(function(){
+
+    $("form #start").on('change', function(e){
         $("form #end").attr('min', $(this).val());
     });
-    $("form #end").change(function(e){
+    $("form #end").on('change', function(e){
         $("form #start").attr('max', $(this).val());
     });
-    $("#range").change(function(e){
+    $("#range").on('change', function(e){
         var range = $(this).val();
         var value = "";
         if (range == 0) value = "1 ans";
@@ -13,7 +14,7 @@ $(document).ready(function(e){
         if (range == 2) value = "100 ans";
         $(".badge-range").text(value);
     });
-    $("#start").change(function(e){
+    $("#start").on('change', function(e){
         var start = $(this).val();
         var value = "";
         if (start < 0) {
@@ -23,7 +24,7 @@ $(document).ready(function(e){
         }
         $(".badge-start").text(value);
     });
-    $("#end").change(function(e){
+    $("#end").on('change', function(e){
         var end = $(this).val();
         var value = "";
         if (end < 0) {
@@ -98,7 +99,7 @@ $(document).ready(function(e){
         }
     }).then(function(response) {
         $("#modal-categories .modal-body").html(response);
-        $("#set_filters").click(function(e) {
+        $("#set_filters").on('click', function(e) {
             // hide events and characters with category id
             $("#modal-categories .modal-body input[type=checkbox]:not(:checked)").each(function(e) {
                 var className = '.category-' + $(this).attr('category_id');
@@ -111,7 +112,7 @@ $(document).ready(function(e){
                 $(className).show();
             });
         });
-        $("#customSwitchAll").click(function(e) {
+        $("#customSwitchAll").on('click', function(e) {
             if ($(this).is(':checked')) {
                 $("#modal-categories .modal-body input.custom-control-input").prop('checked', true);
             } else {
@@ -119,23 +120,23 @@ $(document).ready(function(e){
             }
         });
   	});
-    $("#btn-events-first").click(function() {
+    $("#btn-events-first").on('click', function() {
         $(".timeline-wrapper .character").css('z-index', '0');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").css('z-index', '1');
     });
-    $("#btn-characters-first").click(function() {
+    $("#btn-characters-first").on('click', function() {
         $(".timeline-wrapper .character").css('z-index', '1');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").css('z-index', '0');
     });
-    $("#btn-characters-only").click(function() {
+    $("#btn-characters-only").on('click', function() {
         $(".timeline-wrapper .character").show('slow');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").hide('slow');
     });
-    $("#btn-events-only").click(function() {
+    $("#btn-events-only").on('click', function() {
         $(".timeline-wrapper .character").hide('slow');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").show('slow');
     });
-    $("#btn-reset").click(function() {
+    $("#btn-reset").on('click', function() {
         $(".timeline-wrapper .character, .timeline-wrapper .event, .timeline-wrapper .longevent").show();
         $(".timeline-wrapper .character").css('z-index', '1');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").css('z-index', '0');

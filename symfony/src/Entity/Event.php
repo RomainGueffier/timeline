@@ -45,6 +45,11 @@ class Event
     private $description;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $source;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image_filename;
@@ -132,6 +137,18 @@ class Event
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getSource(): ?string
+    {
+        return is_array($this->source) ? implode(',', $this->source) : '';
+    }
+
+    public function setSource(?string $source): self
+    {
+        $this->source = explode(',', $source);
 
         return $this;
     }

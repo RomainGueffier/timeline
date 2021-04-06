@@ -63,6 +63,11 @@ class Character
     private $age;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $source;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $weight;
@@ -191,6 +196,18 @@ class Character
     public function setAge(int $age): self
     {
         $this->age = $age;
+
+        return $this;
+    }
+
+    public function getSource(): ?string
+    {
+        return is_array($this->source) ? implode(',', $this->source) : '';
+    }
+
+    public function setSource(?string $source): self
+    {
+        $this->source = explode(',', $source);
 
         return $this;
     }
