@@ -1,13 +1,13 @@
 /** custom bootstrap theming **/
 $theme-colors: (
-    "light": #F0EFED,
-    "secondary": #7C7879,
-    "info": #B8D1E7,
-    "primary": #2F6CC0,
-    "success": #6EA682,
-    "warning": #D19062,
-    "danger": #9D5454,
-    "dark": #202429,
+    "light": whitesmoke,
+    "secondary": lightslategrey,
+    "info": lightskyblue,
+    "primary": steelblue,
+    "success": olive,
+    "warning": sandybrown,
+    "danger": firebrick,
+    "dark": #222,
 );
 
 /** add bootstrap & font-awesome **/
@@ -32,29 +32,27 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 .timeline-wrapper {
     overflow-x: auto;
     position: relative;
-    box-shadow: 0 0 0.5em #000 inset;
-    background-color: #F7F7F7;
-    background-size: 13px, 29px, 37px, 53px;
+    background-color: whitesmoke;
+    min-height: 500px;
 }
 
 .timeline {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    border-top: 2px solid #222;
-    margin-bottom: 1rem;
+    border-top: 2px solid darkslategrey;
+    height: 2rem;
+    position: sticky;
+    top: 0;
+    width: fit-content;
+    z-index: 10;
+    background: rgba(245,245,245,.8);
 }
 
 .timeline-events{
     width: fit-content;
     position: relative;
     height: 500px;
-}
-
-.timeline {
-    width: fit-content;
-    position: relative;
-    z-index: 2;
 }
 
 .character {
@@ -65,28 +63,32 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     position: absolute;
     opacity: .9;
     z-index: 1;
-    background: rgba(200,200,190, .8);
+    background: rgba(176,196,222, .8);//lightsteelblue
     height: 2rem;
 }
 
 .event, .longevent {
     position: absolute;
     height: 100%;
-    border-left: 2px solid #555;
+    border-left: 2px solid burlywood;
+    border-bottom: 2px solid burlywood;
     top: 0;
     writing-mode: vertical-rl;
     text-orientation: sideways;
     text-align: right;
-    padding-bottom: .5rem;
-    padding-left: .5rem;
+    padding-bottom: 1rem;
     font-size: .9rem;
     line-height: 0rem;
 }
 
 .longevent {
     width: auto;
-    border: none;
-    background: rgba(237,238,213, .8);
+    background: rgba(245,222,179, .8);//burlywood
+}
+.longevent-content {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
 }
 
 .period {
@@ -108,27 +110,27 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 .timeline-period {
     width: 50px;/** ECHELLE d'une période **/
     height: .5rem;
-    border-left: .1rem solid #333;
+    border-left: .1rem solid darkslategrey;
     position: relative;
 }
 
 .timeline-period.timeline-period-strong {
-    border-left: .4rem solid #333;
+    border-left: .4rem solid darkslategrey;
     height: .8rem;
 }
 
 .timeline-period.timeline-period-zero {
-    border-left: .5rem solid #333;
+    border-left: .5rem solid darkslategrey;
     height: 1rem;
 }
 
 .timeline-period.timeline-period-light {
-    border-left: .3rem solid #333;
+    border-left: .3rem solid darkslategrey;
     height: .5rem;
 }
 
 .timeline-period.timeline-period-extralight {
-    border-left: .2rem solid #333;
+    border-left: .2rem solid darkslategrey;
     height: .3rem;
 }
 
@@ -164,35 +166,35 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 }
 
 .character-birth-0.character-death-0 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.2) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.2) 100%);
 }
 
 .character-birth-0.character-death-50 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 75%, rgba(200,200,190,0.2) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.9) 75%, rgba(176,196,222,0.2) 100%);
 }
 
 .character-birth-0.character-death-100 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 100%);
 }
 
 .character-birth-100.character-death-0 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.9) 0%, rgba(200,200,190,0.2) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.9) 0%, rgba(176,196,222,0.2) 100%);
 }
 
 .character-birth-100.character-death-50 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.9) 0%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 75%, rgba(200,200,190,0.2) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.9) 0%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.9) 75%, rgba(176,196,222,0.2) 100%);
 }
 
 .character-birth-50.character-death-0 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 25%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.2) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 25%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.2) 100%);
 }
 
 .character-birth-50.character-death-50 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 25%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 75%, rgba(200,200,190,0.2) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 25%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.9) 75%, rgba(176,196,222,0.2) 100%);
 }
 
 .character-birth-50.character-death-100 {
-    background: linear-gradient(90deg, rgba(200,200,190,0.2) 0%, rgba(200,200,190,0.9) 25%, rgba(200,200,190,0.9) 50%, rgba(200,200,190,0.9) 100%);
+    background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 25%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.9) 100%);
 }
 
 .timeline-100 .character-info-small {
@@ -209,11 +211,10 @@ fieldset.form-group > div {
 
 /** display priority button **/
 .timeline-wrapper .btn-timeline-display-toggle {
-    position: fixed;
-    bottom: 12rem;
+    position: sticky;
+    top: 10rem;
     left: 2rem;
     z-index: 2;
-    opacity: .8;
 }
 
 /*****************
