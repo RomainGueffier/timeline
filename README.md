@@ -1,4 +1,4 @@
-# Timeline.io - La vraie chronologie
+# Timeline.thenest - La vraie chronologie
 Ce projet permet de visualiser l'histoire et le temps sur l'échelle de l'humanité.
 Une frise chronologique permet d'ajouter des personnages, périodes et évènements et de les comparer entre eux.
 Il est possible d'adapter l'échelle de la frise et d'avoir un tout nouveau regard sur l'histoire !
@@ -22,8 +22,18 @@ Source docker env : https://github.com/coloso/symfony-docker
 **!!! Attention à ne pas laisser un serveur apache ou mysql tourner sur les ports 80/81/3306, sinon docker ne démarrera pas !!!**
 
 ## Installation / Mise à jour
+Pour collaborer au développement, merci de cloner la branche **DEV**
+
 ### Installer le proxy
-Installer et mettre en route le proxy disponible sur le dépôt suivant : https://github.com/RomainGueffier/eagle.git
+Installer et mettre en route le proxy disponible sur le dépôt suivant : https://github.com/RomainGueffier/eagle.thenest.git
+> Il est sinon possible de modifier le docker-compose pour tourner symfony sans proxy
+
+### Installer la base de données et phpmyadmin
+Installer et mettre en route le proxy disponible sur le dépôt suivant : https://github.com/RomainGueffier/penguin.thenest.git
+> Il est également possible de modifier le docker-compose pour faire touner mysql sans le proxy
+
+### Installer un service de mail
+Utiliser la configuration de son gmail ou ajouter un service docker comme **maildev**
 
 ### Récupération des sources
 Récupérer le zip / faire un git clone dans un répertoire sur son poste
@@ -36,7 +46,7 @@ run docker and connect to container:
 ```
 
 ### Installation de Symfony (application)
-install latest version of [Symfony](http://symfony.com/doc/current/setup.html) via composer:
+Installer la dernière version de [Symfony](http://symfony.com/doc/current/setup.html) via composer:
 
 Lorsque Docker est démarré, lancer la commande :
 ```
@@ -82,13 +92,8 @@ $ yarn encore production
 Enfin, cette commande pour vider tous les caches :
 ```
 $ bin/console cache:pool:clear cache.global_clearer
+$ bin/console cache:warmup
 ```
 
 ### Accès à l'application
 Accéder à [localhost](http://localhost/) dans le navigateur
-
-### Reste à faire
-* Ajouter dans les formulaires des données la possibilité de lier des données à une frise
-* Modifier les entités dans ce but
-* Revoir le graphisme du site (encore)
-* Ajouter la notion de frise partagée, en lecture seule, etc
