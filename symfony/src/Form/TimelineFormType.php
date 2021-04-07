@@ -17,6 +17,17 @@ class TimelineFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // range choices ( 1 to 100 step 5)
+        $ranges = [];
+        foreach (range(0, 100, 5) as $number) {
+            $plural = 's';
+            if ($number === 0) {
+                $number = 1;
+                $plural = '';
+            }
+            $ranges[$number . ' an' . $plural] = $number;
+        }
+
         $builder
             ->add('name', TextType::class, ['label' => 'Nom', 'required' => true,])
             ->add('description', TextareaType::class, ['label' => 'Description'])
@@ -32,11 +43,7 @@ class TimelineFormType extends AbstractType
                 'required' => true,
                 'label' => 'Unité de frise',
                 'help' => 'La durée de la plus petite unité de temps sur la courbe',
-                'choices' => [
-                    '1 an' => 0,
-                    '10 ans' => 1,
-                    '100 ans' => 2
-                ],
+                'choices' => $ranges,
                 'expanded' => false,
                 'multiple' => false
             ])
