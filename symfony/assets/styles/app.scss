@@ -67,6 +67,18 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     height: 2rem;
 }
 
+.character .character-actions {
+    position: sticky;
+    left: .5rem;
+    right: .5rem;
+    margin: auto;
+    width: fit-content;
+}
+
+.character .character-actions > small {
+    margin: auto .5rem;
+}
+
 .event, .longevent {
     position: absolute;
     height: 100%;
@@ -197,24 +209,12 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
     background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 25%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.9) 100%);
 }
 
-.timeline-100 .character-info-small {
-    display: none;
-}
-
 /** Forms filters **/
 fieldset.form-group > div {
     max-height: 150px;
     border: 1px solid #EEE;
     padding: .8em;
     overflow: auto;
-}
-
-/** display priority button **/
-.timeline-wrapper .btn-timeline-display-toggle {
-    position: sticky;
-    top: 10rem;
-    left: 2rem;
-    z-index: 2;
 }
 
 /*****************

@@ -52,29 +52,24 @@ class TimelineController extends AbstractController
         // Valeurs par défaut
         $start = $timeline->getStart() ?: -4100; // année de début de la frise
         $end = $timeline->getEnd() ?: 2000; // année de fin de la frise
-        $unit = 100; // en années par 50px
-        $range = $timeline->getUnit() ?: 2; // équivalent unit dans le form (2=>100ans,1=>10ans,0=>1an)
+        $range = $timeline->getUnit() ?: 100; // en années par 50px (défaut 100 ans)
 
         // GET modifications des valeurs
         $range = $request->query->get('range') != null ? $request->query->get('range') : $range;
+        if ($range < 1) {
+            $range = 1;
+        }
 
         // !!! todo vérification date de fin pas inférieure date de début
         $start = $request->query->get('start') != null ? $request->query->get('start') : $start;
         $end = $request->query->get('end') != null ? $request->query->get('end') : $end;
 
-        if ($range == 2) {
-            $unit = 100;
-        } elseif ($range == 1) {
-            $unit = 10;
-        } else {
-            $unit = 1;
-        }
-        $ratio = $unit / 50;
+        $ratio = $range / 50;
         $date = $start;
 
         $graphic_timeline = '<div class="timeline-period"></div>';
         while ($date < $end) {
-            $date += $unit;
+            $date += $range;
             if ($date == 0) {
                 $graphic_timeline .= '<div class="timeline-period timeline-period-zero"><label>0</label></div>';
             } elseif (is_integer(abs($date) / 1000)) {
@@ -92,7 +87,6 @@ class TimelineController extends AbstractController
             'ratio' => $ratio,
             'start' => $start,
             'end' => $end,
-            'unit' => $unit,
             'timeline' => $timeline,
             'range' => $range,
             'graphic_timeline' => $graphic_timeline

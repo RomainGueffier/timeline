@@ -1,25 +1,25 @@
 {% if characters %}
 {% for key, character in characters %}
 <div class="character character-birth-{{ character.birth.accuracy }} character-death-{{ character.death.accuracy }} text-center {% for category in character.categories %}category-{{ category.id }} {% endfor %}" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ (character.weight * 3) - 3 }}rem;">
-    <small>{{ character.name }}</small>
-    <button type="button" class="btn btn-sm btn-link" data-toggle="collapse" data-target="#collapse-character-{{ key }}" aria-expanded="false" aria-controls="collapse-character-{{ key }}">
-        <i class="fas fa-plus-circle"></i>
-    </button>
-    <small class="character-info-small float-left m-2">{{ character.name }} {{ (character.birth.accuracy < 100) ? '~' : '' }}{{ character.birth.year }}</small>
-    <small class="character-info-small float-right m-2">{{ character.name }} {{ (character.death.accuracy < 100) ? '~' : '' }}{{ character.death.year }}</small>
-    <div class="collapse btn-group small" id="collapse-character-{{ key }}">
-        <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-character-{{ key }}">
-            <i class="fas fa-info-circle" data-toggle="popover" title="Voir plus"></i>
+    <div class="character-actions">
+        <small>{{ character.name }}</small>
+        <button type="button" class="btn btn-sm btn-link" data-toggle="collapse" data-target="#collapse-character-{{ key }}" aria-expanded="false" aria-controls="collapse-character-{{ key }}">
+            <i class="fas fa-plus-circle"></i>
         </button>
-        <button type="button" class="btn btn-link btn-sm btn-hide">
-            <i class="fas fa-eye-slash" data-toggle="popover" title="Masquer"></i>
-        </button>
-        <button type="button" class="btn btn-link btn-sm btn-up disabled">
-            <i class="fas fa-level-up-alt" data-toggle="popover" title="Monter"></i>
-        </button>
-        <button type="button" class="btn btn-link btn-sm btn-down disabled">
-            <i class="fas fa-level-down-alt" data-toggle="popover" title="Descendre"></i>
-        </button>
+        <div class="collapse btn-group small" id="collapse-character-{{ key }}">
+            <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-character-{{ key }}">
+                <i class="fas fa-info-circle" data-toggle="popover" title="Voir plus"></i>
+            </button>
+            <button type="button" class="btn btn-link btn-sm btn-hide">
+                <i class="fas fa-eye-slash" data-toggle="popover" title="Masquer"></i>
+            </button>
+            <button type="button" class="btn btn-link btn-sm btn-up disabled">
+                <i class="fas fa-level-up-alt" data-toggle="popover" title="Monter"></i>
+            </button>
+            <button type="button" class="btn btn-link btn-sm btn-down disabled">
+                <i class="fas fa-level-down-alt" data-toggle="popover" title="Descendre"></i>
+            </button>
+        </div>
     </div>
 </div>
 <!-- Hidden Modal -->

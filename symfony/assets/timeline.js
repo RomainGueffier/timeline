@@ -1,17 +1,17 @@
 $(function(){
 
-    $("form #start").on('change', function(e){
+    $("form #start").on('change', function(e) {
         $("form #end").attr('min', $(this).val());
     });
-    $("form #end").on('change', function(e){
+    $("form #end").on('change', function(e) {
         $("form #start").attr('max', $(this).val());
     });
-    $("#range").on('change', function(e){
-        var range = $(this).val();
-        var value = "";
-        if (range == 0) value = "1 ans";
-        if (range == 1) value = "10 ans";
-        if (range == 2) value = "100 ans";
+    $("#range").on('change', function(e) {
+        let range = $(this).val();
+        if (range < 1) {
+            range = 1;
+        }
+        const value = range + (range <= 1 ? ' an' : ' ans');
         $(".badge-range").text(value);
     });
     $("#start").on('change', function(e){
@@ -24,7 +24,7 @@ $(function(){
         }
         $(".badge-start").text(value);
     });
-    $("#end").on('change', function(e){
+    $("#end").on('change', function(e) {
         var end = $(this).val();
         var value = "";
         if (end < 0) {
