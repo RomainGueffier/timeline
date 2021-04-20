@@ -29,7 +29,7 @@ class TimelineFormType extends AbstractType
         }
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom', 'required' => true,])
+            ->add('name', TextType::class, ['label' => 'Nom', 'required' => true])
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('start', IntegerType::class, [
                 'label' => 'Date de début',
