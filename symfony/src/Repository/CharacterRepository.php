@@ -19,32 +19,45 @@ class CharacterRepository extends ServiceEntityRepository
         parent::__construct($registry, Character::class);
     }
 
-    // /**
-    //  * @return Character[] Returns an array of Character objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Array Returns an array with pairs of id 
+     * and name for all characters off an user
+     */
+    public function findAllByUser($userId)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, id FROM `character` c
+            WHERE c.user_id = :user
+            ORDER BY c.name ASC
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['user' => $userId]);
 
-    /*
-    public function findOneBySomeField($value): ?Character
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallkeyvalue
+        return $stmt->fetchAllKeyValue();
     }
-    */
+
+    /**
+     * @return Array Returns an array with data of characters to export in file
+     * Do not export sensible data like ids !
+     * !! Todo export images
+     */
+    public function exportByIds(array $charactersIds)
+    {
+        if (!$charactersIds) {
+            return [];
+        }
+        
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, birth, birthplace, death, deathplace, age, description, weight, source FROM `character` c
+            WHERE c.id IN (' . implode(',', $charactersIds) . ')
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallassociative
+        return $stmt->fetchAllAssociative();
+    }
 }

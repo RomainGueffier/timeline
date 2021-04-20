@@ -19,32 +19,44 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    // /**
-    //  * @return Category[] Returns an array of Category objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Array Returns an array with pairs of id 
+     * and name for all categories off an user
+     */
+    public function findAllByUser($userId)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, id FROM `category` c
+            WHERE c.user_id = :user
+            ORDER BY c.name ASC
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['user' => $userId]);
 
-    /*
-    public function findOneBySomeField($value): ?Category
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallkeyvalue
+        return $stmt->fetchAllKeyValue();
     }
-    */
+
+    /**
+     * @return Array Returns an array with data of categories to export in file
+     * Do not export sensible data like ids !
+     */
+    public function exportByIds(array $categoryIds)
+    {
+        if (!$categoryIds) {
+            return [];
+        }
+        
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, description FROM category c
+            WHERE c.id IN (' . implode(',', $categoryIds) . ')
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallassociative
+        return $stmt->fetchAllAssociative();
+    }
 }

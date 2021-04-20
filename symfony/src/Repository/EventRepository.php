@@ -19,32 +19,45 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    // /**
-    //  * @return Event[] Returns an array of Event objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Array Returns an array with pairs of id 
+     * and name for all events off an user
+     */
+    public function findAllByUser($userId)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, id FROM `event` e
+            WHERE e.user_id = :user
+            ORDER BY e.name ASC
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['user' => $userId]);
 
-    /*
-    public function findOneBySomeField($value): ?Event
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallkeyvalue
+        return $stmt->fetchAllKeyValue();
     }
-    */
+
+    /**
+     * @return Array Returns an array with data of event to export in file
+     * Do not export sensible data like ids !
+     * !! Todo export also images
+     */
+    public function exportByIds(array $eventIds)
+    {
+        if (!$eventIds) {
+            return [];
+        }
+        
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, start, end, duration, description, source FROM event e
+            WHERE e.id IN (' . implode(',', $eventIds) . ')
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallassociative
+        return $stmt->fetchAllAssociative();
+    }
 }

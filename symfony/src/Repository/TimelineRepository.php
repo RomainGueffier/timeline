@@ -19,32 +19,44 @@ class TimelineRepository extends ServiceEntityRepository
         parent::__construct($registry, Timeline::class);
     }
 
-    // /**
-    //  * @return Timeline[] Returns an array of Timeline objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Array Returns an array with pairs of id 
+     * and name for all timelines off an user
+     */
+    public function findAllByUser(int $userId)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, id FROM timeline t
+            WHERE t.user_id = :user
+            ORDER BY t.name ASC
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['user' => $userId]);
 
-    /*
-    public function findOneBySomeField($value): ?Timeline
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallkeyvalue
+        return $stmt->fetchAllKeyValue();
     }
-    */
+
+    /**
+     * @return Array Returns an array with data of timelines to export in file
+     * Do not export sensible data like ids !
+     */
+    public function exportByIds(array $timelinesIds)
+    {
+        if (!$timelinesIds) {
+            return [];
+        }
+        
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT name, description, start, end, unit FROM timeline t
+            WHERE t.id IN (' . implode(',', $timelinesIds) . ')
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallassociative
+        return $stmt->fetchAllAssociative();
+    }
 }

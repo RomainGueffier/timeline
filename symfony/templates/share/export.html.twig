@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export de données{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="mb-2 mt-5">Export de données</h2>
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">
+                    Pour exporter les données, tu peux choisir entre exporter chaque élément séparément ou l'ensemble des données associées (personnages et évènements de la frise ou de la catégorie par exemple).
+                </p>
+                <p class="text-muted">
+                    Lors d'un export complet, les liens entre les données sont conservés, dans le cas contraire tu devras manuellement associer les données à l'import.
+                    Lors de l'importation, ces données seront automatiquement liées au compte depuis lequel se fait l'import.
+                    Les partages ne sont pas conservés, ni le mode public ou privé. Tu devras les redéfinir à l'import.
+                </p>
+                {% for form in forms %}
+                <hr/>
+                {{ form_start(form) }}
+                    {% if form_errors(form) %}
+                    <div class="alert alert-danger">
+                        {{ form_errors(form) }}
+                    </div>
+                    {% endif %}
+                    {% set formExported = attribute(exported, form.vars.name) %}
+                    {% if formExported is defined and formExported is not empty %}
+                    {% if formExported.error %}
+                    <p class="alert alert-danger">
+                        Le précédent export n'a pas fonctionné car aucune donnée valide n'a été trouvé. Merci de ré-essayer ou de contacter le webmaster en cas de problème persistant.
+                    </p>
+                    {% elseif formExported.file is not empty %}
+                    <p class="alert alert-success">
+                        Le précédent export est terminé, le fichier généré est disponible <a href="{{ path('download', {file: formExported.file}) }}" target="_blank" class="btn btn-link"><i class="fas fa-download"></i> ici</a>
+                    </p>
+                    {% endif %}
+                    {% endif %}
+                    <div class="form-group">
+                        {{ form_row(form.entity) }}
+                    </div>
+                    <div class="form-row">
+                        <div class="col-auto">
+                            {{ form_row(form.export) }}
+                        </div>
+                        {% if form.export_all is defined %}
+                        <div class="col-auto">
+                            {{ form_row(form.export_all) }}
+                        </div>
+                        {% endif %}
+                    </div>
+                {{ form_end(form) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('share') }}
+{% endblock %}
