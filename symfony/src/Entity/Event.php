@@ -6,6 +6,7 @@ use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
@@ -21,31 +22,37 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"export", "export_all"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="array")
+     * @Groups({"export", "export_all"})
      */
     private $start = [];
 
     /**
      * @ORM\Column(type="array")
+     * @Groups({"export", "export_all"})
      */
     private $end = [];
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"export", "export_all"})
      */
     private $duration;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $source;
 
@@ -141,14 +148,14 @@ class Event
         return $this;
     }
 
-    public function getSource(): ?string
+    public function getSource(): ?array
     {
-        return is_array($this->source) ? implode(',', $this->source) : '';
+        return $this->source;
     }
 
-    public function setSource(?string $source): self
+    public function setSource(?array $source): self
     {
-        $this->source = explode(',', $source);
+        $this->source = $source;
 
         return $this;
     }

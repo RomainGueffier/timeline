@@ -167,7 +167,7 @@ class CharacterController extends AbstractController
      * @Route("/character/deleteajax/id/{id}", name="character_ajax_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function deleteAjax($id, FileUploader $fileUploader, Response $response): Response
+    public function deleteAjax($id, FileUploader $fileUploader): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->findOneBy([
@@ -188,6 +188,7 @@ class CharacterController extends AbstractController
             $error = false;
         }
 
+        $response = new Response();
         $response->setContent(json_encode([
             'error' => $error,
             'message' => $message

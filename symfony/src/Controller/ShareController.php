@@ -19,10 +19,14 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File as ConstraintsFile;
 use App\Entity\Timeline;
 use App\Entity\Character;
 use App\Entity\Event;
 use App\Entity\Category;
+use Symfony\Component\Serializer\SerializerInterface;
+use App\Service\ImportUploader;
 
 class ShareController extends AbstractController
 {
@@ -39,7 +43,7 @@ class ShareController extends AbstractController
      * @Route("/share/export", name="export")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function export(Request $request): Response
+    public function export(Request $request, SerializerInterface $serializer): Response
     {
         $userId = $this->getUser()->getId();
         
@@ -57,7 +61,7 @@ class ShareController extends AbstractController
             // build form object from data and name
             $form = $this->_generateEntityListForm($name, $data);
             // catch POST request to compute posted form
-            $exported[$name] = $this->_handleRequest($request, $form);
+            $exported[$name] = $this->_handleRequest($request, $form, $serializer);
             // build rendering of forms
             $forms[$name . 'Form'] = $form->createView();
         }
@@ -68,10 +72,96 @@ class ShareController extends AbstractController
         ]);
     }
 
-    #[Route('/share/import', name: 'import')]
-    public function import(): Response
+    /**
+     * @Route("/share/import", name="import")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function import(Request $request, SerializerInterface $serializer, ImportUploader $fileUploader): Response
     {
+        $form = $this->_generateImportForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $entitiesClasses = [
+                'timelines' => Timeline::class,
+                'characters' => Character::class,
+                'events' => Event::class,
+                'categories' => Category::class
+            ];
+            $entityClass = $entitiesClasses[$data['entity']];
+            $timelineId = $data['timeline']; // timeline which children data must be linked
+
+            // upload json file
+            $jsonFile = $form->get('file')->getData();
+            if ($jsonFile && $entityClass) {
+                $filename = $fileUploader->upload($jsonFile);
+
+                // retrieve raw data from json file
+                $jsonData = file_get_contents($fileUploader->getTargetDirectory() . '/' . $filename);
+                try {
+                    $entities = $serializer->deserialize(
+                        $jsonData,
+                        $entityClass . '[]',
+                        'json',
+                        [
+                            'groups' => [$data['type']] // export or export_all
+                        ]
+                    );
+                } catch (Exception $e) {
+                    throw $this->createException("Impossible d'importer ce fichier, les données semblent mal formatée ou le type de donnée ne correspond pas au contenu du fichier : ". $e->getMessage());
+                }
+                
+                //dd($entities);
+                // process and storage
+                $entityManager = $this->getDoctrine()->getManager();
+
+                foreach ($entities as $entity) {
+                    // assign to current user
+                    $entity->setUser($this->getUser());
+                    if ($data['type'] == 'export_all' && ($entityClass === Timeline::class || $entityClass === Category::class)) {
+                        foreach ($entity->getCharacters() as $character) {
+                            $character->setUser($this->getUser());
+                        }
+                        foreach ($entity->getEvents() as $event) {
+                            $event->setUser($this->getUser());
+                        }
+                        if ($entityClass === Timeline::class) {
+                            foreach ($entity->getCategories() as $category) {
+                                $category->setUser($this->getUser());
+                            }
+                        }
+                    }
+                    
+                    // import always set visibility private
+                    if ($entityClass === Timeline::class) {
+                        $entity->setVisibility(false);
+                    }
+
+                    // if imported as a child of a database timeline, link to new timeline
+                    if ($entityClass !== Timeline::class && $timelineId) {
+                        $timeline = $entityManager->getRepository(Timeline::class)->find($timelineId);
+                        if ($timeline) {
+                            $entity->setTimeline($timeline);
+                        }
+                    }
+
+                    // save in database
+                    $entityManager->persist($entity);
+                    $entityManager->flush();
+                }
+
+                return $this->render('share/imported.html.twig', [
+                    'import_type' => $data['type'],
+                    'entity_class' => $data['entity'],
+                    'entities' => $entities
+                ]);
+            }
+        } 
+
         return $this->render('share/import.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 
@@ -129,9 +219,9 @@ class ShareController extends AbstractController
     }
 
     /**
-     * Handle Request and compute data from form
+     * Handle Request and compute data from form to json
      */
-    private function _handleRequest(Request $request, object $form)
+    private function _handleRequest(Request $request, object $form, SerializerInterface $serializer)
     {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -144,22 +234,33 @@ class ShareController extends AbstractController
                     'events' => Event::class,
                     'categories' => Category::class
                 ];
+                $formName = $form->getName();
+                $exportMode = $form->getClickedButton()->getName();
+                $entities = [];
 
-                if (!in_array($form->getName(), array_keys($entitiesClasses))) {
+                if (!in_array($formName, array_keys($entitiesClasses))
+                    || !$data['entity']
+                    || !in_array($exportMode, ['export', 'export_all'])
+                ) {
                     return ['error' => true, 'file' => ""];
                 }
 
                 // export data
-                $entityManager = $this->getDoctrine()->getManager();
-                // get main entity's data
-                $entities = $entityManager->getRepository($entitiesClasses[$form->getName()])->exportByIds($data['entity']);
-                // if button all data clicked, then add linked data to main entity
-                if ($form->has('export_all') && $form->getClickedButton() === $form->get('export_all')) {
-                    //$childrenEntities = $entityManager->getRepository(Character::class)->exportByIds($data['entity']);
-                }
+                $json = "";
+                $entities = $this->getDoctrine()
+                                ->getManager()
+                                ->getRepository($entitiesClasses[$formName])
+                                ->findBy(['id' => $data['entity']]);
 
-                //dd(json_encode($entities));
-                return ['error' => false, 'file' => $this->_storeInJsonFile($entities)];
+                if ($entities) {
+                    $json = $serializer->serialize(
+                        $entities,
+                        'json',
+                        ['groups' => $exportMode] // export or export_all
+                    );
+                }
+                
+                return ['error' => false, 'file' => $this->_writeTmpFile($json)];
             }
             // form submitted, but errors
             return ['error' => true, 'file' => ""];
@@ -174,7 +275,7 @@ class ShareController extends AbstractController
      * dependency of data with current app
      * https://symfony.com/doc/current/components/filesystem.html
      */
-    private function _storeInJsonFile(array $data): string
+    private function _writeTmpFile(string $data): string
     {
         $filesystem = new Filesystem();
         $filename = 'export' . time();
@@ -186,8 +287,76 @@ class ShareController extends AbstractController
             throw $this->createException("Impossible de créer un répertoire dans le dossier temporaire ".$exception->getPath());
         }
    
-        $filesystem->dumpFile('/tmp/downloads/' . $filename . '.timeline', json_encode($data));
+        $filesystem->dumpFile('/tmp/downloads/' . $filename . '.timeline', $data);
 
         return $filename;
+    }
+
+    /**
+     * Import form definition
+     */
+    private function _generateImportForm()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $timelines = $entityManager->getRepository(Timeline::class)->findAllByUser($this->getUser()->getId());
+
+        return $this->get('form.factory')
+            ->createNamed('import')
+            ->add('file', FileType::class, [
+                'label' => 'Fichier d\'import (.timeline)',
+                'required' => true,
+                'constraints' => [
+                    new ConstraintsFile([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/json',
+                        ],
+                        'mimeTypesMessage' => 'Merci de téléverser uniquement un fichier .timeline',
+                    ])
+                ]
+            ])
+            ->add('entity', ChoiceType::class, [
+                'required' => true,
+                'label' => 'Type de donnée',
+                'help' => 'Sélectionner le type de donnée de contenue dans le fichier',
+                'choices' => [
+                    'Frises chronologiques' => 'timelines',
+                    'Catégories' => 'categories',
+                    'Personnages' => 'characters',
+                    'Évènements' => 'events'
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'constraints' => [
+                    new Choice([
+                        'choices' => ['timelines', 'categories', 'characters', 'events'],
+                        'message' => "Merci de choisir une option valide !",
+                    ])
+                ]
+            ])
+            ->add('type', ChoiceType::class, [
+                'required' => true,
+                'label' => 'Type d\'import',
+                'choices' => [
+                    'Import simple' => 'export',
+                    'Import complet (avec toutes les données associées)' => 'export_all'
+                ],
+                'help' => "Un import simple va seulement ajouter à ton compte les données de la frise ou de la catégorie mais pas les personnages ou évènements associés.
+                                    Tu devras les associer manuellement. Un export complet ajoute automatiquement les données associées pendant l'import.",
+                'constraints' => [
+                    new Choice([
+                        'choices' => ['export', 'export_all'],
+                        'message' => "Merci de choisir une option valide !",
+                    ])
+                ]
+            ])
+            ->add('timeline', ChoiceType::class, [
+                'placeholder' => '-- Aucune --',
+                'required' => false,
+                'label' => 'Frise chronologique',
+                'choices' => $timelines,
+                'help' => "Sélectionne la frise chronologique à laquelle associer les données à importer. Si aucune n'est sélectionnée, les données orphelines pourront toujours être associées plus tard à une frise.",
+            ])
+            ->add('import', SubmitType::class, ['label' => 'Importer']);
     }
 }

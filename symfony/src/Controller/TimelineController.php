@@ -107,7 +107,6 @@ class TimelineController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $timeline = $form->getData();
 
-            $user = $this->getUser();
             $timeline->setUser($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -188,10 +187,10 @@ class TimelineController extends AbstractController
      * @Route("/timeline/deleteajax/id/{id}", name="timeline_ajax_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function deleteAjax($id, Response $response): Response
+    public function deleteAjax($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $timeline = $entityManager->getRepository(Event::class)->findOneBy([
+        $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
             'id' => $id,
             'user' => $this->getUser()->getId(),
         ]);
@@ -205,6 +204,7 @@ class TimelineController extends AbstractController
             $error = false;
         }
 
+        $response = new Response();
         $response->setContent(json_encode([
             'error' => $error,
             'message' => $message

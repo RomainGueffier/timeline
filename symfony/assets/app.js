@@ -172,4 +172,9 @@ $(function(){
             }
         });
     });
+
+    // all form input file personnalisation
+    $("input[type=file]").on('change', function (e){
+        $(this).next('.custom-file-label').text(e.target.files[0].name);
+    })
 });

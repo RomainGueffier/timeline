@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\CallbackTransformer;
 
 class EventType extends AbstractType
 {
@@ -65,6 +66,18 @@ class EventType extends AbstractType
                 'help' => "Sélectionner la frise sur laquelle l'évènement apparaîtra"
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+
+            // https://symfony.com/doc/current/form/data_transformers.html#example-1-transforming-strings-form-data-tags-from-user-input-to-an-array
+            $builder->get('source')->addModelTransformer(new CallbackTransformer(
+                function ($sourceAsArray) {
+                    // transform the array to a string
+                    return implode(', ', $sourceAsArray);
+                },
+                function ($sourceAsString) {
+                    // transform the string back to an array
+                    return explode(', ', $sourceAsString);
+                }
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
