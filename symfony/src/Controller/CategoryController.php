@@ -149,7 +149,7 @@ class CategoryController extends AbstractController
      * @Route("/category/deleteajax/id/{id}", name="category_ajax_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function deleteAjax($id, Response $response): Response
+    public function deleteAjax($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository(Category::class)->findOneBy([
@@ -166,6 +166,7 @@ class CategoryController extends AbstractController
             $error = false;
         }
 
+        $response = new Response();
         $response->setContent(json_encode([
             'error' => $error,
             'message' => $message

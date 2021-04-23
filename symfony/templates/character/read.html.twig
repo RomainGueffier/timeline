@@ -20,7 +20,7 @@
                 <h6>Source(s)</h6>
                 <ul class="list-group list-group-flush mb-3">
                 {% if character.source %}
-                {% for source in character.source|split(',') %}
+                {% for source in character.source %}
                 <li class="list-group-item">
                     <a href="{{ source }}" class="badge badge-info">{{ source }}</a>
                 </li>

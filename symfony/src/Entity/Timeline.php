@@ -6,6 +6,7 @@ use App\Repository\TimelineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TimelineRepository::class)
@@ -21,26 +22,31 @@ class Timeline
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"export", "export_all"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $start;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $end;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $unit;
 
@@ -50,17 +56,20 @@ class Timeline
     private $visibility;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="timeline")
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="timeline", cascade={"persist", "remove"})
+     * @Groups({"export_all"})
      */
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="timeline")
+     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="timeline", cascade={"persist", "remove"})
+     * @Groups({"export_all"})
      */
     private $characters;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="timeline")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="timeline", cascade={"persist", "remove"})
+     * @Groups({"export_all"})
      */
     private $events;
 

@@ -4,7 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    brochures_directory: '%kernel.project_dir%/public/uploads/images'
+    images_directory: '%kernel.project_dir%/public/uploads/images'
+    import_directory: '%kernel.project_dir%/public/uploads/import'
 
 services:
     # default configuration for services in *this* file
@@ -32,4 +33,7 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Service\FileUploader:
         arguments:
-            $targetDirectory: '%brochures_directory%'
+            $targetDirectory: '%images_directory%'
+    App\Service\ImportUploader:
+        arguments:
+            $targetDirectory: '%import_directory%'

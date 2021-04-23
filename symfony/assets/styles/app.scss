@@ -39,6 +39,14 @@ form legend {
     font-weight: bold;
 }
 
+.custom-file-input {
+    cursor: pointer;
+}
+
+.custom-file-input ~ .custom-file-label:lang(fr)::after {
+    content: "Choisir...";
+}
+
 /*****************
    Timeline styles
 ******************/

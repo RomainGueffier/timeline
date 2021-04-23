@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Données importées{% endblock %}
+
+{% block container %}
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h2 class="mb-2 mt-5"><i class="fas fa-file-import"></i> Données importées</h2>
+        <div class="card">
+            <div class="card-body">
+                <p class="alert alert-success">
+                    Les données ci-dessous ont été importées avec succès !
+                </p>
+                <div class="accordion" id="accordionEntities">
+                    {% for key,entity in entities %}
+                    <div class="card">
+                        <div class="card-header" id="heading{{ key }}">
+                            {% if import_type == 'export_all' %}
+                            <button class="btn btn-sm btn-secondary float-right" type="button" data-toggle="collapse" data-target="#collapse{{ key }}" aria-expanded="true" aria-controls="collapse{{ key }}">
+                                Voir les données associées
+                            </button>
+                            {% endif %}
+                            <h5 class="mb-0">{{ entity.name }}</h5>
+                            <h6 class="text-muted">
+                                {{ entity_class|replace({
+                                    'timelines': 'Frise chronologique',
+                                    'categories': 'Catégorie',
+                                    'characters': 'Personnage',
+                                    'events': 'Évènement'
+                                }) }}
+                            </h6>
+                        </div>
+                        {% if import_type == 'export_all' %}
+                        <div id="collapse{{ key }}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionEntities">
+                            <div class="card-body">
+                                <h6 class="mt-3 p-2 bg-secondary text-light rounded">Personnages</h6>
+                                {% if entity.characters|length > 0 %}
+                                {% include 'share/entitylist.html.twig' with {'entities': entity.characters} %}
+                                {% else %}
+                                <p class="alert alert-secondary">Aucun personnage associé</p>
+                                {% endif %}
+                                <h6 class="mt-3 p-2 bg-secondary text-light rounded">Évènements</h6>
+                                {% if entity.events|length > 0 %}
+                                {% include 'share/entitylist.html.twig' with {'entities': entity.events} %}
+                                {% else %}
+                                <p class="alert alert-secondary">Aucun évènement associé</p>
+                                {% endif %}
+                                {% if entity_class == 'timelines' %}
+                                <h6 class="mt-3 p-2 bg-secondary text-light rounded">Catégories</h6>
+                                {% if entity.categories|length > 0 %}
+                                {% include 'share/entitylist.html.twig' with {'entities': entity.categories} %}
+                                {% else %}
+                                <p class="alert alert-secondary">Aucune catégorie associée</p>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

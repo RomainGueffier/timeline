@@ -37,26 +37,4 @@ class TimelineRepository extends ServiceEntityRepository
         // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallkeyvalue
         return $stmt->fetchAllKeyValue();
     }
-
-    /**
-     * @return Array Returns an array with data of timelines to export in file
-     * Do not export sensible data like ids !
-     */
-    public function exportByIds(array $timelinesIds)
-    {
-        if (!$timelinesIds) {
-            return [];
-        }
-        
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = '
-            SELECT name, description, start, end, unit FROM timeline t
-            WHERE t.id IN (' . implode(',', $timelinesIds) . ')
-            ';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-
-        // https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchallassociative
-        return $stmt->fetchAllAssociative();
-    }
 }

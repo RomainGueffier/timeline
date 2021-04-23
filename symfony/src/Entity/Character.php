@@ -6,8 +6,8 @@ use App\Repository\CharacterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CharacterRepository::class)
@@ -29,46 +29,55 @@ class Character
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"export", "export_all"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $birth;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $birthplace;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $death;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $deathplace;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"export", "export_all"})
      */
     private $age;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $source;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"export", "export_all"})
      */
     private $weight;
 
@@ -200,14 +209,14 @@ class Character
         return $this;
     }
 
-    public function getSource(): ?string
+    public function getSource(): ?array
     {
-        return is_array($this->source) ? implode(',', $this->source) : '';
+        return $this->source;
     }
 
-    public function setSource(?string $source): self
+    public function setSource(?array $source): self
     {
-        $this->source = explode(',', $source);
+        $this->source = $source;
 
         return $this;
     }
