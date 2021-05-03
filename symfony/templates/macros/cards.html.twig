@@ -1,0 +1,82 @@
+{# https://twig.symfony.com/doc/3.x/tags/macro.html #}
+
+{% macro row(entity, entity_name, list_path) %}
+{% import "/macros/buttons.html.twig" as buttons %}
+<article class="card shadow mb-3" id="{{ entity_name }}-wrapper-{{ entity.id }}">
+    <div class="card-body d-flex p-0">
+        <div class="w-100 p-3">
+            {{ _self.body(entity, entity_name) }}
+        </div>
+        <div class="bg-light p-3 d-flex flex-wrap align-content-center justify-content-center gap-2">
+            {{ buttons.actions(entity, entity_name) }}
+        </div>
+    </div>
+</article>
+{% endmacro %}
+
+{% macro grid(entity, entity_name, list_path) %}
+{% import "/macros/buttons.html.twig" as buttons %}
+<article class="col mb-3" id="{{ entity_name }}-wrapper-{{ entity.id }}">
+    <div class="card h-100 shadow">
+        {{ _self.image(entity) }}
+        <div class="card-body">
+            {{ _self.body(entity, entity_name) }}
+        </div>
+        <div class="card-footer">
+            {{ buttons.actions(entity, entity_name) }}
+        </div>
+    </div>
+</article>
+{% endmacro %}
+
+{% macro body(entity, entity_name) %}
+    {% if entity_name == 'character' %}
+    <h4 class="card-title">{{ entity.name }}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">
+        {{ entity.age }} ans <small>({{ entity.birth.year }}{{ entity.birth.BC ? ' av.n.è.' : '' }} - {{ entity.death.year }}{{ entity.birth.BC ? ' av.n.è.' : '' }})</small>
+    </h6>
+    <p class="card-text">{{ entity.description|u.truncate(50, '...') }}</p>
+    {% elseif entity_name == 'event' %}
+    <h4 class="card-title">{{ entity.name }}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">
+        {{ entity.duration }} an(s)
+        <small class="text-muted">
+            ({{ (entity.start.accuracy < 100) ? 'env. ' : '' }}
+            {% if entity.duration > 1 %}
+            {{ entity.start.year }} {{ entity.start.BC ? 'avant n.è.' : '' }} - {{ (entity.end.accuracy < 100) ? 'env. ' : '' }}{{ entity.end.year }} {{ entity.end.BC ? 'avant n.è.' : '' }}
+            {% else %}
+            {{ entity.start.year }} {{ entity.start.BC ? 'avant n.è.' : '' }}
+            {% endif %})
+        </small>
+    </h6>
+    <p class="card-text">{{ entity.description|u.truncate(50, '...') }}</p>
+    {% else %}
+    <h4>
+        {% if entity_name == 'timeline' %}<i class="fas fa-{{ entity.visibility ? 'lock' : 'unlock' }}"></i> {% endif %}
+        {{ entity.name }}
+    </h4>
+    <p class="text-muted">{{ entity.description|u.truncate(100, '...') }}</p>
+    {% endif %}
+{% endmacro %}
+
+{% macro image(entity) %}
+    {% if entity.imageFilename is defined %}
+    <img class="card-img-top" src="{{ entity.imageFilename ? asset('uploads/images/' ~ entity.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ entity.imageFilename }}">
+    {% endif %}
+{% endmacro %}
+
+{% macro form_add(form, entity_name) %}
+    <div class="card shadow mx-auto" style="max-width: 800px;">
+        <div class="card-body">
+            {{ form(form, {'action': path(entity_name ~ '_add')}) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro form_edit(form, entity_name, entity) %}
+    <div class="card shadow mx-auto" style="max-width: 800px;">
+        <div class="card-body">
+            {{ form(form, {'action': path(entity_name ~ '_edit', {id: entity.id})}) }}
+        </div>
+    </div>
+{% endmacro %}

@@ -1,37 +1,10 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Liste des personnages{% endblock %}
-
-{% block container %}
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        <a type="button" class="btn btn-success btn-lg btn-block my-3" href="{{ path('character_add') }}">
-            <i class="fas fa-plus-square"></i> Ajouter un personnage
-        </a>
-        {% if characters %}
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-            {% for character in characters %}
-            <div class="col mb-3" id="character-wrapper-{{ character.id }}">
-                <div class="card h-100 shadow">
-                    <img class="card-img-top" src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
-                    <div class="card-body">
-                        <h4 class="card-title">{{ character.name }}</h4>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ character.age }} ans <small>({{ character.birth.year }}{{ character.birth.BC ? ' av.n.è.' : '' }} - {{ character.death.year }}{{ character.birth.BC ? ' av.n.è.' : '' }})</small></h6>
-                        <p class="card-text">{{ character.description|u.truncate(50, '...') }}</p>
-
-                    </div>
-                    <div class="card-footer">
-                        <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-                        <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                        <button type="button" class="btn btn-danger btn-character-delete" character_id="{{ character.id }}"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p class="alert alert-warning" role="alert">Aucun personnage</p>
-        {% endif %}
-    </div>
-</main>
-{% endblock %}
+{% if characters %}
+{% import "/macros/cards.html.twig" as cards %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    {% for character in characters %}
+    {{ cards.grid(character, 'character') }}
+    {% endfor %}
+</div>
+{% else %}
+<p class="alert alert-warning" role="alert">Aucun personnage</p>
+{% endif %}

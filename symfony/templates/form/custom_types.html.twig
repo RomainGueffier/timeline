@@ -1,9 +1,9 @@
 {% block old_date_row %}
 {{ form_label(form) }}
-<div class="form-row my-3">
-    <div id="{{ form.vars.id }}" class="custom_form_olddate row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+<div class="mb-3 p-3 border rounded">
+    <div id="{{ form.vars.id }}" class="custom_form_olddate row row-cols-auto">
         {% for child in form.children|filter(child => not child.rendered) %}
-        <div class="form-group col">
+        <div class="col mb-3">
             {{ form_label(child) }}
             {{ form_widget(child) }}
             {{ form_help(child) }}
@@ -19,11 +19,11 @@
 <div class="form-group-inline">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <button type="button" id="age-calculator" class="form-control btn btn-secondary" data-toggle="tooltip" title="Calculer la durée à partir des dates de début et fin">
+            <button type="button" id="age-calculator" class="form-control btn btn-secondary" data-bs-toggle="tooltip" title="Calculer la durée à partir des dates de début et fin">
                 <i class="fas fa-calculator"></i>
             </button>
         </div>
-        <input id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" type="number" class="form-control" value="{{ form.vars.value }}" {% if form.vars.required %}required="required"{% endif %}>
+        <input id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" type="number" class="form-control bg-light" value="{{ form.vars.value }}" {% if form.vars.required %}required="required"{% endif %}>
     </div>
     {{ form_help(form) }}
     {{ form_errors(form) }}

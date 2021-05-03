@@ -1,23 +1,24 @@
 {% if characters %}
+{% import "/macros/lists.html.twig" as lists %}
 {% for key, character in characters %}
 <div class="character character-birth-{{ character.birth.accuracy }} character-death-{{ character.death.accuracy }} text-center {% for category in character.categories %}category-{{ category.id }} {% endfor %}" role="alert" style="width:{{ character.age / ratio }}px;left:{{ attribute(positions, key) }}px;top: {{ (character.weight * 3) - 3 }}rem;">
     <div class="character-actions">
         <small>{{ character.name }}</small>
-        <button type="button" class="btn btn-sm btn-link" data-toggle="collapse" data-target="#collapse-character-{{ key }}" aria-expanded="false" aria-controls="collapse-character-{{ key }}">
+        <button type="button" class="btn btn-sm btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-character-{{ key }}" aria-expanded="false" aria-controls="collapse-character-{{ key }}">
             <i class="fas fa-plus-circle"></i>
         </button>
         <div class="collapse btn-group small" id="collapse-character-{{ key }}">
-            <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-character-{{ key }}">
-                <i class="fas fa-info-circle" data-toggle="popover" title="Voir plus"></i>
+            <button type="button" class="btn btn-link btn-sm btn-modal" data-bs-toggle="modal" data-bs-target="#modal-character-{{ key }}">
+                <i class="fas fa-info-circle" data-bs-toggle="popover" title="Voir plus"></i>
             </button>
             <button type="button" class="btn btn-link btn-sm btn-hide">
-                <i class="fas fa-eye-slash" data-toggle="popover" title="Masquer"></i>
+                <i class="fas fa-eye-slash" data-bs-toggle="popover" title="Masquer"></i>
             </button>
             <button type="button" class="btn btn-link btn-sm btn-up disabled">
-                <i class="fas fa-level-up-alt" data-toggle="popover" title="Monter"></i>
+                <i class="fas fa-level-up-alt" data-bs-toggle="popover" title="Monter"></i>
             </button>
             <button type="button" class="btn btn-link btn-sm btn-down disabled">
-                <i class="fas fa-level-down-alt" data-toggle="popover" title="Descendre"></i>
+                <i class="fas fa-level-down-alt" data-bs-toggle="popover" title="Descendre"></i>
             </button>
         </div>
     </div>
@@ -30,23 +31,18 @@
                 <h5 class="modal-title" id="{{ key }}Label">
                     {{ character.name }} - <small class="text-muted">{{ (character.birth.accuracy == 100 or character.death.accuracy == 100) ? '' : 'env. ' }}{{ character.age }} an(s)</small>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <img src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}" class="img-fluid">
             <div class="modal-body">
                 <small class="text-muted">
                     {{ (character.birth.accuracy < 100) ? 'env. ' : '' }} {{ character.birth.year|abs }} {{ character.birth.BC ? 'avant n.è.' : '' }} - {{ (character.death.accuracy < 100) ? 'env. ' : '' }} {{ character.death.year|abs }} {{ character.death.BC ? 'avant n.è.' : '' }}
                 </small>
-                <p>{{ character.description|u.truncate(100, '...') }}</p>
+                <p class="mt-3">{{ character.description }}</p>
+                {{ lists.sources(character) }}
             </div>
             <div class="modal-footer">
-                <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-                {% if is_granted('edit', character) %}
-                <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                {% endif %}
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
             </div>
         </div>
     </div>

@@ -1,23 +1,24 @@
 {% if events %}
+{% import "/macros/lists.html.twig" as lists %}
 {% for key, event in events %}
 {% if event.duration <= 1 %}
 <div class="event {% for category in event.categories %}category-{{ category.id }} {% endfor %}" style="left: {{ attribute(positions, key) }}px;">
     <div class="collapse btn-group small" id="collapse-event-{{ key }}">
-        <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-event-{{ key }}">
-            <i class="fas fa-info-circle" data-toggle="popover" title="Voir plus"></i>
+        <button type="button" class="btn btn-link btn-sm btn-modal" data-bs-toggle="modal" data-bs-target="#modal-event-{{ key }}">
+            <i class="fas fa-info-circle" data-bs-toggle="popover" title="Voir plus"></i>
         </button>
         <button type="button" class="btn btn-link btn-sm btn-hide">
-            <i class="fas fa-eye-slash" data-toggle="popover" title="Masquer"></i>
+            <i class="fas fa-eye-slash" data-bs-toggle="popover" title="Masquer"></i>
         </button>
         <button type="button" class="btn btn-link btn-sm btn-up disabled">
-            <i class="fas fa-level-up-alt" data-toggle="popover" title="Monter"></i>
+            <i class="fas fa-level-up-alt" data-bs-toggle="popover" title="Monter"></i>
         </button>
         <button type="button" class="btn btn-link btn-sm btn-down disabled">
-            <i class="fas fa-level-down-alt" data-toggle="popover" title="Descendre"></i>
+            <i class="fas fa-level-down-alt" data-bs-toggle="popover" title="Descendre"></i>
         </button>
     </div>
     {{ event.name }}
-    <button type="button" class="btn btn-sm btn-link" data-toggle="collapse" data-target="#collapse-event-{{ key }}" aria-expanded="false" aria-controls="collapse-event-{{ key }}">
+    <button type="button" class="btn btn-sm btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-event-{{ key }}" aria-expanded="false" aria-controls="collapse-event-{{ key }}">
         <i class="fas fa-plus-circle"></i>
     </button>
 </div>
@@ -25,21 +26,21 @@
 <div class="longevent {% for category in event.categories %}category-{{ category.id }} {% endfor %}" style="left: {{ attribute(positions, key) }}px;width: {{ event.duration / ratio }}px;">
     <div class="longevent-content">
         <div class="collapse btn-group small" id="collapse-event-{{ key }}">
-            <button type="button" class="btn btn-link btn-sm btn-modal" data-toggle="modal" data-target="#modal-event-{{ key }}">
-                <i class="fas fa-info-circle" data-toggle="popover" title="Voir plus"></i>
+            <button type="button" class="btn btn-link btn-sm btn-modal" data-bs-toggle="modal" data-bs-target="#modal-event-{{ key }}">
+                <i class="fas fa-info-circle" data-bs-toggle="popover" title="Voir plus"></i>
             </button>
             <button type="button" class="btn btn-link btn-sm btn-hide">
-                <i class="fas fa-eye-slash" data-toggle="popover" title="Masquer"></i>
+                <i class="fas fa-eye-slash" data-bs-toggle="popover" title="Masquer"></i>
             </button>
             <button type="button" class="btn btn-link btn-sm btn-up disabled">
-                <i class="fas fa-level-up-alt" data-toggle="popover" title="Monter"></i>
+                <i class="fas fa-level-up-alt" data-bs-toggle="popover" title="Monter"></i>
             </button>
             <button type="button" class="btn btn-link btn-sm btn-down disabled">
-                <i class="fas fa-level-down-alt" data-toggle="popover" title="Descendre"></i>
+                <i class="fas fa-level-down-alt" data-bs-toggle="popover" title="Descendre"></i>
             </button>
         </div>
         {{ event.name }}
-        <button type="button" class="btn btn-sm btn-link" data-toggle="collapse" data-target="#collapse-event-{{ key }}" aria-expanded="false" aria-controls="collapse-event-{{ key }}">
+        <button type="button" class="btn btn-sm btn-link" data-bs-toggle="collapse" data-bs-target="#collapse-event-{{ key }}" aria-expanded="false" aria-controls="collapse-event-{{ key }}">
             <i class="fas fa-plus-circle"></i>
         </button>
     </div>
@@ -53,9 +54,7 @@
                 <h5 class="modal-title" id="{{ key }}Label">
                     {{ event.name }} - <small class="text-muted">{{ event.duration }} an(s)</small>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <img src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}" class="img-fluid">
             <div class="modal-body">
@@ -67,14 +66,11 @@
                     {{ event.start.year }} {{ event.start.BC ? 'avant n.è.' : '' }}
                     {% endif %})
                 </small>
-                <p>{{ event.description|u.truncate(100, '...') }}</p>
+                <p class="mt-3">{{ event.description|u.truncate(100, '...') }}</p>
+                {{ lists.sources(event) }}
             </div>
             <div class="modal-footer">
-                <a href="{{ path('event_read_one', {id: event.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-                {% if is_granted('edit', event) %}
-                <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                {% endif %}
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
             </div>
         </div>
     </div>

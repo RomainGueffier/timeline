@@ -1,0 +1,18 @@
+{# https://twig.symfony.com/doc/3.x/tags/macro.html #}
+
+{% macro sources(entity) %}
+    <h6>Source(s)</h6>
+    <ul class="list-group list-group-flush mb-3">
+        {% if entity.source %}
+        {% for source in entity.source %}
+        <li class="list-group-item">
+            <a href="{{ source }}" class="text-decoration-none text-primary">{{ source }}</a>
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="list-group-item">
+            Aucune source
+        </li>
+        {% endif %}
+    </ul>
+{% endmacro %}

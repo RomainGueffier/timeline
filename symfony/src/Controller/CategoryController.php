@@ -122,34 +122,7 @@ class CategoryController extends AbstractController
      * @Route("/category/delete/id/{id}", name="category_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete($id, TranslatorInterface $translator)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $category = $entityManager->getRepository(Category::class)->findOneBy([
-            'id' => $id,
-            'user' => $this->getUser()->getId(),
-        ]);
-        if (!$category) {
-            throw $this->createNotFoundException($translator->trans('pagenotfound'));
-        }
-        $name = $category->getName();
-
-        if ($category) {
-            $entityManager->remove($category);
-            $entityManager->flush();
-        }
-
-        return $this->render('category/delete.html.twig', [
-            'category' => $category,
-            'name' => $name
-        ]);
-    }
-
-    /**
-     * @Route("/category/deleteajax/id/{id}", name="category_ajax_delete")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function deleteAjax($id): Response
+    public function delete($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository(Category::class)->findOneBy([

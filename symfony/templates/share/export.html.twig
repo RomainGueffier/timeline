@@ -36,17 +36,13 @@
                     </p>
                     {% endif %}
                     {% endif %}
-                    <div class="form-group">
+                    <div class="mb-3">
                         {{ form_row(form.entity) }}
                     </div>
-                    <div class="form-row">
-                        <div class="col-auto">
-                            {{ form_row(form.export) }}
-                        </div>
+                    <div class="mb-3 d-flex flex-wrap gap-2">
+                        {{ form_row(form.export) }}
                         {% if form.export_all is defined %}
-                        <div class="col-auto">
-                            {{ form_row(form.export_all) }}
-                        </div>
+                        {{ form_row(form.export_all) }}
                         {% endif %}
                     </div>
                 {{ form_end(form) }}

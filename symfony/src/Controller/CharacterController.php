@@ -135,39 +135,7 @@ class CharacterController extends AbstractController
      * @Route("/character/delete/id/{id}", name="character_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete($id, FileUploader $fileUploader, TranslatorInterface $translator)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $character = $entityManager->getRepository(Character::class)->findOneBy([
-            'id' => $id,
-            'user' => $this->getUser()->getId(),
-        ]);
-
-        if (!$character) {
-            throw $this->createNotFoundException($translator->trans('pagenotfound'));
-        }
-        $name = $character->getName();
-
-        if ($character) {
-            $image = $character->getImageFilename();
-            if ($image) {
-                $fileUploader->delete($image);
-            }
-            $entityManager->remove($character);
-            $entityManager->flush();
-        }
-
-        return $this->render('character/delete.html.twig', [
-            'character' => $character,
-            'name' => $name
-        ]);
-    }
-
-    /**
-     * @Route("/character/deleteajax/id/{id}", name="character_ajax_delete")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function deleteAjax($id, FileUploader $fileUploader): Response
+    public function delete($id, FileUploader $fileUploader): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $character = $entityManager->getRepository(Character::class)->findOneBy([

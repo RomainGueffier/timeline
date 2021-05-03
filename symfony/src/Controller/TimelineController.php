@@ -15,7 +15,7 @@ class TimelineController extends AbstractController
 {
 
     /**
-     * @Route("/timeline/list", name="timeline_list")
+     * @Route("/timeline/list", name="timeline_read_all")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function list()
@@ -31,6 +31,24 @@ class TimelineController extends AbstractController
 
         return $this->render('timeline/list.html.twig', [
             'timelines' => $timelines,
+        ]);
+    }
+
+    /**
+     * @Route("/timeline/read/id/{id}", name="timeline_read_one")
+     */
+    public function read($id, Request $request, TranslatorInterface $translator)
+    {
+        $timeline = $this->getDoctrine()->getRepository(Timeline::class)->find($id);
+
+        if (!$timeline) {
+            throw $this->createNotFoundException($translator->trans('pagenotfound'));
+        }
+
+        $this->denyAccessUnlessGranted('read', $timeline);
+
+        return $this->render('timeline/read.html.twig', [
+            'timeline' => $timeline
         ]);
     }
 
@@ -113,7 +131,7 @@ class TimelineController extends AbstractController
             $entityManager->persist($timeline);
             $entityManager->flush();
 
-            return $this->redirectToRoute('timeline_list');
+            return $this->redirectToRoute('timeline_read_all');
         }
 
         return $this->render('timeline/add.html.twig', [
@@ -146,7 +164,7 @@ class TimelineController extends AbstractController
             $entityManager->persist($timeline);
             $entityManager->flush();
 
-            return $this->redirectToRoute('timeline_list');
+            return $this->redirectToRoute('timeline_read_all');
         }
 
         return $this->render('timeline/edit.html.twig', [
@@ -159,35 +177,7 @@ class TimelineController extends AbstractController
      * @Route("/timeline/delete/id/{id}", name="timeline_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete($id, TranslatorInterface $translator)
-    {
-        $user = $this->getUser();
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([
-            'id' => $id, 'user' => $user->getId()
-        ]);
-
-        if (!$timeline) {
-            throw $this->createNotFoundException($translator->trans('pagenotfound'));
-        }
-
-        $name = $timeline->getName();
-
-        $entityManager->remove($timeline);
-        $entityManager->flush();
-
-        return $this->render('timeline/delete.html.twig', [
-            'timeline' => $timeline,
-            'name' => $name
-        ]);
-    }
-
-    /**
-     * @Route("/timeline/deleteajax/id/{id}", name="timeline_ajax_delete")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function deleteAjax($id): Response
+    public function delete($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $timeline = $entityManager->getRepository(Timeline::class)->findOneBy([

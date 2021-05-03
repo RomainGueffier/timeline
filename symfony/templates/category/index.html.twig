@@ -1,30 +1,8 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Liste des catégories{% endblock %}
-
-{% block container %}
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        <a type="button" class="btn btn-success btn-lg btn-block my-3" href="{{ path('category_add') }}">
-            <i class="fas fa-plus-square"></i> Ajouter une catégorie
-        </a>
-        {% if categories %}
-        <ul class="list-group list-group-flush shadow rounded">
-            {% for category in categories %}
-            <li class="list-group-item" id="category-wrapper-{{ category.id }}">
-                <div class="float-right">
-                    <a href="{{ path('category_read_one', {id: category.id}) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('category_edit', {id: category.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                    <button type="button" class="btn btn-danger btn-category-delete" category_id="{{ category.id }}"><i class="fas fa-trash"></i></button>
-                </div>
-                <h4>{{ category.name }}</h4>
-                <p class="text-muted">{{ category.description|u.truncate(100, '...') }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="alert alert-warning" role="alert">Aucune catégorie</p>
-        {% endif %}
-    </div>
-</main>
-{% endblock %}
+{% if categories %}
+{% import "/macros/cards.html.twig" as cards %}
+{% for category in categories %}
+{{ cards.row(category, 'category') }}
+{% endfor %}
+{% else %}
+<p class="alert alert-warning" role="alert">Aucune catégorie</p>
+{% endif %}
