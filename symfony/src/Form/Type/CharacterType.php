@@ -85,7 +85,7 @@ class CharacterType extends AbstractType
             $builder->get('source')->addModelTransformer(new CallbackTransformer(
                 function ($sourceAsArray) {
                     // transform the array to a string
-                    return implode(', ', $sourceAsArray);
+                    return implode(', ', $sourceAsArray ?: []);
                 },
                 function ($sourceAsString) {
                     // transform the string back to an array

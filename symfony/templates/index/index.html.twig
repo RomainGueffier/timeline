@@ -7,22 +7,35 @@
 {{ encore_entry_link_tags('index') }}
 {% endblock %}
 
-{% block container %}
-<section class="jumbotron text-center rounded-0" style="background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url('{{ asset('/build/background.jpg') }}') no-repeat top center fixed;">
-    <div class="container">
-        <h1 class="jumbotron-heading display-3 text-light">Timeline.io</h1>
-        <p class="lead text-muted">L'histoire à travers ce constructeur de frise gratuit et intuitif ! Retrouvez des frises par thème ou créez vous même votre frise.</p>
-        <p>
-            <a href="{{ path('user_signin') }}" class="btn btn-lg btn-primary my-2">Inscription</a>
-            <a href="#timelines" class="btn btn-secondary btn-lg my-2">Parcourir les frises</a>
-        </p>
+{% block header %}
+<section class="px-4 py-5 text-center border-bottom">
+    <img class="d-block mx-auto mb-4" src="{{ asset('build/logo.png') }}" alt="" width="84" height="84">
+    <h1 class="display-5 fw-bold">Timeline.io</h1>
+    <div class="col-lg-6 mx-auto mb-5">
+        <p class="lead mb-4">L'histoire à travers ce constructeur de frise gratuit et intuitif ! Retrouvez des frises par thème ou créez vous même votre frise.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('dashboard') }}" class="btn btn-success btn-lg px-4 me-sm-3">Tableau de bord</a>
+            {% else %}
+            <a href="{{ path('user_signin') }}" class="btn btn-success btn-lg px-4 me-sm-3">Inscription</a>
+            {% endif %}
+            <a href="#timelines" class="btn btn-outline-secondary btn-lg px-4">Parcourir les frises</a>
+        </div>
     </div>
+    <div class="overflow-hidden" style="max-height: 30vh;">
+    <div class="container px-5">
+        <img src="{{ asset('/build/background.jpg') }}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="clock in sand" loading="lazy">
+    </div>
+  </div>
 </section>
-<section id="timelines" class="album py-5 bg-light">
+{% endblock %}
+
+{% block container %}
+<section id="timelines" class="album py-5 bg-white">
     <div class="container">
-        <h2 class="text-center display-4 my-2">Tendances</h2><hr>
+        <h2 class="pb-2 text-center">Dernières publications</h2>
         {% if timelines %}
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap justify-content-evenly pt-3 gap-3">
             {% for timeline in timelines %}
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                 <div class="card mb-4 shadow">

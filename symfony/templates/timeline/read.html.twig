@@ -1,0 +1,16 @@
+{% import "/macros/lists.html.twig" as lists %}
+{% import "/macros/buttons.html.twig" as buttons %}
+<h2 class="my-2 display-4">{{ timeline.name }}</h2>
+<div class="row no-gutters bg-light position-relative">
+    <div class="col-md-6 mb-md-0 p-md-4">
+        <img src="{{ asset('build/blank_image.jpg') }}" class="align-self-end" alt="{{ timeline.name }}" style="width:100%;">
+    </div>
+    <div class="col-md-6 position-static p-4 pl-md-0">
+        <small class="badge bg-dark">Visibilité {{ timeline.visibility ? 'publique' : 'privée' }}</small>
+        <p class="lead">
+            Depuis l'an {{ timeline.start < 0 ? timeline.start ~ ' av. n. è.' : timeline.start }} jusqu'à l'an {{ timeline.end < 0 ? timeline.end ~ ' av. n. è.' : timeline.end }}
+        </p>
+        <p>{{ timeline.description }}</p>
+        <p>{{ buttons.actions(timeline, 'timeline', true) }}</p>
+    </div>
+</div>

@@ -1,13 +1,35 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
 /** custom bootstrap theming **/
+$linen: linen;
+$floralwhite: floralwhite;
+
 $theme-colors: (
-    "light": whitesmoke,
-    "secondary": lightslategrey,
-    "info": lightskyblue,
-    "primary": steelblue,
-    "success": olive,
-    "warning": sandybrown,
-    "danger": firebrick,
-    "dark": #222,
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark,
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "white":      $white,
+  "gray":       $gray-600,
+  "darkgray":   $gray-800,
+  "linen":      $linen,
+  "floralwhite":$floralwhite
 );
 
 /** add bootstrap & font-awesome **/
@@ -18,8 +40,44 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 
 /*****************
+   Extends bootstrap 5
+******************/
+
+.border-md-start {
+    border-left: 1px solid #dee2e6;
+}
+
+.border-md-end {
+    border-right: 1px solid #dee2e6;
+}
+
+@include media-breakpoint-down(md) {
+    .border-md-start {
+        border-left: 0 !important;
+    }
+
+    .border-md-end {
+        border-right: 0 !important;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .w-sm-100 {
+        width: 100%;
+    }
+}
+
+.shadow-inset {
+    box-shadow: $box-shadow-inset;
+}
+
+/*****************
    Main styles
 ******************/
+
+html {
+    scroll-behavior: smooth;
+}
 
 .jumbotron {
     margin-bottom: 0;
@@ -29,12 +87,12 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
    Forms styles
 ******************/
 
-form .form-group > label.required:after,
+form .form-label.required:after,
 form legend.required:after {
     content: "*";
 }
 
-form .form-group > label,
+form .form-label,
 form legend {
     font-weight: bold;
 }
@@ -45,6 +103,10 @@ form legend {
 
 .custom-file-input ~ .custom-file-label:lang(fr)::after {
     content: "Choisir...";
+}
+
+.custom_form_olddate .form-label {
+    font-weight: normal;
 }
 
 /*****************
@@ -231,14 +293,41 @@ form legend {
     background: linear-gradient(90deg, rgba(176,196,222,0.2) 0%, rgba(176,196,222,0.9) 25%, rgba(176,196,222,0.9) 50%, rgba(176,196,222,0.9) 100%);
 }
 
-/** Forms filters **/
-fieldset.form-group > div {
-    max-height: 150px;
-    border: 1px solid #EEE;
-    padding: .8em;
-    overflow: auto;
-}
+/*****************
+   Dashboard styles
+******************/
 
 /*****************
    Fixes styles
 ******************/
+
+// Fix js click on parent button that detect i font awesome class's
+// https://stackoverflow.com/a/55628227
+i.fa, i.fas {
+    pointer-events: none;
+}
+
+/*****************
+   Animations styles
+******************/
+
+@keyframes shake {
+    0% { transform: translate(2px, 1px) rotate(0deg); } 
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(0px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(2px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(2px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.shake {
+    animation-name: shake;
+    animation-duration: 0.5s;
+    transform-origin:50% 50%;
+    animation-iteration-count: infinite;
+}

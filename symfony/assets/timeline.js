@@ -1,4 +1,31 @@
-$(function(){
+/**
+ * Timeline js
+ */
+
+import App from './app'
+
+var app = new App()
+const bootstrap = require('bootstrap')
+
+class Timeline {
+
+    constructor() {
+
+    }
+
+    showModal(event) {
+        const modalId = event.target.getAttribute('data-bs-target')
+        const modalEl = document.querySelector(modalId)
+        if (!!modalEl) {
+            var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)
+            modal.show()
+        }
+    }
+}
+
+var timeline = new Timeline()
+
+document.addEventListener("DOMContentLoaded", () => {
 
     $("form #start").on('change', function(e) {
         $("form #end").attr('min', $(this).val());
@@ -51,9 +78,9 @@ $(function(){
         $("#character-loader").remove();
         $(".timeline-events").html(response);
         // Launch ajax listener
-        $(document).on("click", ".btn-modal", function(e){
-            $(e.currentTarget.getAttribute('data-target')).modal('show');
-        });
+        app.on('document', 'click', '.btn-modal', function(e) {
+            timeline.showModal(e)
+        })
         // Launch dropdown hide listener
         $(document).on("click", ".btn-hide", function(e){
             $(this).parents(".character").hide('slow');
@@ -76,9 +103,9 @@ $(function(){
         $("#event-loader").remove();
         $(response).insertAfter(".timeline-events");
         // Launch ajax listener
-        $(document).on("click", ".btn-modal", function(e){
-            $(e.currentTarget.getAttribute('data-target')).modal('show');
-        });
+        app.on('document', 'click', '.btn-modal', function(e) {
+            timeline.showModal(e)
+        })
         // Launch dropdown hide listener
         $(document).on("click", ".btn-hide", function(e){
             $(this).parents(".event, .longevent").hide('slow');
@@ -141,4 +168,4 @@ $(function(){
         $(".timeline-wrapper .character").css('z-index', '1');
         $(".timeline-wrapper .event, .timeline-wrapper .longevent").css('z-index', '0');
     });
-});
+})

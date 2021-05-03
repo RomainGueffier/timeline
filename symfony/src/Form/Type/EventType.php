@@ -71,6 +71,7 @@ class EventType extends AbstractType
             $builder->get('source')->addModelTransformer(new CallbackTransformer(
                 function ($sourceAsArray) {
                     // transform the array to a string
+                    $sourceAsArray = $sourceAsArray ?: [];
                     return implode(', ', $sourceAsArray);
                 },
                 function ($sourceAsString) {

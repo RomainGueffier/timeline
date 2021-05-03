@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body_classes %}d-flex flex-column h-100{% endblock %}
+
+{% block header %}
+<header class="navbar navbar-dark bg-dark shadow w-100 justify-content-between align-items-center">
+    <div class="position-absolute d-md-none top-0 end-0 mt-3 me-2 d-flex">
+        <div class="dropdown dropstart me-2">
+            <a href="#" class="d-flex align-items-center text-muted text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user-circle fa-2x ms-2" aria-hidden="true"></i>
+            </a>
+            <ul id="dropdown-menu-mobile" class="dropdown-menu dropdown-menu-dark dropdown-menu-start text-small shadow" aria-labelledby="dropdownUser1">
+                <li><span class="dropdown-item">{{ user.pseudo }}</span></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item disabled" href="#">Paramètres</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ path('user_profile') }}" data-title="Mon profil utilisateur">
+                        Profil utilisateur
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a></li>
+            </ul>
+        </div>
+        <button class="navbar-toggler collapsed border-0" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Afficher le menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <a class="navbar-brand col-sm-12 col-md-4 col-lg-3 col-xxl-2 me-0 px-3 border-md-end border-secondary" href="{{ path('index') }}">
+        <img class="me-2" src="{{ asset('build/logo.png') }}" width="32" height="32" alt="logo" loading="lazy">
+        <span class="fs-5">Timeline.io</span>
+    </a>
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xxl-10 d-flex flex-wrap-reverse py-1 px-2 align-items-center justify-content-between w-sm-100">
+        <span class="d-block flex-grow-1 navbar-brand bg-dark lead text-muted text-wrap ps-3">
+            <i class="fas fa-angle-right"></i> <span id="dashboard-nav-title"></span><small id="dashboard-nav-subtitle"></small>
+        </span>
+        <button id="dashboard-back-link" class="btn btn-dark text-muted">Retour</button>
+        <div class="dropdown border-md-start border-secondary ps-3 d-none d-md-block me-3">
+            <a href="#" class="d-flex align-items-center text-muted text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <strong>{{ user.pseudo }}</strong><i class="fa fa-user-circle fa-2x ms-2" aria-hidden="true"></i>
+            </a>
+            <ul id="dropdown-menu-screen" class="dropdown-menu dropdown-menu-start dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item disabled" href="#">Paramètres</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ path('user_profile') }}" data-title="Mon profil utilisateur">
+                        Profil utilisateur
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block container %}
+<div class="flex-fill container-fluid">
+    <div class="row h-100">
+        <nav id="sidebarMenu" class="col-md-4 col-lg-3 col-xxl-2 d-md-block bg-darkgray sidebar collapse pb-5">
+            <div class="position-sticky pt-3">
+                <ul id="dashboard-nav" class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a id="home" href="{{ path('dashboard_home') }}" class="nav-link text-light" data-title="Accueil">
+                            <i class="fas fa-home fa-fw" aria-hidden="true"></i>
+                            Vue d'ensemble
+                        </a>
+                    </li>
+                    <li class="d-flex">
+                        <a id="timelines" href="{{ path('timeline_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Frises chronologiques">
+                            <i class="fas fa-stream fa-fw" aria-hidden="true"></i>
+                            Mes frises chronologiques
+                        </a>
+                        <a id="timeline-add" href="{{ path('timeline_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter une frise">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li class="d-flex">
+                        <a id="categories" href="{{ path('category_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Catégories">
+                            <i class="fas fa-tags fa-rw" aria-hidden="true"></i>
+                            Mes catégories
+                        </a>
+                        <a id="category-add" href="{{ path('category_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter une catégorie">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li class="d-flex">
+                        <a id="characters" href="{{ path('character_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Personnages">
+                            <i class="fas fa-users fa-fw" aria-hidden="true"></i>
+                            Mes personnages
+                        </a>
+                        <a id="character-add" href="{{ path('character_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter un personnage">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li class="d-flex">
+                        <a id="events" href="{{ path('event_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Évènements">
+                            <i class="fas fa-calendar fa-fw" aria-hidden="true"></i>
+                            Mes évènements
+                        </a>
+                        <a id="event-add" href="{{ path('event_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter une évènement">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="{{ path('export') }}" class="nav-link text-light">
+                            <i class="fas fa-file-export fa-fw" aria-hidden="true"></i>
+                            Exporter des données
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('import') }}" class="nav-link text-light">
+                            <i class="fas fa-file-import fa-fw"></i>
+                            Importer des données
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-8 col-lg-9 col-xxl-10 p-4" id="root">
+            <div class="d-flex justify-content-center h-100">
+                <div class="spinner-border my-auto" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('dashboard') }}
+{{ encore_entry_script_tags('character_form') }}
+{{ encore_entry_script_tags('event_form') }}
+{{ encore_entry_script_tags('category_form') }}
+{% endblock %}

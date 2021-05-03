@@ -136,38 +136,7 @@ class EventController extends AbstractController
      * @Route("/event/delete/id/{id}", name="event_delete")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function delete($id, FileUploader $fileUploader, TranslatorInterface $translator)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $event = $entityManager->getRepository(Event::class)->findOneBy([
-            'id' => $id,
-            'user' => $this->getUser()->getId(),
-        ]);
-        if (!$event) {
-            throw $this->createNotFoundException($translator->trans('pagenotfound'));
-        }
-        $name = $event->getName();
-
-        if ($event) {
-            $image = $event->getImageFilename();
-            if ($image) {
-                $fileUploader->delete($image);
-            }
-            $entityManager->remove($event);
-            $entityManager->flush();
-        }
-
-        return $this->render('event/delete.html.twig', [
-            'event' => $event,
-            'name' => $name
-        ]);
-    }
-
-    /**
-     * @Route("/event/deleteajax/id/{id}", name="event_ajax_delete")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
-    public function deleteAjax($id, FileUploader $fileUploader)
+    public function delete($id, FileUploader $fileUploader)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $event = $entityManager->getRepository(Event::class)->findOneBy([

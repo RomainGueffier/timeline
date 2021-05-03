@@ -11,78 +11,155 @@
         {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
-    {% block body %}
-    <body class="d-flex flex-column h-100 bg-light">
-    {% endblock %}
-        {% block header %}{% endblock %}
-        {% block navbar %}
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-            <a class="navbar-brand" href="{{ path('index') }}">
-                <img src="{{ asset('build/logo.png') }}" width="32" height="32" alt="" loading="lazy">
-                Timeline.io
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto text-center">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('index') }}">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
-                    </li>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('timeline_list') }}">Mes frises chronologiques</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Données <i class="fas fa-caret-down"></i>
+    <body class="{% block body_classes %}d-flex flex-column h-100 bg-light{% endblock %}">
+        {% block header %}
+        <header class="p-3 bg-dark text-white">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="{{ path('index') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img class="me-2" src="{{ asset('build/logo.png') }}" width="32" height="32" alt="logo" loading="lazy">
+                        <span class="fs-5">Timeline.io</span>
+                    </a>
+
+                    {% block navbar %}
+                    <ul class="nav col-12 col-lg-auto ms-2 me-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="{{ path('index') }}" class="nav-link px-2 text-secondary">Accueil</a></li>
+                        <li><a href="{{ path('contact') }}" class="nav-link px-2 text-white">Contact</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white disabled">FAQs</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white disabled">À propos</a></li>
+                    </ul>
+                    {% endblock %}
+
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                        <input type="search" class="form-control form-control-dark" placeholder="Rechercher...">
+                    </form>
+
+                    <div class="text-end d-flex align-content-center gap-2">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a href="{{ path('dashboard') }}" class="btn btn-dark">
+                            Tableau de bord
                         </a>
-                        <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ path('character_read_all') }}">Personnages</a>
-                            <a class="dropdown-item" href="{{ path('event_read_all') }}">Évènements</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ path('category_read_all') }}">Catégories</a>
-                        </div>
-                    </li>
-                    {% endif %}
-                </ul>
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="nav-link btn btn-dark mx-2" href="{{ path('user_profile') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Mon Profil">
-                    <i class="fas fa-user-circle"></i><span class="d-block d-sm-none"> Mon profil</span>
-                </a>
-                <a class="nav-link btn btn-dark mx-2" href="{{ path('app_logout') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Se déconnecter">
-                    <i class="fas fa-sign-out-alt"></i><span class="d-block d-sm-none"> Se déconnecter</span>
-                </a>
-                {% else %}
-                <a class="nav-link btn btn-dark mx-2" href="{{ path('app_login') }}" tabindex="-1" aria-disabled="true" data-toggle="tooltip" title="Connexion utilisateur">
-                    <i class="fas fa-user-circle"></i><span class="d-block d-sm-none"> Connexion utilisateur</span>
-                </a>
-                {% endif %}
-                <form class="form-inline my-2 my-md-0" action="" method="get" style="opacity:.7;">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Rechercher..." aria-label="Recherche">
-                    <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button> -->
-                </form>
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-warning" data-bs-toggle="tooltip" title="Se déconnecter">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                        {% else %}
+                        <a href="{{ path('app_login') }}" class="btn btn-outline-light" data-bs-toggle="tooltip" title="Connexion">
+                            Connexion
+                        </a>
+                        <a href="{{ path('user_signin') }}" class="btn btn-warning" data-bs-toggle="tooltip" title="Inscription">
+                            Inscription
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </nav>
+        </header>
         {% endblock %}
         {% block container %}
-        {% endblock %}
+        {% endblock %}   
         {% block footer %}
-        <footer class="footer mt-auto py-5 bg-dark text-center">
+        <footer class="footer mt-auto pt-3 bg-dark text-center">
             <div class="container">
+                <button id="changelog" class="btn btn-outline-info btn-sm float-end" data-bs-toggle="modal" data-bs-target="#changelogModal">
+                    Changelog (<i class="fas fa-code-branch"></i> v1.1)
+                </button>
                 <p class="text-muted">
-                    <span class="lead">{{ app.request.getSchemeAndHttpHost()|replace({'http://': ''}) }}</span> <span class="text-success"><i class="fas fa-code-branch"></i> v1</span>
-                    <br><a class="text-muted" href="https://sites.google.com/view/romaingueffier/accueil"><i class="fas fa-copyright"></i> Romain Gueffier - {{ "now"|date("Y") }}</a>
+                    {{ app.request.getSchemeAndHttpHost()|replace({'http://': ''}) }} <a class="text-muted" href="https://sites.google.com/view/romaingueffier/accueil"><i class="fas fa-copyright"></i> Romain Gueffier - {{ "now"|date("Y") }}</a>
                 </p>
             </div>
         </footer>
-        {% block modal %}
         {% endblock %}
+        {% block modal %}
+        <div id="changelogModal" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="Changelog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Changelog</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="p-3 bg-linen">
+                            <small class="text-muted">3 mai 2021</small>
+                            <h4 class="text-green">
+                                Version <i class="fas fa-code-branch"></i> 1.1
+                            </h4>
+                            <p>
+                                Grosse évolution de l'ensemble de l'application !
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Gestion des données des frises centralisée dans un tableau de bord, import et export, refonte graphique et technique.
+                                    Ajout de l'actuel Changelog
+                                </span>
+                            </p>
+                            <hr>
+                            <p>
+                                Amélioration technique
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Suppression de bootbox et suppression (en cours) progressive de jQuery, montée de version vers Bootstrap 5.
+                                    Migration progressive du core symfony vers une API REST, utilisation de Javascript Fetch pour des chargements asynchrones des pages dans le tableau de bord
+                                </span>
+                            </p>
+                            <hr>
+                            <p>
+                                Amélioration graphique
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Simplification des menus, tableau de bord centralisé avec animation. Unification de l'interface et des boutons d'actions.
+                                    Amélioration de la navigation mobile.
+                                </span>
+                            </p>
+                            <hr>
+                            <p>
+                                Import et Export de données
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Formulaires pour sélectionner les données à exporter ou importer. Fichiers JSON.
+                                </span>
+                            </p>
+                        </div>
+                        <div class="p-3">
+                            <small class="text-muted">6 avril 2021</small>
+                            <h4 class="text-green">
+                                Version <i class="fas fa-code-branch"></i> 1.0
+                            </h4>
+                            <p>
+                                Construction de frises chronologiques avec des personnages, évènements et des catégories.
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Les catégories permettent de classer les évènements et les personnages plus facilement dans la frise, 
+                                    par exemple pour afficher ou cacher rapidement un groupe de personnages ou d'évènements liés
+                                </span>
+                            </p>
+                            <hr>
+                            <p>
+                                Compte utilisateur (inscription, espace utilisateur)
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Il est possible de modifier son mot de passe, au besoin ou si oublié.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        {% block toast %}
+        <div class="toast-container position-absolute p-3 top-0 end-0 p-3 d-none" id="toasts-container">
+            <div id="toast-model" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="{{ asset('build/logo.png') }}" class="rounded me-2" alt="logo" width="16">
+                    <strong class="me-auto">Timeline.io</strong>
+                    <small>À l'instant</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body"></div>
+            </div>
+        </div>
         {% endblock %}
         {% block javascripts %}
         {{ encore_entry_script_tags('app') }}

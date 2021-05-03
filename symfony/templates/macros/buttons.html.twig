@@ -1,0 +1,38 @@
+{# https://twig.symfony.com/doc/3.x/tags/macro.html #}
+
+{% macro actions(entity, entity_name, detailedView = false) %}
+{% if detailedView %}
+{% if entity_name != 'timeline' %}
+<a class="btn btn-secondary" 
+    target="_blank" 
+    href="{{ entity.imageFilename ? asset('uploads/images/' ~ entity.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ entity.imageFilename }}">
+    <i class="fas fa-image"></i>
+</a>
+{% endif %}
+{% else %}
+{% if entity_name == 'timeline' %}
+<a target="_blank" href="{{ path('timeline', {id: entity.id}) }}"  class="btn btn-primary">
+    <i class="fas fa-external-link-alt"></i> <small>Ouvrir la frise interactive</small>
+</a>
+{% endif %}
+<a href="{{ path(entity_name ~ '_read_one', {id: entity.id}) }}" 
+    class="btn btn-primary btn-view" data-content-name="{{ entity.name }}" 
+    data-content-type="{{ entity_name }}">
+    <i class="fas fa-eye fa-fw"></i>
+</a>
+{% endif %}
+<a href="{{ path(entity_name ~ '_edit', {id: entity.id}) }}" 
+    class="btn btn-warning btn-edit" 
+    data-content-name="{{ entity.name }}" 
+    data-content-type="{{ entity_name }}">
+    <i class="fas fa-edit fa-fw"></i>
+</a>
+<a href="{{ path(entity_name ~ '_delete', {id: entity.id}) }}" 
+    class="btn btn-danger btn-delete" 
+    data-content-name="{{ entity.name }}" 
+    data-content-type="{{ entity_name }}" 
+    data-detailed-view="{{ detailedView }}"
+    data-entity-id="{{ entity.id }}">
+    <i class="fas fa-trash fa-fw"></i>
+</a>
+{% endmacro %}

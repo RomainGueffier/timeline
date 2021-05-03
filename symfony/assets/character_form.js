@@ -1,4 +1,8 @@
-$(function(){
+/**
+ * JS for character form (add and edit)
+ */
+
+export function characterForm() {
 
     function setAge(birth, death) {
         var age = 0;
@@ -8,7 +12,7 @@ $(function(){
             } else if (birth <= 0 && death <= 0) {
                 age = Math.abs(death - birth);
             } else {
-                // in this case, bith is before 0 and death after 0
+                // in this case, birth is before 0 and death after 0
                 // then calculate by taking account of "year 0"
                 age = death + Math.abs(birth);
             }
@@ -56,4 +60,4 @@ $(function(){
             }
         }
     });
-});
+}

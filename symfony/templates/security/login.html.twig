@@ -17,22 +17,22 @@
                         Tu es déjà connecté {{ app.user.username }}, <a class="btn btn-link" href="{{ path('app_logout') }}">Deconnexion</a>
                     </div>
                     {% endif %}
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="inputEmail">E-mail</label>
                         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="inputPassword">Mot de passe</label>
                         <input type="password" name="password" id="inputPassword" class="form-control" required>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <div class="form-group form-check">
+                    <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" name="_remember_me">
                         <label class="form-check-label" for="exampleCheck1">Se rappeler de moi</label>
                     </div>
                     <button class="btn btn-primary" type="submit">Connexion</button>
                     <a class="btn btn-warning" href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
-                    <div class="form-group float-md-right">
+                    <div class="mb-3 float-md-end">
                       <label>Pas encore de compte ?</label>
                       <a href="{{ path('user_signin') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Inscription</a>
                     </div>

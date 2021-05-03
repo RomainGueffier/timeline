@@ -1,69 +1,59 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Personnage : {{ category.name }}{% endblock %}
-
-{% block container %}
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        <h2 class="my-2 display-4">{{ category.name }}</h2>
-        <div class="p-4 bg-light">
-            <p>{{ category.description }}</p>
-            <p class="mb-0">
-                {% if is_granted('edit', category) %}
-                <a class="btn btn-outline-warning" href="{{ path('category_edit', {id: category.id}) }}">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a class="btn btn-outline-danger btn-delete" href="{{ path('category_delete', {id: category.id}) }}"><i class="fas fa-trash"></i></a>
-                {% endif %}
-                <button type="button" class="btn btn-outline-info" data-toggle="collapse" data-target="#collapseData" aria-expanded="false" aria-controls="collapseData">
-                    <i class="fas fa-list"></i> Voir la liste des personnages et évènements associés
-                </button>
-            </p>
-            <div class="collapse row" id="collapseData">
-                <div class="col">
-                    <h4 class="m-3">Personnages</h4>
-                    {% if characters %}
-                    {% for character in characters %}
-                    <div class="media my-3">
-                        <img style="width:128px;" class="align-self-start mr-3" src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
-                        <div class="media-body">
-                            <div class="float-right">
-                                <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
-                                <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="btn btn-outline-danger btn-sm disabled"><i class="fas fa-trash"></i></a>
-                            </div>
-                            <h5 class="mt-0">{{ character.name }}</h5>
-                            <p class="text-muted">{{ character.description|u.truncate(50, '...') }}</p>
-                        </div>
+<h2 class="my-2 display-4">{{ category.name }}</h2>
+<div class="p-4 bg-light">
+    <p>{{ category.description }}</p>
+    <p class="mb-0">
+        {% if is_granted('edit', category) %}
+        <a class="btn btn-warning" href="{{ path('category_edit', {id: category.id}) }}">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a class="btn btn-danger btn-delete" href="{{ path('category_delete', {id: category.id}) }}"><i class="fas fa-trash"></i></a>
+        {% endif %}
+        <button type="button" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collapseData" aria-expanded="false" aria-controls="collapseData">
+            <i class="fas fa-list"></i> Voir la liste des personnages et évènements associés
+        </button>
+    </p>
+    <div class="collapse row" id="collapseData">
+        <div class="col">
+            <h4 class="m-3">Personnages</h4>
+            {% if characters %}
+            {% for character in characters %}
+            <div class="media my-3">
+                <img style="width:128px;" class="align-self-start mr-3" src="{{ character.imageFilename ? asset('uploads/images/' ~ character.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ character.imageFilename }}">
+                <div class="media-body">
+                    <div class="float-right">
+                        <a href="{{ path('character_read_one', {id: character.id}) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('character_edit', {id: character.id}) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
+                        <a href="#" class="btn btn-outline-danger btn-sm disabled"><i class="fas fa-trash"></i></a>
                     </div>
-                    {% endfor %}
-                    {% else %}
-                    <p class="alert alert-warning" role="alert">Aucun personnage</p>
-                    {% endif %}
-                </div>
-                <div class="col">
-                    <h4 class="m-3">Évènements</h4>
-                    {% if events %}
-                    {% for event in events %}
-                    <div class="media my-3">
-                        <img style="width:128px;" class="align-self-start mr-3" src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
-                        <div class="media-body">
-                            <div class="float-right">
-                                <a href="{{ path('event_read_one', {id: event.id}) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
-                                <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="btn btn-outline-danger btn-sm disabled"><i class="fas fa-trash"></i></a>
-                            </div>
-                            <h5 class="mt-0">{{ event.name }}</h5>
-                            <p class="text-muted">{{ event.description|u.truncate(50, '...') }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    {% else %}
-                    <p class="alert alert-warning" role="alert">Aucun évènements</p>
-                    {% endif %}
+                    <h5 class="mt-0">{{ character.name }}</h5>
+                    <p class="text-muted">{{ character.description|u.truncate(50, '...') }}</p>
                 </div>
             </div>
+            {% endfor %}
+            {% else %}
+            <p class="alert alert-warning" role="alert">Aucun personnage</p>
+            {% endif %}
+        </div>
+        <div class="col">
+            <h4 class="m-3">Évènements</h4>
+            {% if events %}
+            {% for event in events %}
+            <div class="media my-3">
+                <img style="width:128px;" class="align-self-start mr-3" src="{{ event.imageFilename ? asset('uploads/images/' ~ event.imageFilename) : asset('build/blank_image.jpg') }}" alt="{{ event.imageFilename }}">
+                <div class="media-body">
+                    <div class="float-right">
+                        <a href="{{ path('event_read_one', {id: event.id}) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
+                        <a href="#" class="btn btn-outline-danger btn-sm disabled"><i class="fas fa-trash"></i></a>
+                    </div>
+                    <h5 class="mt-0">{{ event.name }}</h5>
+                    <p class="text-muted">{{ event.description|u.truncate(50, '...') }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="alert alert-warning" role="alert">Aucun évènements</p>
+            {% endif %}
         </div>
     </div>
-</main>
-{% endblock %}
+</div>

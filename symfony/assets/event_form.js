@@ -1,4 +1,8 @@
-$(function(){
+/**
+ * JS for event form (add and edit)
+ */
+
+export function eventForm() {
 
     function setAge(birth, death) {
         var age = 0;
@@ -56,4 +60,4 @@ $(function(){
             }
         }
     });
-});
+}

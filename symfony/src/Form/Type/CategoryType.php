@@ -23,6 +23,7 @@ class CategoryType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('events', EntityType::class, [
+                'required' => false,
                 'label' => 'Évènements',
                 'class' => Event::class,
                 'choice_label' => 'name',
@@ -36,6 +37,7 @@ class CategoryType extends AbstractType
                 },
             ])
             ->add('characters', EntityType::class, [
+                'required' => false,
                 'label' => 'Personnages',
                 'class' => Character::class,
                 'choice_label' => 'name',
