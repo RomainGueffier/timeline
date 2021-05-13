@@ -61,7 +61,7 @@
         <footer class="footer mt-auto pt-3 bg-dark text-center">
             <div class="container">
                 <button id="changelog" class="btn btn-outline-info btn-sm float-end" data-bs-toggle="modal" data-bs-target="#changelogModal">
-                    Changelog (<i class="fas fa-code-branch"></i> v1.1)
+                    Changelog (<i class="fas fa-code-branch"></i> v1.1.1)
                 </button>
                 <p class="text-muted">
                     {{ app.request.getSchemeAndHttpHost()|replace({'http://': ''}) }} <a class="text-muted" href="https://sites.google.com/view/romaingueffier/accueil"><i class="fas fa-copyright"></i> Romain Gueffier - {{ "now"|date("Y") }}</a>
@@ -78,7 +78,29 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="p-3 bg-linen">
+                    <div class="p-3 bg-linen">
+                            <small class="text-muted">13 mai 2021</small>
+                            <h4 class="text-green">
+                                Version <i class="fas fa-code-branch"></i> 1.1.1
+                            </h4>
+                            <p>
+                                Amélioration de l'affichage des évènements
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Les évènements s'affichent au dessus de la frise, il sont orientés horizontalement pour permettre de les superposer facilement.
+                                    Ajout d'une notification en cas d'utilisation de navigateurs non compatibles (surtout Safari).
+                                </span>
+                            </p>
+                            <hr>
+                            <p>
+                                Correctif du déploiements des Assets en production
+                                <br>
+                                <span class="fst-italic text-muted">
+                                    Ajout d'un versionnement des images et fichiers JS/CSS
+                                </span>
+                            </p>
+                        </div>
+                        <div class="p-3">
                             <small class="text-muted">3 mai 2021</small>
                             <h4 class="text-green">
                                 Version <i class="fas fa-code-branch"></i> 1.1

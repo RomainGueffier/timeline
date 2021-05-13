@@ -15,6 +15,7 @@ import '../node_modules/selectize/dist/css/selectize.bootstrap3.css';
 
 import BootstrapModal from './components/Modal';
 import BootstrapNotification from './components/Notification'
+import Browser from './components/Browser'
 
 export default class App {
 
@@ -116,5 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const changelogEl = document.getElementById('changelog')
     let changelogModal = bootstrap.Modal.getInstance(changelogEl) || new bootstrap.Modal(changelogEl)
+
+    const browser = new Browser()
+    if (browser.isBlink || browser.isIE || browser.isSafari) {
+        app.notification.new("L'application n'est pas optimisée pour Safari et Internet Explorer, nous recommandons Chrome ou Firefox.")
+    }
     
 })
