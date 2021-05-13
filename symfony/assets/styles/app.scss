@@ -115,9 +115,8 @@ form legend {
 
 .timeline-wrapper {
     overflow-x: auto;
-    position: relative;
     background-color: whitesmoke;
-    min-height: 500px;
+    padding: 1rem 0;
 }
 
 .timeline {
@@ -126,14 +125,19 @@ form legend {
     flex-wrap: nowrap;
     border-top: 2px solid darkslategrey;
     height: 2rem;
-    position: sticky;
-    top: 0;
     width: fit-content;
     z-index: 10;
     background: rgba(245,245,245,.8);
+    margin-bottom: .5rem;
 }
 
-.timeline-events{
+#timeline-events, #timeline-characters {
+    width: fit-content;
+    position: relative;
+    height: 200px;
+}
+
+#timeline-characters {
     width: fit-content;
     position: relative;
     height: 500px;
@@ -163,28 +167,42 @@ form legend {
     margin: auto .5rem;
 }
 
-.event, .longevent {
+.event {
     position: absolute;
     height: 100%;
-    border-left: 2px solid burlywood;
-    border-bottom: 2px solid burlywood;
-    top: 0;
-    writing-mode: vertical-rl;
-    text-orientation: sideways;
-    text-align: right;
-    padding-bottom: 1rem;
-    font-size: .9rem;
-    line-height: 0rem;
+    border-left: 3px solid burlywood;
+    bottom: 0;
+    border-top-left-radius: .5rem;
+}
+
+.event-content {
+    width: max-content;
+    border: 1px solid burlywood;
+    background: rgba(245,222,179, .8);//burlywood
+    font-size: .7rem;
+    padding: 0 .3rem;
+    text-align: center;
+    border-radius: .5rem;
 }
 
 .longevent {
-    width: auto;
-    background: rgba(245,222,179, .8);//burlywood
+    position: absolute;
+    bottom: 0;
+    border-right: 3px solid burlywood;
+    border-left: 3px solid burlywood;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
 }
 .longevent-content {
-    position: absolute;
-    bottom: 1rem;
-    left: 0;
+    width: max-content;
+    margin-bottom: 1rem;
+    border-top: 1px solid burlywood;
+    border-bottom: 1px solid burlywood;
+    background: rgba(245,222,179, .8);//burlywood
+    font-size: .7rem;
+    padding: 0 .3rem;
+    text-align: center;
+    border-radius: .5rem;
 }
 
 .period {

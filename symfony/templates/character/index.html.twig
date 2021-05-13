@@ -1,5 +1,5 @@
 {% if characters %}
-{% import "/macros/cards.html.twig" as cards %}
+{% import "macros/cards.html.twig" as cards %}
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
     {% for character in characters %}
     {{ cards.grid(character, 'character') }}

@@ -1,5 +1,5 @@
 {% if timelines %}
-{% import "/macros/cards.html.twig" as cards %}
+{% import "macros/cards.html.twig" as cards %}
 {% for timeline in timelines %}
 {{ cards.row(timeline, 'timeline') }}
 {% endfor %}

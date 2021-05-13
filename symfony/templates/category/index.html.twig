@@ -1,5 +1,5 @@
 {% if categories %}
-{% import "/macros/cards.html.twig" as cards %}
+{% import "macros/cards.html.twig" as cards %}
 {% for category in categories %}
 {{ cards.row(category, 'category') }}
 {% endfor %}
