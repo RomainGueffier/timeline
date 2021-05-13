@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let changelogModal = bootstrap.Modal.getInstance(changelogEl) || new bootstrap.Modal(changelogEl)
 
     const browser = new Browser()
-    if (browser.isBlink || browser.isIE || browser.isSafari) {
+    if (browser.isIE || browser.isSafari) {
         app.notification.new("L'application n'est pas optimisée pour Safari et Internet Explorer, nous recommandons Chrome ou Firefox.")
     }
     
