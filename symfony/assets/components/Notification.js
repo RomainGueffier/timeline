@@ -19,7 +19,7 @@ export default class BootstrapNotification {
      *    @property {Integer} delay default 5s (in ms)
      *    @property {String} style bootstrap default styles (danger, warning, light, dark, etc..)
      */
-    new(message, options) {
+    new(message, options = {}) {
 
         const delay = options.delay || 5000
         const style = options.style || 'default'

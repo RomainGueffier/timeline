@@ -1,6 +1,6 @@
 {
     "name": "therealtimeline/app",
-    "description": "The Real Timeline App - Symfony 5",
+    "description": "Timeline App - Symfony 5",
     "type": "project",
     "license": "proprietary",
     "require": {
