@@ -129,7 +129,8 @@ class ShareController extends AbstractController
                         }
                         if ($entityClass === Timeline::class) {
                             foreach ($entity->getCategories() as $category) {
-                                $category->setUser($this->getUser());
+                                $category->setUser($this->getUser())
+                                    ->removeAllChildren();// to avoid multiple circular relationships
                             }
                         }
                     }

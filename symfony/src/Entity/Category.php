@@ -204,4 +204,15 @@ class Category
     {
         return $this->getTimeline()->getVisibility();
     }
+
+    /**
+    * Remove all children for importation
+    */
+    public function removeAllChildren(): self
+    {
+        $this->events->clear();
+        $this->characters->clear();
+
+        return $this;
+    }
 }
