@@ -63,10 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // chargement asynchrone des Personnages / évènements selon la frise chronologique choisie
-    var timeline_id = $(".timeline-events").attr('data-timeline-id');
-    var ratio = $(".timeline-events").attr('data-ratio');
-    var start = $(".timeline-events").attr('data-start');
-    var end = $(".timeline-events").attr('data-end');
+    const timelineWrapperEl = document.getElementById('timeline-wrapper')
+    var timeline_id = timelineWrapperEl.getAttribute('data-timeline-id')
+    var ratio = timelineWrapperEl.getAttribute('data-ratio')
+    var start = timelineWrapperEl.getAttribute('data-start')
+    var end = timelineWrapperEl.getAttribute('data-end')
 
     $.ajax({
         url: '/character/ajax',
@@ -76,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }).then(function(response) {
         $("#character-loader").remove();
-        $(".timeline-events").html(response);
+        document.getElementById("timeline-characters").innerHTML = response
         // Launch ajax listener
         app.on('document', 'click', '.btn-modal', function(e) {
             timeline.showModal(e)
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }).then(function(response) {
         $("#event-loader").remove();
-        $(response).insertAfter(".timeline-events");
+        document.getElementById("timeline-events").innerHTML = response
         // Launch ajax listener
         app.on('document', 'click', '.btn-modal', function(e) {
             timeline.showModal(e)

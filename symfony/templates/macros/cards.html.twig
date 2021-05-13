@@ -1,7 +1,7 @@
 {# https://twig.symfony.com/doc/3.x/tags/macro.html #}
 
 {% macro row(entity, entity_name, list_path) %}
-{% import "/macros/buttons.html.twig" as buttons %}
+{% import "macros/buttons.html.twig" as buttons %}
 <article class="card shadow mb-3" id="{{ entity_name }}-wrapper-{{ entity.id }}">
     <div class="card-body d-flex p-0">
         <div class="w-100 p-3">
@@ -15,7 +15,7 @@
 {% endmacro %}
 
 {% macro grid(entity, entity_name, list_path) %}
-{% import "/macros/buttons.html.twig" as buttons %}
+{% import "macros/buttons.html.twig" as buttons %}
 <article class="col mb-3" id="{{ entity_name }}-wrapper-{{ entity.id }}">
     <div class="card h-100 shadow">
         {{ _self.image(entity) }}

@@ -2,6 +2,8 @@
 
 {% block title %}Frise chronologique{% endblock %}
 
+{% block body_classes %}d-flex flex-column bg-light{% endblock %}
+
 {% block container %}
 <section class="p-5 mb-4 bg-light rounded-3 text-center">
     <div class="container-fluid py-5">
@@ -53,7 +55,15 @@
         </div>
     </div>
 </section>
-<div id="timeline-wrapper" class="timeline-wrapper timeline-{{ range }}">
+<div id="timeline-wrapper" class="d-flex flex-column timeline-wrapper timeline-{{ range }}" data-ratio="{{ ratio }}" data-start="{{ start }}" data-end="{{ end }}" data-timeline-id="{{ timeline.id }}">
+    <div id="event-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-calendar"></i><small> Chargement des évènements...</small>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>
+        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+    </div>
+    <div id="timeline-events"></div>
     <div id="timeline-units" class="timeline">
         {{ graphic_timeline|raw }}
     </div>
@@ -64,15 +74,7 @@
         </div>
         <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
     </div>
-    <div id="event-loader" class="alert alert-secondary alert-dismissible fade show" role="alert">
-        <div class="d-flex align-items-center">
-            <i class="fas fa-calendar"></i><small> Chargement des évènements...</small>
-            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-        </div>
-        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
-    </div>
-    <div class="timeline-events" data-ratio="{{ ratio }}" data-start="{{ start }}" data-end="{{ end }}" data-timeline-id="{{ timeline.id }}"></div>
-    <div class="timeline-period"></div>
+    <div id="timeline-characters"></div>
 </div>
 {% endblock %}
 
