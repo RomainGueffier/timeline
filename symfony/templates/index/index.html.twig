@@ -17,14 +17,14 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <a href="{{ path('dashboard') }}" class="btn btn-success btn-lg px-4 me-sm-3">Tableau de bord</a>
             {% else %}
-            <a href="{{ path('user_signin') }}" class="btn btn-success btn-lg px-4 me-sm-3">Inscription</a>
+            <a href="{{ path('app_login') }}" class="btn btn-success btn-lg px-4 me-sm-3">Connexion</a>
             {% endif %}
             <a href="#timelines" class="btn btn-outline-secondary btn-lg px-4">Parcourir les frises</a>
         </div>
     </div>
     <div class="overflow-hidden" style="max-height: 30vh;">
     <div class="container px-5">
-        <img src="{{ asset('/build/background.jpg') }}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="clock in sand" loading="lazy">
+        <img src="{{ asset('build/background.jpg') }}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="clock in sand" loading="lazy">
     </div>
   </div>
 </section>

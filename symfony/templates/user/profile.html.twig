@@ -13,7 +13,16 @@
                 <a href="{{ path('app_logout') }}" class="btn btn-primary" data-bs-toggle="tooltip" title="Déconnexion"><i class="fas fa-sign-out-alt"></i></a>
                 <a href="{{ path('user_edit') }}" class="btn btn-warning" data-bs-toggle="tooltip" title="Modifier ton profil"><i class="fas fa-edit"></i></a>
                 <a href="{{ path('app_forgot_password_request') }}" class="btn btn-dark" data-bs-toggle="tooltip" title="Changer ton mot de passe"><i class="fas fa-unlock-alt"></i></a>
-                <a href="{{ path('user_delete') }}" class="btn btn-danger btn-delete" data-bs-toggle="tooltip" title="Supprimer ton compte"><i class="fas fa-trash"></i></a>
+                <a href="{{ path('user_delete') }}" 
+                    class="btn btn-danger btn-delete" 
+                    data-bs-toggle="tooltip" 
+                    title="Supprimer ton compte"
+                    data-content-name="{{ user.pseudo }} ({{ user.email }})" 
+                    data-content-type="user" 
+                    data-detailed-view="1"
+                    data-entity-id="{{ user.id }}">
+                    <i class="fas fa-trash"></i>
+                </a>
             </div>
         </div>
     </div>

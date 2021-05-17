@@ -147,17 +147,36 @@ class UserController extends AbstractController
         // usually you'll want to make sure the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $message = "Impossible de supprimer cette frise";
+        $error = true;
         $user = $this->getUser();
 
         if (!$user) {
-            throw $this->createNotFoundException(
-                'Impossible de visualiser votre compte, merci de vous reconnecter ou de réessayer plus tard.'
-            );
+            $message = 'Impossible de récupérer les informations de votre compte, merci de vous reconnecter ou de réessayer plus tard.';
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
+            $userData = $entityManager->getRepository(User::class)->findOneBy([
+                'id' => $this->getUser()->getId()
+            ]);
+            $entityManager->remove($userData);
+            $entityManager->flush();
+
+            // logout session
+            $this->get('security.token_storage')->setToken(null);
+            $this->get('session')->invalidate();
+
+            $message = "Ton compte " . $user->getEmail() . " a bien été supprimé, tes données et partages également !";
+            $error = false;
         }
 
-        return $this->render('user/profile.html.twig', [
-            'user' => $user
-        ]);
+        $response = new Response();
+        $response->setContent(json_encode([
+            'error' => $error,
+            'message' => $message
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

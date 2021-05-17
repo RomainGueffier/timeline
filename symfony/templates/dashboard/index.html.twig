@@ -16,7 +16,7 @@
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item disabled" href="#">Paramètres</a></li>
                 <li>
-                    <a class="dropdown-item" href="{{ path('user_profile') }}" data-title="Mon profil utilisateur">
+                    <a class="dropdown-item dashboard-link" href="{{ path('user_profile') }}" data-title="Mon profil utilisateur">
                         Profil utilisateur
                     </a>
                 </li>
@@ -36,7 +36,7 @@
         <span class="d-block flex-grow-1 navbar-brand bg-dark lead text-muted text-wrap ps-3">
             <i class="fas fa-angle-right"></i> <span id="dashboard-nav-title"></span><small id="dashboard-nav-subtitle"></small>
         </span>
-        <button id="dashboard-back-link" class="btn btn-dark text-muted">Retour</button>
+        <button id="dashboard-back-link" class="btn btn-dark text-muted dashboard-link">Retour</button>
         <div class="dropdown border-md-start border-secondary ps-3 d-none d-md-block me-3">
             <a href="#" class="d-flex align-items-center text-muted text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 <strong>{{ user.pseudo }}</strong><i class="fa fa-user-circle fa-2x ms-2" aria-hidden="true"></i>
@@ -44,7 +44,7 @@
             <ul id="dropdown-menu-screen" class="dropdown-menu dropdown-menu-start dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                 <li><a class="dropdown-item disabled" href="#">Paramètres</a></li>
                 <li>
-                    <a class="dropdown-item" href="{{ path('user_profile') }}" data-title="Mon profil utilisateur">
+                    <a class="dropdown-item dashboard-link" href="{{ path('user_profile') }}" data-title="Mon profil utilisateur">
                         Profil utilisateur
                     </a>
                 </li>
@@ -63,44 +63,44 @@
             <div class="position-sticky pt-3">
                 <ul id="dashboard-nav" class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a id="home" href="{{ path('dashboard_home') }}" class="nav-link text-light" data-title="Accueil">
+                        <a id="home" href="{{ path('dashboard_home') }}" class="nav-link dashboard-link text-light" data-title="Accueil">
                             <i class="fas fa-home fa-fw" aria-hidden="true"></i>
                             Vue d'ensemble
                         </a>
                     </li>
                     <li class="d-flex">
-                        <a id="timelines" href="{{ path('timeline_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Frises chronologiques">
+                        <a id="timelines" href="{{ path('timeline_read_all') }}" class="nav-link dashboard-link text-light flex-grow-1 me-1" data-title="Frises chronologiques">
                             <i class="fas fa-stream fa-fw" aria-hidden="true"></i>
                             Mes frises chronologiques
                         </a>
-                        <a id="timeline-add" href="{{ path('timeline_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter une frise">
+                        <a id="timeline-add" href="{{ path('timeline_add') }}" class="btn btn-success btn-sm text-light my-auto dashboard-link" data-title="Ajouter une frise">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="d-flex">
-                        <a id="categories" href="{{ path('category_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Catégories">
+                        <a id="categories" href="{{ path('category_read_all') }}" class="nav-link dashboard-link text-light flex-grow-1 me-1" data-title="Catégories">
                             <i class="fas fa-tags fa-rw" aria-hidden="true"></i>
                             Mes catégories
                         </a>
-                        <a id="category-add" href="{{ path('category_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter une catégorie">
+                        <a id="category-add" href="{{ path('category_add') }}" class="btn btn-success btn-sm text-light my-auto dashboard-link" data-title="Ajouter une catégorie">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="d-flex">
-                        <a id="characters" href="{{ path('character_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Personnages">
+                        <a id="characters" href="{{ path('character_read_all') }}" class="nav-link dashboard-link text-light flex-grow-1 me-1" data-title="Personnages">
                             <i class="fas fa-users fa-fw" aria-hidden="true"></i>
                             Mes personnages
                         </a>
-                        <a id="character-add" href="{{ path('character_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter un personnage">
+                        <a id="character-add" href="{{ path('character_add') }}" class="btn btn-success btn-sm text-light my-auto dashboard-link" data-title="Ajouter un personnage">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="d-flex">
-                        <a id="events" href="{{ path('event_read_all') }}" class="nav-link text-light flex-grow-1 me-1" data-title="Évènements">
+                        <a id="events" href="{{ path('event_read_all') }}" class="nav-link dashboard-link text-light flex-grow-1 me-1" data-title="Évènements">
                             <i class="fas fa-calendar fa-fw" aria-hidden="true"></i>
                             Mes évènements
                         </a>
-                        <a id="event-add" href="{{ path('event_add') }}" class="btn btn-success btn-sm text-light my-auto" data-title="Ajouter une évènement">
+                        <a id="event-add" href="{{ path('event_add') }}" class="btn btn-success btn-sm text-light my-auto dashboard-link" data-title="Ajouter une évènement">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
