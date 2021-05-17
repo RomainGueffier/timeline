@@ -97,6 +97,9 @@ class Dashboard {
             case 'event':
                 return 'l\'évènement'
                 break
+            case 'user':
+                return 'ton compte'
+                break
             default:
                 return 'le contenu'
         }
@@ -180,7 +183,7 @@ dashboard.backButton.addEventListener('click', function(e) {
 })
 
 //app.on('#dashboard-nav', 'click', 'a', function(e) {
-document.querySelectorAll('#dashboard-nav li a, #dropdown-menu-screen li a,  #dropdown-menu-mobile li a').forEach(element => {
+document.querySelectorAll('.dashboard-link').forEach(element => {
     element.addEventListener('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -329,6 +332,10 @@ var observer = new MutationObserver(function(mutations) {
                                     // if delete action in list, then remove entity from dom
                                     if (!needRedirection && !!entityWrapper) {
                                         entityWrapper.remove()
+                                    }
+                                    // if user delete account redirect to home
+                                    else if (entityName === 'user') {
+                                        window.location.href = '/'
                                     }
                                     // else redirect to list (delete in detailed view)
                                     else {

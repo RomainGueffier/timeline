@@ -52,7 +52,7 @@
     <p class="card-text">{{ entity.description|u.truncate(50, '...') }}</p>
     {% else %}
     <h4>
-        {% if entity_name == 'timeline' %}<i class="fas fa-{{ entity.visibility ? 'lock' : 'unlock' }}"></i> {% endif %}
+        {% if entity_name == 'timeline' %}<i class="fas fa-{{ entity.visibility ? 'unlock' : 'lock' }}"></i> {% endif %}
         {{ entity.name }}
     </h4>
     <p class="text-muted">{{ entity.description|u.truncate(100, '...') }}</p>

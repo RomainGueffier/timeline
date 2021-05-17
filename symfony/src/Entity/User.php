@@ -52,22 +52,22 @@ class User implements UserInterface
     private $enabled = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Character", mappedBy="user", cascade={"persist", "remove"})
      */
     private $characters;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user", cascade={"persist", "remove"})
      */
     private $events;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="user", cascade={"persist", "remove"})
      */
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Timeline", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Timeline", mappedBy="user", cascade={"persist", "remove"})
      */
     private $timelines;
 
